@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+
+Name: ${project.groupId}/
+Implementation-Title: ${project.name}
+Specification-Title: ${project.description}
+Implementation-Version: ${project.version}
+Specification-Version: ${project.version}
+SHA-Digest: ${git.commit.id}
+Implementation-Vendor: ${project.organization.name}
+Specification-Vendor: ${project.organization.name}
+Implementation-Vendor-Id: ${build.number}
+Implementation-URL: ${project.url}
+Class-Path: ${project.groupId}/
+JavaFX-Application-Class: net.loxal.client.rest.App
+Sealed: true
+Build-Jdk: ${java.version}
+Built-By: ${user.name}
+Created-By: Apache Maven ${maven.version}

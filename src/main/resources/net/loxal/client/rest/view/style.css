@@ -1,0 +1,37 @@
+/*
+ * Copyright 2014 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ */
+
+.request {
+    -fx-border-color: #119;
+}
+
+#request-url-bar {
+    -fx-pref-width: 760;
+    -fx-fit-to-width: true;
+    -fx-fill-width: true;
+}
+
+.OTHER {
+    -fx-border-color: #999;
+}
+
+.SERVER_ERROR {
+    -fx-border-color: #d11;
+}
+
+.CLIENT_ERROR {
+    -fx-border-color: #d61;
+}
+
+.SUCCESSFUL {
+    -fx-border-color: #191;
+}
+
+.request-alt {
+    -fx-color: #119;
+}
+
+.response {
+    -fx-border-color: #191;
+}
