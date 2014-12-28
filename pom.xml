@@ -114,6 +114,12 @@
         </plugins>
     </build>
 
+    <scm>
+        <connection>scm:git:git://github.com:loxal/rest-client.git</connection>
+        <developerConnection>scm:git:git@github.com:loxal/rest-client.git</developerConnection>
+        <url>https://github.com/loxal/rest-client</url>
+        <tag>HEAD</tag>
+    </scm>
     <inceptionYear>2013</inceptionYear>
     <url>http://www.loxal.net</url>
 </project>
