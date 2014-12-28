@@ -7,20 +7,18 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <description>Tool to execute custom REST request</description>
+    <parent>
+        <groupId>loxal</groupId>
+        <artifactId>meta</artifactId>
+        <version>1.2.1</version>
+        <relativePath>../loxal/pom.xml</relativePath>
+    </parent>
 
     <artifactId>rest-client</artifactId>
     <version>0.9.4</version>
     <packaging>jar</packaging>
     <name>RESTful Client</name>
-
-    <parent>
-        <groupId>loxal</groupId>
-        <artifactId>meta</artifactId>
-        <version>1.2.1</version>
-        <relativePath>../rest-kit/meta-pom.xml</relativePath>
-    </parent>
+    <description>Tool to execute custom REST request</description>
 
     <properties>
         <jersey.version>2.13</jersey.version>
