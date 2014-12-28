@@ -4,7 +4,7 @@
   <description />
   <settings ref="Build">
     <parameters />
-    <build-runners order="RUNNER_5, RUNNER_1" />
+    <build-runners order="RUNNER_1, RUNNER_5" />
     <vcs-settings>
       <vcs-entry-ref root-id="Loxal_RestClient_RestClient" />
     </vcs-settings>
