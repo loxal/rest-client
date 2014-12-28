@@ -3,6 +3,9 @@
   <name>Build</name>
   <description />
   <settings ref="Build">
+    <options>
+      <option name="checkoutMode" value="ON_AGENT" />
+    </options>
     <parameters />
     <build-runners order="RUNNER_5, RUNNER_1" />
     <vcs-settings>
