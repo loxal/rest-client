@@ -57,7 +57,6 @@ import javafx.scene.control.Tooltip
 import javafx.scene.control.Control
 import javafx.event.ActionEvent
 import java.util.logging.Level
-import java.util.logging.Filter
 import kotlin.platform.platformStatic
 
 public class Controller : Initializable {
@@ -237,8 +236,8 @@ public class Controller : Initializable {
                 // TODO style output red-ish if not OK
                 LOG.info("responseBody.getStyleClass(): ${responseBody.getStyleClass()}")
                 println(LOG.getLevel())
-                responseBody.getStyleClass().add(Response.Status.Family.OTHER.name())
-                responseHeaders.getStyleClass().add(Response.Status.Family.OTHER.name())
+                responseBody.getStyleClass().add(Response.Status.Family.CLIENT_ERROR.name())
+                responseHeaders.getStyleClass().add(Response.Status.Family.CLIENT_ERROR.name())
             }
             responseBody.appendText(responseBodyPayload)
             showResponseHeaders(getResponse)
