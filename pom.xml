@@ -91,6 +91,7 @@
                         <configuration>
                             <sourceDirs>
                                 <source>src/main/kotlin</source>
+                                <source>src/main/resources</source>
                             </sourceDirs>
                         </configuration>
                     </execution>
