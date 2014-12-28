@@ -4,10 +4,6 @@
   ~ Copyright 2014 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
   -->
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -18,8 +14,11 @@
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
-
-<AnchorPane id="rootPane" fx:id="rootContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" stylesheets="/net/loxal/client/rest/view/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.loxal.client.rest.Controller">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="rootPane" fx:id="rootContainer" cacheShape="false"
+            focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0"
+            stylesheets="/net/loxal/client/rest/view/style.css" xmlns="http://javafx.com/javafx/8"
+            fx:controller="net.loxal.client.rest.Controller">
     <children>
         <ComboBox id="request-url-bar" fx:id="requestUrlChoice" cacheShape="false" centerShape="false" editable="true" focusTraversable="false" layoutX="7.0" layoutY="22.0" onKeyReleased="#declareUrl" pickOnBounds="false" promptText="https://api.example.com" scaleShape="false" styleClass="request" visibleRowCount="5" />
         <Button fx:id="requestPerformer" cancelButton="true" defaultButton="true" layoutX="794.0" layoutY="23.0" mnemonicParsing="false" onAction="#doRequest" pickOnBounds="false" prefHeight="26.0" prefWidth="112.0" text="Request" />

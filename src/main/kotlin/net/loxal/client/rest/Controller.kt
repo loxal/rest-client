@@ -178,17 +178,10 @@ public class Controller : Initializable {
             LOG.info(invalidUrlMessage)
         }
 
-        requestParameterData.setText(URL(urlValue).getQuery())
-        requestParameterData.textProperty().setValue(URL(urlValue).getQuery())
-        requestParameterData.textProperty().set(URL(urlValue).getQuery())
-        //        requestParameterData.replaceSelection(URL(urlValue).getQuery())
+        requestParameterData.setText(this.url.toString())
 
         requestParameterData.fireEvent(ActionEvent())
         requestUrlChoice.fireEvent(ActionEvent())
-
-        println(requestParameterData.getText())
-        println(requestUrlChoice.getValue())
-        println(URL(urlValue).getQuery())
     }
 
     private fun doPostRequest() {
@@ -220,25 +213,15 @@ public class Controller : Initializable {
         try {
             val getResponse = prepareRequest().get()
             // TODO support XML
-            println(LOG.getLevel())
-            println(LOG.setLevel(Level.FINE))
+            LOG.setLevel(Level.FINE)
             LOG.fine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TEST FINE")
-            println(LOG.getLevel())
+            LOG.log(Level.FINE, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TEST FINE")
 
             val responseBodyPayload = formatJson(getResponse.readEntity(javaClass<String>()))
-            if (getResponse.getStatusInfo().getFamily()== Response.Status.Family.SUCCESSFUL) {
-                // TODO style output green-ish if OK
-                LOG.info("responseBody.getStyleClass(): ${responseBody.getStyleClass()}")
-                println(LOG.getLevel())
-                responseBody.getStyleClass().add(Response.Status.Family.SUCCESSFUL.name())
-                responseHeaders.getStyleClass().add(Response.Status.Family.SUCCESSFUL.name())
-            } else {
-                // TODO style output red-ish if not OK
-                LOG.info("responseBody.getStyleClass(): ${responseBody.getStyleClass()}")
-                println(LOG.getLevel())
-                responseBody.getStyleClass().add(Response.Status.Family.CLIENT_ERROR.name())
-                responseHeaders.getStyleClass().add(Response.Status.Family.CLIENT_ERROR.name())
-            }
+            LOG.info("responseBody.getStyleClass(): ${responseBody.getStyleClass()}")
+            responseBody.getStyleClass().add(getResponse.getStatusInfo().getFamily().name())
+            responseHeaders.getStyleClass().add(getResponse.getStatusInfo().getFamily().name())
+
             responseBody.appendText(responseBodyPayload)
             showResponseHeaders(getResponse)
         } catch (e: ProcessingException) {
