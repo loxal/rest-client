@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="58a4adc5-5edc-4329-b909-87cdc49d4bf0" xsi:noNamespaceSchemaLocation="http://www.jetbrains.com/teamcity/schemas/9.0/project-config.xsd">
+  <name>Build</name>
+  <description />
+  <settings ref="Build">
+    <parameters />
+    <build-runners order="RUNNER_5" />
+    <vcs-settings>
+      <vcs-entry-ref root-id="Loxal_RestClient_RestClient" />
+    </vcs-settings>
+    <requirements />
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+
