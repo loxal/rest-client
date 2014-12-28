@@ -11,7 +11,7 @@
         <groupId>loxal</groupId>
         <artifactId>meta</artifactId>
         <version>1.2.1</version>
-        <relativePath>../loxal/pom.xml</relativePath>
+        <relativePath>../loxal/meta-pom.xml</relativePath>
     </parent>
 
     <artifactId>rest-client</artifactId>
