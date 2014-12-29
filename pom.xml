@@ -15,10 +15,10 @@
     </parent>
 
     <artifactId>rest-client</artifactId>
-    <version>0.9.4</version>
+    <version>0.9.5</version>
     <packaging>jar</packaging>
-    <name>RESTful Client</name>
-    <description>Tool to execute custom REST request</description>
+    <name>Epvin</name>
+    <description>REST Client Tool</description>
 
     <properties>
         <jersey.version>2.13</jersey.version>

@@ -28,7 +28,7 @@ public class App : Application() {
             scene = Scene(rootNode)
             stage.setScene(scene)
 
-            stage.setTitle("RESTful Client")
+            stage.setTitle("Epvin")
             stage.setIconified(true)
             // TODO can be attached in a declarative way via *.fxml?
             stage.getIcons().add(Image("/net/loxal/client/rest/view/tool-icon-32.png"))
