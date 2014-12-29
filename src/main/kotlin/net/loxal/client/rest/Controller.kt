@@ -178,7 +178,7 @@ public class Controller : Initializable {
             LOG.info(invalidUrlMessage)
         }
 
-        requestParameterData.setText(this.url.toString())
+        requestParameterData.setText(this.url.getQuery())
 
         requestParameterData.fireEvent(ActionEvent())
         requestUrlChoice.fireEvent(ActionEvent())

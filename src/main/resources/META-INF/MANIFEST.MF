@@ -1,6 +1,7 @@
 Manifest-Version: 1.0
 
 Name: ${project.groupId}/
+Application-Name: ${project.name}
 Implementation-Title: ${project.name}
 Specification-Title: ${project.description}
 Implementation-Version: ${project.version}
