@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ * Copyright 2015 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
  */
 
 package net.loxal.client.rest
@@ -29,12 +29,10 @@ public class App : Application() {
             stage.setScene(scene)
 
             stage.setTitle("Epvin")
-            stage.setIconified(true)
             // TODO can be attached in a declarative way via *.fxml?
             stage.getIcons().add(Image("/net/loxal/client/rest/view/tool-icon-32.png"))
-            stage.getIcons().add(Image("/net/loxal/client/rest/view/tool-icon-64.png"))
-            stage.getIcons().add(Image("/net/loxal/client/rest/view/tool-icon-128.png"))
-            stage.getIcons().add(Image("/net/loxal/client/rest/view/tool-icon-256.png"))
+            rootNode.requestFocus()
+            stage.requestFocus()
             stage.show()
 
             val controller = loader.getController<Controller>()
@@ -42,7 +40,6 @@ public class App : Application() {
         } catch (e: IOException) {
             LOG.severe("${e.getCause()}\n ${e.getMessage()}")
         }
-
     }
 
     class object {
