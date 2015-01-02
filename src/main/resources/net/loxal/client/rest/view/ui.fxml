@@ -54,5 +54,7 @@
                      styleClass="request-alt" text="OPTIONS" toggleGroup="$requestMethod"/>
         <RadioButton fx:id="headMethodRadio" layoutX="367.0" layoutY="58.0" mnemonicParsing="false"
                      styleClass="request-alt" text="HEAD" toggleGroup="$requestMethod"/>
+        <Label layoutX="136.0" layoutY="571.0" prefHeight="16.0" prefWidth="109.0" text="Response Status:"/>
+        <Label fx:id="responseStatus" layoutX="245.0" layoutY="571.0" prefHeight="16.0" prefWidth="257.0"/>
     </children>
 </AnchorPane>

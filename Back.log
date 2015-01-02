@@ -1,8 +1,7 @@
 Backlog
 
 MVP
-    OPTIONS method
-    HEAD method
+    TIME consumption of the request alonside the response phrase
     Search field for saved Requests to quickly find a request by name
     URL transform form to copy and paste URLs that contain header and body information
         URL needs to end with "#REST-call#Headers|header:value0,value1,value2#body|{"key": value"} or <xml></xml>#

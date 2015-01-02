@@ -58,6 +58,8 @@ import javafx.scene.control.Control
 import javafx.event.ActionEvent
 import java.util.logging.Level
 import kotlin.platform.platformStatic
+import com.google.gson.JsonSyntaxException
+import com.google.gson.JsonElement
 
 public class Controller : Initializable {
     private val files: ObservableList<File> = FXCollections.observableArrayList<File>()
@@ -71,6 +73,8 @@ public class Controller : Initializable {
     private var responseHeaders: TextArea = TextArea()
     FXML
     private var notification: Label = Label()
+    FXML
+    private var responseStatus: Label = Label()
     FXML
     private var requestParameterData: TextArea = TextArea()
     FXML
@@ -232,6 +236,7 @@ public class Controller : Initializable {
 
             responseBody.appendText(responseBodyPayload)
             showResponseHeaders(getResponse)
+            showStatus(getResponse)
         } catch (e: ProcessingException) {
             LOG.severe(e.getMessage())
             notification.setText(e.getMessage())
@@ -305,7 +310,7 @@ public class Controller : Initializable {
     private fun declareRequestParameters(): String {
         val requestParameterContent: String
 
-        if (StringUtils.EMPTY == requestParameterData.getText()) {
+        if (StringUtils.EMPTY == requestParameterData.getText() || null == requestParameterData.getText()) {
             requestParameterContent = StringUtils.EMPTY
         } else {
             requestParameterContent = requestParameterData.getText()
@@ -337,7 +342,14 @@ public class Controller : Initializable {
     }
 
     private fun formatJson(json: String): String {
-        val jsonElement = JsonParser().parse(json)
+        val jsonElement: JsonElement
+        try {
+            jsonElement = JsonParser().parse(json)
+        } catch (e: JsonSyntaxException) {
+            LOG.warning(e.getMessage())
+            LOG.warning(e.getCause().toString())
+            return json
+        }
         return GsonBuilder().setPrettyPrinting().create().toJson(jsonElement)
     }
 
@@ -512,27 +524,39 @@ public class Controller : Initializable {
 
     fun doHeadRequest() {
         try {
-            val getResponse = prepareRequest().get()
-            // TODO support XML
+            val response = prepareRequest().head()
             LOG.setLevel(Level.FINE)
             LOG.fine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TEST FINE")
             LOG.log(Level.FINE, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TEST FINE")
 
-            val responseBodyPayload = formatJson(getResponse.readEntity(javaClass<String>()))
-            LOG.info("responseBody.getStyleClass(): ${responseBody.getStyleClass()}")
-            responseBody.getStyleClass().add(getResponse.getStatusInfo().getFamily().name())
-            responseHeaders.getStyleClass().add(getResponse.getStatusInfo().getFamily().name())
-
-            responseBody.appendText(responseBodyPayload)
-            showResponseHeaders(getResponse)
+            responseBody.getStyleClass().add(response.getStatusInfo().getFamily().name())
+            responseHeaders.getStyleClass().add(response.getStatusInfo().getFamily().name())
+            responseBody.appendText(response.readEntity(javaClass<String>()))
+            showResponseHeaders(response)
+            showStatus(response)
         } catch (e: ProcessingException) {
             LOG.severe(e.getMessage())
             notification.setText(e.getMessage())
         }
-        throw UnsupportedOperationException("Not Implemented")
     }
 
     fun doOptionsRequest() {
-        throw UnsupportedOperationException("Not Implemented")
+        try {
+            val response = prepareRequest().options()
+
+            responseBody.getStyleClass().add(response.getStatusInfo().getFamily().name())
+            responseHeaders.getStyleClass().add(response.getStatusInfo().getFamily().name())
+            responseBody.appendText(response.readEntity(javaClass<String>()))
+            showResponseHeaders(response)
+            showStatus(response)
+        } catch (e: ProcessingException) {
+            LOG.severe(e.getMessage())
+            notification.setText(e.getMessage())
+        }
+    }
+
+    fun showStatus(response: Response) {
+        responseStatus.setText("${response.getStatusInfo().getStatusCode()} ${response.getStatusInfo().getReasonPhrase()}")
+        responseStatus.setTooltip(Tooltip(response.getStatusInfo().getFamily().name()))
     }
 }
