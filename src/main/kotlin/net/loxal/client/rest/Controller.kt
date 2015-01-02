@@ -60,6 +60,7 @@ import java.util.logging.Level
 import kotlin.platform.platformStatic
 import com.google.gson.JsonSyntaxException
 import com.google.gson.JsonElement
+import java.time.Instant
 
 public class Controller : Initializable {
     private val files: ObservableList<File> = FXCollections.observableArrayList<File>()
@@ -112,6 +113,8 @@ public class Controller : Initializable {
 
     private var url: URL = URL("https://example.com")
 
+    private var startRequest: Instant = Instant.now()
+
     private fun createShortcut(control: Control, keyCodeCombination: KeyCodeCombination, action: Runnable) {
         control.getScene().getAccelerators().put(keyCodeCombination, action)
         control.setTooltip(Tooltip("${keyCodeCombination.getDisplayText()}"))
@@ -143,6 +146,7 @@ public class Controller : Initializable {
 
         declareUrl()
         cleanupPreviousResponse()
+        startRequest = Instant.now()
         when (selectedRequestMethod) {
             HttpMethod.GET -> doGetRequest()
             HttpMethod.POST -> doPostRequest()
@@ -197,19 +201,22 @@ public class Controller : Initializable {
     }
 
     private fun doPostRequest() {
-        val postResponse = prepareRequest().post(Entity.json<String>(declareRequestBody()))
+        val response = prepareRequest().post(Entity.json<String>(declareRequestBody()))
 
-        if (postResponse.getStatus() == Response.Status.CREATED.getStatusCode() && postResponse.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
+        if (response.getStatus() == Response.Status.CREATED.getStatusCode() && response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
 
-            responseBody.appendText(formatJson(postResponse.readEntity<String>(javaClass<String>())))
-            val stringHeaders = postResponse.getHeaders()
+            responseBody.appendText(formatJson(response.readEntity<String>(javaClass<String>())))
+            val stringHeaders = response.getHeaders()
 
             for (header in stringHeaders.entrySet()) {
                 responseHeaders.appendText(header.getKey() + ": " + header.getValue() + "\n")
             }
         } else {
-            responseBody.appendText(postResponse.getStatusInfo().getReasonPhrase())
+            responseBody.appendText(response.getStatusInfo().getReasonPhrase())
         }
+
+        showResponseHeaders(response)
+        showStatus(response)
     }
 
     private fun declareRequestBody(): String {
@@ -235,6 +242,7 @@ public class Controller : Initializable {
             responseHeaders.getStyleClass().add(getResponse.getStatusInfo().getFamily().name())
 
             responseBody.appendText(responseBodyPayload)
+
             showResponseHeaders(getResponse)
             showStatus(getResponse)
         } catch (e: ProcessingException) {
@@ -252,13 +260,15 @@ public class Controller : Initializable {
     private fun doPutRequest() {
         try {
 
-            val getResponse = prepareRequest().put(Entity.json<String>(" {  \"key\" : \"value\" }"))
+            val response = prepareRequest().put(Entity.json<String>(" {  \"key\" : \"value\" }"))
 
-            if (getResponse.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
-                responseBody.appendText(formatJson(getResponse.readEntity<String>(javaClass<String>())) + "OK")
+            if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
+                responseBody.appendText(formatJson(response.readEntity<String>(javaClass<String>())) + "OK")
             } else {
-                responseBody.appendText(getResponse.getStatusInfo().getReasonPhrase() + "FAILED")
+                responseBody.appendText(response.getStatusInfo().getReasonPhrase() + "FAILED")
             }
+            showResponseHeaders(response)
+            showStatus(response)
         } catch (e: ProcessingException) {
             LOG.severe(e.getMessage())
             notification.setText(e.getMessage())
@@ -268,11 +278,13 @@ public class Controller : Initializable {
 
     private fun doDeleteRequest() {
         try {
-            val getResponse = prepareRequest().delete()
+            val response = prepareRequest().delete()
 
-            if (getResponse.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
-                responseBody.appendText(getResponse.getStatusInfo().getReasonPhrase())
+            if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
+                responseBody.appendText(response.getStatusInfo().getReasonPhrase())
             }
+            showResponseHeaders(response)
+            showStatus(response)
         } catch (e: ProcessingException) {
             LOG.severe(e.getMessage())
             notification.setText(e.getMessage())
@@ -556,7 +568,9 @@ public class Controller : Initializable {
     }
 
     fun showStatus(response: Response) {
-        responseStatus.setText("${response.getStatusInfo().getStatusCode()} ${response.getStatusInfo().getReasonPhrase()}")
+        val requestDuration = Instant.now().minusMillis(startRequest.toEpochMilli()).toEpochMilli()
+        responseStatus.setText("${response.getStatusInfo().getStatusCode()} ${response.getStatusInfo().getReasonPhrase()} in ${requestDuration}ms")
         responseStatus.setTooltip(Tooltip(response.getStatusInfo().getFamily().name()))
+
     }
 }
