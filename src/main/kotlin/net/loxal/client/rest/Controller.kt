@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ * Copyright 2015 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
  */
 
 package net.loxal.client.rest
@@ -90,6 +90,10 @@ public class Controller : Initializable {
     FXML
     private var putMethodRadio: RadioButton = RadioButton()
     FXML
+    private var headMethodRadio: RadioButton = RadioButton()
+    FXML
+    private var optionsMethodRadio: RadioButton = RadioButton()
+    FXML
     private var requestColumn: TableColumn<ClientRequestModel, String> = TableColumn()
     FXML
     private var requestDeleter: Button = Button()
@@ -117,6 +121,8 @@ public class Controller : Initializable {
         createShortcut(postMethodRadio, KeyCodeCombination(KeyCode.P, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { postMethodRadio.fire() })
         createShortcut(deleteMethodRadio, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { deleteMethodRadio.fire() })
         createShortcut(putMethodRadio, KeyCodeCombination(KeyCode.U, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { putMethodRadio.fire() })
+        createShortcut(headMethodRadio, KeyCodeCombination(KeyCode.E, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { headMethodRadio.fire() })
+        createShortcut(optionsMethodRadio, KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { optionsMethodRadio.fire() })
         createShortcut(requestHeaderData, KeyCodeCombination(KeyCode.DIGIT1, KeyCombination.SHORTCUT_DOWN), Runnable { requestHeaderData.requestFocus() })
         createShortcut(requestParameterData, KeyCodeCombination(KeyCode.DIGIT2, KeyCombination.SHORTCUT_DOWN), Runnable { requestParameterData.requestFocus() })
         createShortcut(requestBody, KeyCodeCombination(KeyCode.DIGIT3, KeyCombination.SHORTCUT_DOWN), Runnable { requestBody.requestFocus() })
@@ -138,6 +144,8 @@ public class Controller : Initializable {
             HttpMethod.POST -> doPostRequest()
             HttpMethod.PUT -> doPutRequest()
             HttpMethod.DELETE -> doDeleteRequest()
+            HttpMethod.HEAD -> doHeadRequest()
+            HttpMethod.OPTIONS -> doOptionsRequest()
         }
     }
 
@@ -228,7 +236,6 @@ public class Controller : Initializable {
             LOG.severe(e.getMessage())
             notification.setText(e.getMessage())
         }
-
     }
 
     private fun showResponseHeaders(getResponse: Response) {
@@ -501,5 +508,31 @@ public class Controller : Initializable {
         platformStatic val LOG = Logger.getGlobal()
         platformStatic val SAVE_AS = "Save request as:"
         private val APP_HOME_DIRECTORY = System.getenv("HOME") + "/.loxal/restClient/request"
+    }
+
+    fun doHeadRequest() {
+        try {
+            val getResponse = prepareRequest().get()
+            // TODO support XML
+            LOG.setLevel(Level.FINE)
+            LOG.fine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TEST FINE")
+            LOG.log(Level.FINE, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TEST FINE")
+
+            val responseBodyPayload = formatJson(getResponse.readEntity(javaClass<String>()))
+            LOG.info("responseBody.getStyleClass(): ${responseBody.getStyleClass()}")
+            responseBody.getStyleClass().add(getResponse.getStatusInfo().getFamily().name())
+            responseHeaders.getStyleClass().add(getResponse.getStatusInfo().getFamily().name())
+
+            responseBody.appendText(responseBodyPayload)
+            showResponseHeaders(getResponse)
+        } catch (e: ProcessingException) {
+            LOG.severe(e.getMessage())
+            notification.setText(e.getMessage())
+        }
+        throw UnsupportedOperationException("Not Implemented")
+    }
+
+    fun doOptionsRequest() {
+        throw UnsupportedOperationException("Not Implemented")
     }
 }

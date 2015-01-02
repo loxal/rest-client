@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  ~ Copyright 2014 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+  ~ Copyright 2015 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
   -->
 
 <?import javafx.scene.control.Button?>
@@ -50,5 +50,9 @@
             </columns>
         </TableView>
         <Button fx:id="requestDeleter" layoutX="1157.0" layoutY="9.0" mnemonicParsing="false" onAction="#deleteRequest" text="Delete Request" />
+        <RadioButton fx:id="optionsMethodRadio" layoutX="279.0" layoutY="58.0" mnemonicParsing="false"
+                     styleClass="request-alt" text="OPTIONS" toggleGroup="$requestMethod"/>
+        <RadioButton fx:id="headMethodRadio" layoutX="367.0" layoutY="58.0" mnemonicParsing="false"
+                     styleClass="request-alt" text="HEAD" toggleGroup="$requestMethod"/>
     </children>
 </AnchorPane>

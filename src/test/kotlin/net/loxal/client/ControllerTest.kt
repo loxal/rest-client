@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ * Copyright 2015 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
  */
 
 package net.loxal.client
@@ -15,25 +15,20 @@ import kotlin.test.assertEquals
 
 public class ControllerTest {
     Before
-    throws(javaClass<Exception>())
     public fun setUp() {
     }
 
     After
-    throws(javaClass<Exception>())
     public fun tearDown() {
     }
 
     Test
-    throws(javaClass<Exception>())
     public fun dummyTest() {
         assertEquals(true, true)
     }
 
     Test
-    throws(javaClass<Exception>())
     public class AsNonApp : Application() {
-        throws(javaClass<Exception>())
         override fun start(primaryStage: Stage) {
             throw AssertionError("NOP")
         }
