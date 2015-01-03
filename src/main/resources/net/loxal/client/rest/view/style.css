@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ * Copyright 2015 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
  */
 
 .request {
@@ -34,4 +34,9 @@
 
 .response {
     -fx-border-color: #191;
+}
+
+.test {
+    /*-fx-min-width: 90%;*/
+    /*-fx-max-width: 190%;*/
 }
