@@ -8,5 +8,6 @@ Post-MVP
         URL needs to end with "#REST-call#Headers|header:value0,value1,value2#body|{"key": value"} or <xml></xml>#
             could be also "#REST-call:{"headers": {"header": ["value0", "value1", 2, true]}, "body": {JSON} or "<xml>optional</xml>"}
             unittest this
-
+    Add command line capability
+        to be able to do something like "cf apps", performing specific REST requests to accomplish something
 
