@@ -117,7 +117,8 @@ public class Controller : Initializable {
 
     private fun createShortcut(control: Control, keyCodeCombination: KeyCodeCombination, action: Runnable) {
         control.getScene().getAccelerators().put(keyCodeCombination, action)
-        control.setTooltip(Tooltip("${keyCodeCombination.getDisplayText()}"))
+        // TODO keyCodeCombination.getDisplayText() is not available in JDK on Windows!
+        control.setTooltip(Tooltip("${keyCodeCombination.getName()}"))
     }
 
     public fun setAccelerators() {
