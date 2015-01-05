@@ -7,9 +7,6 @@
 }
 
 #request-url-bar {
-    -fx-pref-width: 760;
-    -fx-fit-to-width: true;
-    -fx-fill-width: true;
 }
 
 .OTHER {
@@ -37,6 +34,4 @@
 }
 
 .test {
-    /*-fx-min-width: 90%;*/
-    /*-fx-max-width: 190%;*/
 }
