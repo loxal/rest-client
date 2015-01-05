@@ -14,6 +14,7 @@ import javafx.stage.Stage
 import java.io.IOException
 import java.util.logging.Logger
 import kotlin.platform.platformStatic
+import java.io.FileInputStream
 
 public class App : Application() {
 
@@ -24,7 +25,9 @@ public class App : Application() {
         val scene: Scene
 
         try {
-            rootNode = loader.load<AnchorPane>(javaClass.getResourceAsStream(viewDeclarationPath))
+            val fis = FileInputStream("/Users/alex/my/project/loxal/rest-client/src/main/resources/net/loxal/client/rest/view/ui.fxml")
+            rootNode = loader.load<AnchorPane>(fis)
+            //            rootNode = loader.load<AnchorPane>(javaClass.getResourceAsStream(viewDeclarationPath))
             scene = Scene(rootNode)
             stage.setScene(scene)
 
