@@ -14,20 +14,16 @@ import javafx.stage.Stage
 import java.io.IOException
 import java.util.logging.Logger
 import kotlin.platform.platformStatic
-import java.io.FileInputStream
 
 public class App : Application() {
 
     override fun start(stage: Stage) {
-        val viewDeclarationPath = "/net/loxal/client/rest/view/ui.fxml"
         val loader = FXMLLoader()
         val rootNode: AnchorPane
         val scene: Scene
 
         try {
-            val fis = FileInputStream("/Users/alex/my/project/loxal/rest-client/src/main/resources/net/loxal/client/rest/view/ui.fxml")
-            rootNode = loader.load<AnchorPane>(fis)
-            //            rootNode = loader.load<AnchorPane>(javaClass.getResourceAsStream(viewDeclarationPath))
+            rootNode = loader.load<AnchorPane>(javaClass.getResourceAsStream("ui.fxml"))
             scene = Scene(rootNode)
             stage.setScene(scene)
 
@@ -35,7 +31,6 @@ public class App : Application() {
             // TODO can be attached in a declarative way via *.fxml?
             stage.getIcons().add(Image("/net/loxal/client/rest/view/tool-icon-32.png"))
             rootNode.requestFocus()
-            stage.requestFocus()
             stage.show()
 
             val controller = loader.getController<Controller>()
