@@ -4,7 +4,7 @@
     <option name="MAIN_CLASS_NAME" value="net.loxal.client.rest.App" />
     <option name="VM_PARAMETERS" value="" />
     <option name="PROGRAM_PARAMETERS" value="" />
-    <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/../rest-client" />
+    <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" value="" />
     <option name="ENABLE_SWING_INSPECTOR" value="false" />
