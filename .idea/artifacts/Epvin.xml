@@ -1,0 +1,39 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" build-on-make="true" name="Epvin">
+    <output-path>$PROJECT_DIR$/target/artifacts/Epvin</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="net.loxal.client.rest.App" />
+        <option name="description" value="REST Client Tool" />
+        <option name="height" value="900" />
+        <option name="htmlParamFile" value="" />
+        <option name="nativeBundle" value="dmg" />
+        <option name="paramFile" value="" />
+        <option name="title" value="Epvin" />
+        <option name="vendor" value="loxal" />
+        <option name="width" value="900" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="rest-client.jar">
+        <element id="module-output" name="rest-client" />
+        <element id="library" level="project" name="Maven: com.google.code.gson:gson:2.3.1" />
+        <element id="library" level="project" name="Maven: javax.annotation:javax.annotation-api:1.2" />
+        <element id="library" level="project" name="Maven: javax.ws.rs:javax.ws.rs-api:2.0.1" />
+        <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.3.2" />
+        <element id="library" level="project" name="Maven: org.glassfish.hk2.external:aopalliance-repackaged:2.4.0-b06" />
+        <element id="library" level="project" name="Maven: org.glassfish.hk2.external:javax.inject:2.4.0-b06" />
+        <element id="library" level="project" name="Maven: org.glassfish.hk2:hk2-api:2.4.0-b06" />
+        <element id="library" level="project" name="Maven: org.glassfish.hk2:hk2-locator:2.4.0-b06" />
+        <element id="library" level="project" name="Maven: org.glassfish.hk2:hk2-utils:2.4.0-b06" />
+        <element id="library" level="project" name="Maven: org.glassfish.hk2:osgi-resource-locator:1.0.1" />
+        <element id="library" level="project" name="Maven: org.glassfish.jersey.bundles.repackaged:jersey-guava:2.14" />
+        <element id="library" level="project" name="Maven: org.glassfish.jersey.core:jersey-client:2.14" />
+        <element id="library" level="project" name="Maven: org.glassfish.jersey.core:jersey-common:2.14" />
+        <element id="library" level="project" name="Maven: org.javassist:javassist:3.18.1-GA" />
+        <element id="library" level="project" name="Maven: org.jetbrains.kotlin:kotlin-runtime:0.10.195" />
+        <element id="library" level="project" name="Maven: org.jetbrains.kotlin:kotlin-stdlib:0.10.195" />
+      </element>
+    </root>
+  </artifact>
+</component>
