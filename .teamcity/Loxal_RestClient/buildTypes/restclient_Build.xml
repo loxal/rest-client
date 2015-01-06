@@ -15,7 +15,13 @@
         <parameters>
           <param name="artifactsToBuild" value="Epvin" />
           <param name="incrementalMake" value="true" />
-          <param name="iprInfoRunParam" value="&lt;iprInfo path-to-ipr=&quot;&quot; should-load-iml=&quot;true&quot; /&gt;" />
+          <param name="iprInfoRunParam"><![CDATA[<iprInfo path-to-ipr="" should-load-iml="true">
+  <Jdk name="1.8" path-to-library="%env.JDK_18%" is-used="true" type="JavaSDK" path-to-jdk="%env.JDK_18%">
+    <Pattern value="jre/lib/*.jar" />
+    <ExternalAnnotationPattern value="%teamcity.tool.idea%/lib/jdkAnnotations.jar" />
+  </Jdk>
+  <PathVariable name="MAVEN_REPOSITORY" value="%system.path.macro.MAVEN.REPOSITORY%" />
+</iprInfo>]]></param>
           <param name="jvmArgs" value="-Xmx256m" />
           <param name="teamcity.coverage.emma.include.source" value="true" />
           <param name="teamcity.coverage.emma.instr.parameters" value="-ix -*Test*" />
