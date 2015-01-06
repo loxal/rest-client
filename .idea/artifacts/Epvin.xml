@@ -7,7 +7,7 @@
         <option name="description" value="REST Client Tool" />
         <option name="height" value="900" />
         <option name="htmlParamFile" value="" />
-        <option name="nativeBundle" value="dmg" />
+        <option name="nativeBundle" value="all" />
         <option name="paramFile" value="" />
         <option name="title" value="Epvin" />
         <option name="vendor" value="loxal" />
