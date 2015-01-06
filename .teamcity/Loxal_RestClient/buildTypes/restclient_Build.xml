@@ -8,8 +8,9 @@
     </disabled-settings>
     <parameters />
     <build-runners order="RUNNER_5, RUNNER_6, RUNNER_1">
-      <runner id="RUNNER_6" name="New build step" type="JPS">
+      <runner id="RUNNER_6" name="Build Artifact" type="JPS">
         <parameters>
+          <param name="artifactsToBuild" value="Epvin" />
           <param name="incrementalMake" value="true" />
           <param name="iprInfoRunParam" value="&lt;iprInfo path-to-ipr=&quot;&quot; should-load-iml=&quot;true&quot; /&gt;" />
           <param name="jvmArgs" value="-Xmx256m" />
