@@ -3,6 +3,9 @@
   <name>Build</name>
   <description />
   <settings ref="Build">
+    <options>
+      <option name="artifactRules" value="target/**/*.dmg =&gt; dist" />
+    </options>
     <disabled-settings>
       <setting-ref ref="RUNNER_5" />
     </disabled-settings>
