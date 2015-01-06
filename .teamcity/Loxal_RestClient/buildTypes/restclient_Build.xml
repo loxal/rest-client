@@ -4,7 +4,21 @@
   <description />
   <settings ref="Build">
     <parameters />
-    <build-runners order="RUNNER_5, RUNNER_1" />
+    <build-runners order="RUNNER_5, RUNNER_6, RUNNER_1">
+      <runner id="RUNNER_6" name="New build step" type="JPS">
+        <parameters>
+          <param name="incrementalMake" value="true" />
+          <param name="iprInfoRunParam" value="&lt;iprInfo path-to-ipr=&quot;&quot; should-load-iml=&quot;true&quot; /&gt;" />
+          <param name="jvmArgs" value="-Xmx256m" />
+          <param name="teamcity.coverage.emma.include.source" value="true" />
+          <param name="teamcity.coverage.emma.instr.parameters" value="-ix -*Test*" />
+          <param name="teamcity.coverage.idea.includePatterns" value="net.loxal.*" />
+          <param name="teamcity.coverage.jacoco.patterns" value="+:*" />
+          <param name="teamcity.coverage.runner" value="IDEA" />
+          <param name="teamcity.step.mode" value="default" />
+        </parameters>
+      </runner>
+    </build-runners>
     <vcs-settings>
       <vcs-entry-ref root-id="Loxal_RestClient_RestClient" />
     </vcs-settings>
