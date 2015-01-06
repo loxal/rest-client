@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="javafx" name="Epvin">
+  <artifact type="javafx" name="Epvinn">
     <output-path>$PROJECT_DIR$/target/artifacts/epvin</output-path>
     <properties id="javafx-properties">
       <options>
