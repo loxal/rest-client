@@ -4,7 +4,7 @@
   <description />
   <settings ref="Build">
     <options>
-      <option name="artifactRules" value="**/*.dmg =&gt; target" />
+      <option name="artifactRules" value="**/*.* =&gt; target" />
     </options>
     <disabled-settings>
       <setting-ref ref="RUNNER_5" />
