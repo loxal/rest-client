@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="javafx" name="Epvin">
-    <output-path>$PROJECT_DIR$/../rest-client/target/artifacts/epvin</output-path>
+    <output-path>$PROJECT_DIR$/target/artifacts/epvin</output-path>
     <properties id="javafx-properties">
       <options>
         <option name="appClass" value="net.loxal.client.rest.App" />
