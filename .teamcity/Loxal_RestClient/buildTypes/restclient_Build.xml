@@ -4,7 +4,7 @@
   <description />
   <settings ref="Build">
     <options>
-      <option name="artifactRules" value="target/**/*.dmg =&gt; dist" />
+      <option name="artifactRules" value="target/artifacts/epvin/bundles/Epvin-1.0.dmg =&gt; dist" />
     </options>
     <disabled-settings>
       <setting-ref ref="RUNNER_5" />
