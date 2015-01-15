@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="javafx" build-on-make="true" name="Epvin">
+  <artifact type="javafx" name="Epvin">
     <output-path>$PROJECT_DIR$/target/artifacts/Epvin</output-path>
     <properties id="javafx-properties">
       <options>
@@ -27,9 +27,6 @@
         <element id="library" level="project" name="Maven: org.glassfish.hk2:hk2-locator:2.4.0-b06" />
         <element id="library" level="project" name="Maven: org.glassfish.hk2:hk2-utils:2.4.0-b06" />
         <element id="library" level="project" name="Maven: org.glassfish.hk2:osgi-resource-locator:1.0.1" />
-        <element id="library" level="project" name="Maven: org.glassfish.jersey.bundles.repackaged:jersey-guava:2.14" />
-        <element id="library" level="project" name="Maven: org.glassfish.jersey.core:jersey-client:2.14" />
-        <element id="library" level="project" name="Maven: org.glassfish.jersey.core:jersey-common:2.14" />
         <element id="library" level="project" name="Maven: org.javassist:javassist:3.18.1-GA" />
         <element id="library" level="project" name="Maven: org.jetbrains.kotlin:kotlin-runtime:0.10.195" />
         <element id="library" level="project" name="Maven: org.jetbrains.kotlin:kotlin-stdlib:0.10.195" />
