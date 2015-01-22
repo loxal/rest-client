@@ -62,7 +62,7 @@ import com.google.gson.JsonSyntaxException
 import com.google.gson.JsonElement
 import java.time.Instant
 
-public class Controller : Initializable {
+class Controller : Initializable {
     private val files: ObservableList<File> = FXCollections.observableArrayList<File>()
     private val clientRequestModels = FXCollections.observableArrayList<ClientRequestModel>()
 
@@ -120,7 +120,7 @@ public class Controller : Initializable {
         control.setTooltip(Tooltip("${keyCodeCombination.getDisplayText()}"))
     }
 
-    public fun setAccelerators() {
+    fun setAccelerators() {
         createShortcut(requestUrlChoice, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN), Runnable { requestUrlChoice.requestFocus() })
         createShortcut(clearButton, KeyCodeCombination(KeyCode.K, KeyCombination.SHORTCUT_DOWN), Runnable { clearButton.fire() })
         createShortcut(requestPerformer, KeyCodeCombination(KeyCode.ENTER, KeyCombination.SHORTCUT_DOWN), Runnable { requestPerformer.fire() })

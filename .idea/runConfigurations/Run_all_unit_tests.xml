@@ -6,10 +6,10 @@
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
-    <module name="rest-kit" />
+    <module name="rest-client" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" value="" />
-    <option name="PACKAGE_NAME" value="net.loxal.soa" />
+    <option name="PACKAGE_NAME" value="net.loxal.client" />
     <option name="MAIN_CLASS_NAME" value="" />
     <option name="METHOD_NAME" value="" />
     <option name="TEST_OBJECT" value="package" />
