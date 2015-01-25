@@ -77,7 +77,7 @@ class Controller : Initializable {
     FXML
     private var responseStatus: Label = Label()
     FXML
-    private var requestParameterData: TextArea = TextArea()
+    private var requestParameterData: TextArea = TextArea("")
     FXML
     private var requestPerformer: Button = Button()
     FXML
@@ -537,9 +537,6 @@ class Controller : Initializable {
     fun doHeadRequest() {
         try {
             val response = prepareRequest().head()
-            LOG.setLevel(Level.FINE)
-            LOG.fine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TEST FINE")
-            LOG.log(Level.FINE, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TEST FINE")
 
             responseBody.getStyleClass().add(response.getStatusInfo().getFamily().name())
             responseHeaders.getStyleClass().add(response.getStatusInfo().getFamily().name())
