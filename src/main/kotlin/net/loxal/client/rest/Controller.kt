@@ -56,7 +56,6 @@ import java.util.logging.Logger
 import javafx.scene.control.Tooltip
 import javafx.scene.control.Control
 import javafx.event.ActionEvent
-import java.util.logging.Level
 import kotlin.platform.platformStatic
 import com.google.gson.JsonSyntaxException
 import com.google.gson.JsonElement
@@ -138,6 +137,15 @@ class Controller : Initializable {
         createShortcut(queryTable, KeyCodeCombination(KeyCode.DIGIT6, KeyCombination.SHORTCUT_DOWN), Runnable { queryTable.requestFocus() })
         createShortcut(requestDeleter, KeyCodeCombination(KeyCode.BACK_SPACE, KeyCombination.SHORTCUT_DOWN), Runnable { requestDeleter.fire() })
         createShortcut(requestSaver, KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN), Runnable { requestSaver.fire() })
+
+        setShortcutForArrowKeySelection()
+    }
+
+    private fun setShortcutForArrowKeySelection() {
+        queryTable.setOnKeyPressed { keyEvent ->
+            if (keyEvent.getCode().equals(KeyCode.UP).or(keyEvent.getCode().equals(KeyCode.DOWN)))
+                loadSavedRequest()
+        }
     }
 
     FXML
@@ -232,9 +240,6 @@ class Controller : Initializable {
         try {
             val getResponse = prepareRequest().get()
             // TODO support XML
-            LOG.setLevel(Level.FINE)
-            LOG.fine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TEST FINE")
-            LOG.log(Level.FINE, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TEST FINE")
 
             val responseBodyPayload = formatJson(getResponse.readEntity(javaClass<String>()))
             LOG.info("responseBody.getStyleClass(): ${responseBody.getStyleClass()}")
@@ -457,8 +462,7 @@ class Controller : Initializable {
         val appHomeDirectory = File(APP_HOME_DIRECTORY)
         createAppHome(appHomeDirectory)
 
-        appHomeDirectory.listFiles().forEach {
-            file ->
+        appHomeDirectory.listFiles().forEach { file ->
             files.add(file)
             FileInputStream(file).use { fileInputStream ->
                 ObjectInputStream(fileInputStream).use { objectInputStream ->

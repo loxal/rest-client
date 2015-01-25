@@ -1,7 +1,5 @@
-Backlog
+# Backlog
 
-MVP
-    publish on www.loxal.net/rest-client
 Post-MVP
     Search field for saved Requests to quickly find a request by name
     URL transform form to copy and paste URLs that contain header and body information
@@ -10,4 +8,5 @@ Post-MVP
             unittest this
     Add command line capability
         to be able to do something like "cf apps", performing specific REST requests to accomplish something
+        use WGET syntax
 
