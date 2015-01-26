@@ -98,8 +98,8 @@ private class Controller : Initializable {
     FXML
     private private var requestMethod: ToggleGroup = ToggleGroup()
 
-    private var url: URL = URL("https://example.com")
-    private var method: String = HttpMethod.GET
+    private var request: ClientRequestModel = ClientRequestModel.Builder("[Init Request]")
+            .build()
 
     private var startRequest: Instant = Instant.now()
 
@@ -138,7 +138,7 @@ private class Controller : Initializable {
 
         cleanupPreviousResponse()
         startRequest = Instant.now()
-        when (method) {
+        when (request.method) {
             HttpMethod.GET -> doGetRequest()
             HttpMethod.POST -> doPostRequest()
             HttpMethod.PUT -> doPutRequest()
@@ -170,7 +170,7 @@ private class Controller : Initializable {
 
         client.property(ClientProperties.CONNECT_TIMEOUT, 2000)
         client.property(ClientProperties.READ_TIMEOUT, 2000)
-        val target = applyUrlRequestParameters(client.target(url.toURI()),
+        val target = applyUrlRequestParameters(client.target(request.url.toString()),
                 Util.extractRequestParameters(declareRequestParameters()))
         val request = target.request(MediaType.APPLICATION_JSON_TYPE)
 
@@ -189,15 +189,17 @@ private class Controller : Initializable {
 
     FXML
     private fun declareUrl() {
-        method = (this.requestMethod.getSelectedToggle() as RadioButton).getText()
-
         val urlValue: String = if (requestUrlChoice.getValue() == null)
             requestUrlChoice.getPromptText()
         else
             requestUrlChoice.getValue()
 
         try {
-            this.url = URL(urlValue)
+            request = ClientRequestModel.Builder("[Current Request]")
+                    .method((requestMethod.getSelectedToggle() as RadioButton).getText())
+                    .url(URL(urlValue))
+                    .build()
+
             notification.setText("")
         } catch (e: MalformedURLException) {
             val invalidUrlMessage = "Invalid URL: ${e.getMessage()}"
@@ -205,7 +207,7 @@ private class Controller : Initializable {
             App.LOG.info(invalidUrlMessage)
         }
 
-        requestParameterData.setText(this.url.getQuery())
+        requestParameterData.setText(request.url.getQuery())
 
         requestParameterData.fireEvent(ActionEvent())
         requestUrlChoice.fireEvent(ActionEvent())
@@ -266,9 +268,9 @@ private class Controller : Initializable {
             val response = prepareRequest().put(Entity.json<String>(" {  \"key\" : \"value\" }"))
 
             if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
-                responseBody.appendText(Util.formatJson(response.readEntity<String>(javaClass<String>())) + "OK")
+                responseBody.appendText(Util.formatJson(response.readEntity<String>(javaClass<String>())))
             } else {
-                responseBody.appendText(response.getStatusInfo().getReasonPhrase() + "FAILED")
+                responseBody.appendText(response.getStatusInfo().getReasonPhrase())
             }
             showResponseHeaders(response)
             showStatus(response)
@@ -324,7 +326,7 @@ private class Controller : Initializable {
     }
 
     private fun initializeRequestUrlChoice() {
-        requestUrlChoice.getItems().add("https://api.twitter.com/1.1/trends/place.json?id=676757")
+        requestUrlChoice.getItems().add(App.SAMPLE_URL)
         requestUrlChoice.getSelectionModel().select(0)
 
         declareUrl()
@@ -334,12 +336,13 @@ private class Controller : Initializable {
     private fun saveRequest() {
         declareUrl()
 
-        val requestName = "$method: ${url.getHost()}${url.getPath()}"
+        val requestName = "${request.method}: ${request.url.getHost()}${request.url.getPath()}"
         val clientRequestModel = ClientRequestModel.Builder(requestName)
-                .url(url.toString()).body(requestBody.getText())
+                .method(request.method)
+                .url(request.url)
+                .body(requestBody.getText())
                 .headers(requestHeaderData.getText())
-                .parameters(if (requestParameterData.getText() == null) "" else requestParameterData.getText()).build()
-
+                .build()
 
         val fullFilePath = App.APP_HOME_DIRECTORY + "/" + UUID.randomUUID() + "-save.serialized"
         val appHomeDirectory = File(App.APP_HOME_DIRECTORY)
@@ -426,17 +429,31 @@ private class Controller : Initializable {
     private fun loadSavedRequest() {
         val selectedRequest = queryTable.getSelectionModel().getSelectedItem()
         if (selectedRequest != null) {
-            requestHeaderData.setText(selectedRequest.headers)
-            requestParameterData.setText(selectedRequest.parameters)
-            requestBody.setText(selectedRequest.body)
+            request = selectedRequest
 
-            setNewTarget(selectedRequest)
+            setMethodInUi(request.method)
+            requestHeaderData.setText(request.headers)
+            requestParameterData.setText(request.url.getQuery())
+            requestBody.setText(request.body)
+
+            setNewTarget()
         }
     }
 
-    private fun setNewTarget(selectedRequest: ClientRequestModel) {
+    private fun setMethodInUi(method: String) {
+        when (method) {
+            HttpMethod.GET -> requestMethod.selectToggle(getMethodRadio)
+            HttpMethod.POST -> requestMethod.selectToggle(postMethodRadio)
+            HttpMethod.PUT -> requestMethod.selectToggle(putMethodRadio)
+            HttpMethod.DELETE -> requestMethod.selectToggle(deleteMethodRadio)
+            HttpMethod.HEAD -> requestMethod.selectToggle(headMethodRadio)
+            HttpMethod.OPTIONS -> requestMethod.selectToggle(optionsMethodRadio)
+        }
+    }
+
+    private fun setNewTarget() {
         requestUrlChoice.getItems().clear()
-        requestUrlChoice.getItems().add(selectedRequest.url)
+        requestUrlChoice.getItems().add(request.url.toString())
         initializeRequestUrlChoice()
     }
 

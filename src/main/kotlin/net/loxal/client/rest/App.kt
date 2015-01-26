@@ -40,6 +40,7 @@ class App : Application() {
     }
 
     class object {
+        val SAMPLE_URL = "https://example.com"
         val LOG = Logger.getGlobal()
         val SAVE_AS = "Save request as:"
         val APP_HOME_DIRECTORY = System.getenv("HOME") + "/.loxal/restClient/request"

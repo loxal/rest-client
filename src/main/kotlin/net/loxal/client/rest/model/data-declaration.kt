@@ -5,7 +5,9 @@
 package net.loxal.client.rest.model
 
 import java.io.Serializable
-import kotlin.platform.platformStatic
+import javax.ws.rs.HttpMethod
+import java.net.URL
+import net.loxal.client.rest.App
 
 data class Header(val name: String, val value: List<Any>) {
     override public fun toString(): String {
@@ -16,30 +18,30 @@ data class Header(val name: String, val value: List<Any>) {
 data class RequestParameter(val paramName: String, val paramValue: Any)
 
 data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializable {
-    val url: String = builder.url
+    val method: String = builder.method
+    val url: URL = builder.url
     val headers: String = builder.headers
-    val parameters: String = builder.parameters
     val body: String = builder.body
     var name: String = builder.name
 
     public class Builder(val name: String) {
-        var url: String = ""
+        var method: String = HttpMethod.GET
+        var url: URL = URL(App.SAMPLE_URL)
         var headers: String = ""
-        var parameters: String = ""
         var body: String = ""
 
-        public fun url(url: String): Builder {
+        fun method(method: String): Builder {
+            this.method = method
+            return this
+        }
+
+        public fun url(url: URL): Builder {
             this.url = url
             return this
         }
 
         public fun headers(headers: String): Builder {
             this.headers = headers
-            return this
-        }
-
-        public fun parameters(parameters: String): Builder {
-            this.parameters = parameters
             return this
         }
 
@@ -54,6 +56,6 @@ data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializabl
     }
 
     class object {
-        platformStatic val serialVersionUID = 5979696652154735181
+        val serialVersionUID = 5979696652154735183
     }
 }
