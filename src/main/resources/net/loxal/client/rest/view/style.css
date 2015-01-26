@@ -10,19 +10,19 @@
 }
 
 .OTHER {
-    /*-fx-border-color: #999;*/
+    -fx-border-color: #999;
 }
 
 .SERVER_ERROR {
-    /*-fx-border-color: #d11;*/
+    -fx-border-color: #d11;
 }
 
 .CLIENT_ERROR {
-    /*-fx-border-color: #d61;*/
+    -fx-border-color: #d61;
 }
 
 .SUCCESSFUL {
-    /*-fx-border-color: #191;*/
+    -fx-border-color: #191;
 }
 
 .request-alt {
@@ -30,7 +30,7 @@
 }
 
 .response {
-    /*-fx-border-color: #191;*/
+    -fx-border-color: #191;
 }
 
 .test {

@@ -36,13 +36,8 @@ import javax.ws.rs.HttpMethod
 import javax.ws.rs.client.ClientBuilder
 import org.glassfish.jersey.client.ClientProperties
 import javax.ws.rs.core.MediaType
-import java.lang
 import javax.ws.rs.client.Entity
 import javax.ws.rs.core.Response
-import java.util.ArrayList
-import java.util.HashSet
-import com.google.gson.JsonParser
-import com.google.gson.GsonBuilder
 import java.time.format.DateTimeFormatter
 import java.time.LocalTime
 import java.util.UUID
@@ -54,11 +49,8 @@ import javafx.scene.control.cell.PropertyValueFactory
 import javafx.scene.control.cell.TextFieldTableCell
 import java.util.logging.Logger
 import javafx.scene.control.Tooltip
-import javafx.scene.control.Control
 import javafx.event.ActionEvent
 import kotlin.platform.platformStatic
-import com.google.gson.JsonSyntaxException
-import com.google.gson.JsonElement
 import java.time.Instant
 
 class Controller : Initializable {
@@ -114,29 +106,24 @@ class Controller : Initializable {
 
     private var startRequest: Instant = Instant.now()
 
-    private fun createShortcut(control: Control, keyCodeCombination: KeyCodeCombination, action: Runnable) {
-        control.getScene().getAccelerators().put(keyCodeCombination, action)
-        control.setTooltip(Tooltip("${keyCodeCombination.getDisplayText()}"))
-    }
-
     fun setAccelerators() {
-        createShortcut(requestUrlChoice, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN), Runnable { requestUrlChoice.requestFocus() })
-        createShortcut(clearButton, KeyCodeCombination(KeyCode.K, KeyCombination.SHORTCUT_DOWN), Runnable { clearButton.fire() })
-        createShortcut(requestPerformer, KeyCodeCombination(KeyCode.ENTER, KeyCombination.SHORTCUT_DOWN), Runnable { requestPerformer.fire() })
-        createShortcut(getMethodRadio, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { getMethodRadio.fire() })
-        createShortcut(postMethodRadio, KeyCodeCombination(KeyCode.P, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { postMethodRadio.fire() })
-        createShortcut(deleteMethodRadio, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { deleteMethodRadio.fire() })
-        createShortcut(putMethodRadio, KeyCodeCombination(KeyCode.U, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { putMethodRadio.fire() })
-        createShortcut(headMethodRadio, KeyCodeCombination(KeyCode.E, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { headMethodRadio.fire() })
-        createShortcut(optionsMethodRadio, KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { optionsMethodRadio.fire() })
-        createShortcut(requestHeaderData, KeyCodeCombination(KeyCode.DIGIT1, KeyCombination.SHORTCUT_DOWN), Runnable { requestHeaderData.requestFocus() })
-        createShortcut(requestParameterData, KeyCodeCombination(KeyCode.DIGIT2, KeyCombination.SHORTCUT_DOWN), Runnable { requestParameterData.requestFocus() })
-        createShortcut(requestBody, KeyCodeCombination(KeyCode.DIGIT3, KeyCombination.SHORTCUT_DOWN), Runnable { requestBody.requestFocus() })
-        createShortcut(responseBody, KeyCodeCombination(KeyCode.DIGIT4, KeyCombination.SHORTCUT_DOWN), Runnable { responseBody.requestFocus() })
-        createShortcut(responseHeaders, KeyCodeCombination(KeyCode.DIGIT5, KeyCombination.SHORTCUT_DOWN), Runnable { responseHeaders.requestFocus() })
-        createShortcut(queryTable, KeyCodeCombination(KeyCode.DIGIT6, KeyCombination.SHORTCUT_DOWN), Runnable { queryTable.requestFocus() })
-        createShortcut(requestDeleter, KeyCodeCombination(KeyCode.BACK_SPACE, KeyCombination.SHORTCUT_DOWN), Runnable { requestDeleter.fire() })
-        createShortcut(requestSaver, KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN), Runnable { requestSaver.fire() })
+        Util.createShortcut(requestUrlChoice, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN), Runnable { requestUrlChoice.requestFocus() })
+        Util.createShortcut(clearButton, KeyCodeCombination(KeyCode.K, KeyCombination.SHORTCUT_DOWN), Runnable { clearButton.fire() })
+        Util.createShortcut(requestPerformer, KeyCodeCombination(KeyCode.ENTER, KeyCombination.SHORTCUT_DOWN), Runnable { requestPerformer.fire() })
+        Util.createShortcut(getMethodRadio, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { getMethodRadio.fire() })
+        Util.createShortcut(postMethodRadio, KeyCodeCombination(KeyCode.P, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { postMethodRadio.fire() })
+        Util.createShortcut(deleteMethodRadio, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { deleteMethodRadio.fire() })
+        Util.createShortcut(putMethodRadio, KeyCodeCombination(KeyCode.U, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { putMethodRadio.fire() })
+        Util.createShortcut(headMethodRadio, KeyCodeCombination(KeyCode.E, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { headMethodRadio.fire() })
+        Util.createShortcut(optionsMethodRadio, KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { optionsMethodRadio.fire() })
+        Util.createShortcut(requestHeaderData, KeyCodeCombination(KeyCode.DIGIT1, KeyCombination.SHORTCUT_DOWN), Runnable { requestHeaderData.requestFocus() })
+        Util.createShortcut(requestParameterData, KeyCodeCombination(KeyCode.DIGIT2, KeyCombination.SHORTCUT_DOWN), Runnable { requestParameterData.requestFocus() })
+        Util.createShortcut(requestBody, KeyCodeCombination(KeyCode.DIGIT3, KeyCombination.SHORTCUT_DOWN), Runnable { requestBody.requestFocus() })
+        Util.createShortcut(responseBody, KeyCodeCombination(KeyCode.DIGIT4, KeyCombination.SHORTCUT_DOWN), Runnable { responseBody.requestFocus() })
+        Util.createShortcut(responseHeaders, KeyCodeCombination(KeyCode.DIGIT5, KeyCombination.SHORTCUT_DOWN), Runnable { responseHeaders.requestFocus() })
+        Util.createShortcut(queryTable, KeyCodeCombination(KeyCode.DIGIT6, KeyCombination.SHORTCUT_DOWN), Runnable { queryTable.requestFocus() })
+        Util.createShortcut(requestDeleter, KeyCodeCombination(KeyCode.BACK_SPACE, KeyCombination.SHORTCUT_DOWN), Runnable { requestDeleter.fire() })
+        Util.createShortcut(requestSaver, KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN), Runnable { requestSaver.fire() })
 
         setShortcutForArrowKeySelection()
     }
@@ -165,15 +152,33 @@ class Controller : Initializable {
         }
     }
 
+    throws(javaClass<IOException>())
+    private fun loadSavedQuery(fullFilePath: String) {
+        files.clear()
+        try {
+            FileInputStream(fullFilePath).use { fileInputStream ->
+                ObjectInputStream(fileInputStream).use { objectInputStream ->
+                    val clientRequestModel = objectInputStream.readObject() as ClientRequestModel
+                    Controller.LOG.info("Load request: ${clientRequestModel.name}")
+                    loadSavedRequests()
+                }
+            }
+        } catch (e: ClassNotFoundException) {
+            Controller.LOG.severe(e.getMessage())
+        }
+
+    }
+
     private fun prepareRequest(): Invocation.Builder {
         val client = ClientBuilder.newClient()
 
         client.property(ClientProperties.CONNECT_TIMEOUT, 2000)
         client.property(ClientProperties.READ_TIMEOUT, 2000)
-        val target = applyUrlRequestParameters(client.target(url.toURI()), extractRequestParameters())
+        val target = applyUrlRequestParameters(client.target(url.toURI()),
+                Util.extractRequestParameters(declareRequestParameters()))
         val request = target.request(MediaType.APPLICATION_JSON_TYPE)
 
-        return applyHeaderInfo(extractHeaderData(), request)
+        return applyHeaderInfo(Util.extractHeaderData(requestHeaderData.getText()), request)
     }
 
     private fun applyUrlRequestParameters(webTarget: WebTarget, requestParameters: List<RequestParameter>): WebTarget {
@@ -213,7 +218,7 @@ class Controller : Initializable {
 
         if (response.getStatus() == Response.Status.CREATED.getStatusCode() && response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
 
-            responseBody.appendText(formatJson(response.readEntity<String>(javaClass<String>())))
+            responseBody.appendText(Util.formatJson(response.readEntity<String>(javaClass<String>())))
             val stringHeaders = response.getHeaders()
 
             for (header in stringHeaders.entrySet()) {
@@ -241,11 +246,7 @@ class Controller : Initializable {
             val getResponse = prepareRequest().get()
             // TODO support XML
 
-            val responseBodyPayload = formatJson(getResponse.readEntity(javaClass<String>()))
-            LOG.info("responseBody.getStyleClass(): ${responseBody.getStyleClass()}")
-            responseBody.getStyleClass().add(getResponse.getStatusInfo().getFamily().name())
-            responseHeaders.getStyleClass().add(getResponse.getStatusInfo().getFamily().name())
-
+            val responseBodyPayload = Util.formatJson(getResponse.readEntity(javaClass<String>()))
             responseBody.appendText(responseBodyPayload)
 
             showResponseHeaders(getResponse)
@@ -264,11 +265,10 @@ class Controller : Initializable {
 
     private fun doPutRequest() {
         try {
-
             val response = prepareRequest().put(Entity.json<String>(" {  \"key\" : \"value\" }"))
 
             if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
-                responseBody.appendText(formatJson(response.readEntity<String>(javaClass<String>())) + "OK")
+                responseBody.appendText(Util.formatJson(response.readEntity<String>(javaClass<String>())) + "OK")
             } else {
                 responseBody.appendText(response.getStatusInfo().getReasonPhrase() + "FAILED")
             }
@@ -303,27 +303,6 @@ class Controller : Initializable {
         return request
     }
 
-    private fun extractRequestParameters(): List<RequestParameter> {
-        val requestParameters = ArrayList<RequestParameter>()
-        val requestParameterContent: String
-
-        requestParameterContent = declareRequestParameters()
-
-        if (StringUtils.EMPTY != requestParameterContent) {
-            val parameterPairSeparatorRegex = "&\n|&"
-            val parameterPairs = requestParameterContent.split(parameterPairSeparatorRegex)
-            val parameterPairEntrySeparatorRegex = "="
-            parameterPairs.forEach { parameterPair ->
-                val parameterPairEntry = parameterPair.trim().split(parameterPairEntrySeparatorRegex)
-                val parameterNameIdx = 0
-                val parameterValueIdx = 1
-                requestParameters.add(RequestParameter(parameterPairEntry[parameterNameIdx], parameterPairEntry[parameterValueIdx]))
-            }
-        }
-
-        return requestParameters
-    }
-
     private fun declareRequestParameters(): String {
         val requestParameterContent: String
 
@@ -335,39 +314,10 @@ class Controller : Initializable {
         return requestParameterContent
     }
 
-    private fun extractHeaderData(): Set<Header> {
-        val headerNameIdx = 0
-        val headerValueIdx = 1
-        val headers = HashSet<Header>()
-
-        val rawHeaderData = requestHeaderData.getText()
-        if (!rawHeaderData.isEmpty()) {
-            for (rawHeaderLine in rawHeaderData.split("\\n")) {
-                val headerDataPair = rawHeaderLine.split(":\\s")
-                val header = Header(headerDataPair[headerNameIdx], listOf(headerDataPair[headerValueIdx]))
-                headers.add(header)
-            }
-        }
-
-        return headers
-    }
-
     FXML
     private fun cleanupPreviousResponse() {
         responseHeaders.clear()
         responseBody.clear()
-    }
-
-    private fun formatJson(json: String): String {
-        val jsonElement: JsonElement
-        try {
-            jsonElement = JsonParser().parse(json)
-        } catch (e: JsonSyntaxException) {
-            LOG.warning(e.getMessage())
-            LOG.warning(e.getCause().toString())
-            return json
-        }
-        return GsonBuilder().setPrettyPrinting().create().toJson(jsonElement)
     }
 
     override fun initialize(url: URL?, resourceBundle: ResourceBundle?) {
@@ -386,7 +336,6 @@ class Controller : Initializable {
     private fun saveRequest() {
         val requestUrl = requestUrlChoice.getSelectionModel().getSelectedItem()
 
-
         val clientRequestModel = ClientRequestModel.Builder(LocalTime.now().format(DateTimeFormatter.ISO_TIME))
                 .url(requestUrl).body(requestBody.getText())
                 .headers(requestHeaderData.getText())
@@ -395,11 +344,11 @@ class Controller : Initializable {
 
         val fullFilePath = APP_HOME_DIRECTORY + "/" + UUID.randomUUID() + "-save.serialized"
         val appHomeDirectory = File(APP_HOME_DIRECTORY)
-        createAppHome(appHomeDirectory)
+        Util.createAppHome(appHomeDirectory)
         try {
             FileOutputStream(fullFilePath).use { fileOutputStream ->
                 ObjectOutputStream(fileOutputStream).use { objectOutputStream ->
-                    createSaveFile(fullFilePath)
+                    Util.createSaveFile(fullFilePath)
 
                     objectOutputStream.writeObject(clientRequestModel)
                     LOG.info("${SAVE_AS} ${clientRequestModel.name}")
@@ -415,55 +364,12 @@ class Controller : Initializable {
         queryTable.getSelectionModel().select(0)
     }
 
-    private fun createAppHome(appHomeDirectory: File) {
-        if (!appHomeDirectory.exists()) {
-            if (appHomeDirectory.mkdirs()) {
-                LOG.info(lang.String.format("%s created", appHomeDirectory))
-            } else {
-                LOG.severe(lang.String.format("%s creation failed", appHomeDirectory))
-            }
-        }
-    }
-
-    private fun createSaveFile(fullFilePath: String) {
-        val saveFile = File(fullFilePath)
-        if (!saveFile.exists()) {
-            try {
-                if (saveFile.createNewFile()) {
-                    LOG.info("$saveFile created")
-                } else {
-                    LOG.severe("$saveFile creation failed")
-                }
-            } catch (e: IOException) {
-                LOG.severe(e.getMessage())
-            }
-
-        }
-    }
-
-    throws(javaClass<IOException>())
-    private fun loadSavedQuery(fullFilePath: String) {
-        files.clear()
-        try {
-            FileInputStream(fullFilePath).use { fileInputStream ->
-                ObjectInputStream(fileInputStream).use { objectInputStream ->
-                    val clientRequestModel = objectInputStream.readObject() as ClientRequestModel
-                    LOG.info("Load request: ${clientRequestModel.name}")
-                    loadSavedRequests()
-                }
-            }
-        } catch (e: ClassNotFoundException) {
-            LOG.severe(e.getMessage())
-        }
-
-    }
-
     private fun loadSavedRequests() {
         files.clear()
         clientRequestModels.clear()
 
         val appHomeDirectory = File(APP_HOME_DIRECTORY)
-        createAppHome(appHomeDirectory)
+        Util.createAppHome(appHomeDirectory)
 
         appHomeDirectory.listFiles().forEach { file ->
             files.add(file)
@@ -545,8 +451,6 @@ class Controller : Initializable {
         try {
             val response = prepareRequest().head()
 
-            responseBody.getStyleClass().add(response.getStatusInfo().getFamily().name())
-            responseHeaders.getStyleClass().add(response.getStatusInfo().getFamily().name())
             responseBody.appendText(response.readEntity(javaClass<String>()))
             showResponseHeaders(response)
             showStatus(response)
@@ -560,8 +464,6 @@ class Controller : Initializable {
         try {
             val response = prepareRequest().options()
 
-            responseBody.getStyleClass().add(response.getStatusInfo().getFamily().name())
-            responseHeaders.getStyleClass().add(response.getStatusInfo().getFamily().name())
             responseBody.appendText(response.readEntity(javaClass<String>()))
             showResponseHeaders(response)
             showStatus(response)
