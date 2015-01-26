@@ -3,34 +3,34 @@
  */
 
 .request {
-    -fx-border-color: #119;
+    /*-fx-border-color: #119;*/
 }
 
 #request-url-bar {
 }
 
 .OTHER {
-    -fx-border-color: #999;
+    /*-fx-border-color: #999;*/
 }
 
 .SERVER_ERROR {
-    -fx-border-color: #d11;
+    /*-fx-border-color: #d11;*/
 }
 
 .CLIENT_ERROR {
-    -fx-border-color: #d61;
+    /*-fx-border-color: #d61;*/
 }
 
 .SUCCESSFUL {
-    -fx-border-color: #191;
+    /*-fx-border-color: #191;*/
 }
 
 .request-alt {
-    -fx-color: #119;
+    /*-fx-color: #119;*/
 }
 
 .response {
-    -fx-border-color: #191;
+    /*-fx-border-color: #191;*/
 }
 
 .test {

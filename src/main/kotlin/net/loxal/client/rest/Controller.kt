@@ -68,7 +68,7 @@ class Controller : Initializable {
     FXML
     private var requestUrlChoice: ComboBox<String> = ComboBox()
     FXML
-    private var requestHeaderData: TextArea = TextArea()
+    private var requestHeaderData: TextArea = TextArea("")
     FXML
     private var responseHeaders: TextArea = TextArea()
     FXML
@@ -385,9 +385,12 @@ class Controller : Initializable {
     FXML
     private fun saveRequest() {
         val requestUrl = requestUrlChoice.getSelectionModel().getSelectedItem()
+
+
         val clientRequestModel = ClientRequestModel.Builder(LocalTime.now().format(DateTimeFormatter.ISO_TIME))
-                .url(requestUrl).body(requestBody.getText()).headers(requestHeaderData.getText())
-                .parameters(requestParameterData.getText()).build()
+                .url(requestUrl).body(requestBody.getText())
+                .headers(requestHeaderData.getText())
+                .parameters(if (requestParameterData.getText() == null) "" else requestParameterData.getText()).build()
 
 
         val fullFilePath = APP_HOME_DIRECTORY + "/" + UUID.randomUUID() + "-save.serialized"
