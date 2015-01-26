@@ -38,8 +38,6 @@ import org.glassfish.jersey.client.ClientProperties
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.client.Entity
 import javax.ws.rs.core.Response
-import java.time.format.DateTimeFormatter
-import java.time.LocalTime
 import java.util.UUID
 import java.io.ObjectOutputStream
 import java.io.FileOutputStream
@@ -101,6 +99,7 @@ private class Controller : Initializable {
     private private var requestMethod: ToggleGroup = ToggleGroup()
 
     private var url: URL = URL("https://example.com")
+    private var method: String = HttpMethod.GET
 
     private var startRequest: Instant = Instant.now()
 
@@ -135,12 +134,11 @@ private class Controller : Initializable {
 
     FXML
     private fun doRequest() {
-        val selectedRequestMethod = (this.requestMethod.getSelectedToggle() as RadioButton).getText()
-
         declareUrl()
+
         cleanupPreviousResponse()
         startRequest = Instant.now()
-        when (selectedRequestMethod) {
+        when (method) {
             HttpMethod.GET -> doGetRequest()
             HttpMethod.POST -> doPostRequest()
             HttpMethod.PUT -> doPutRequest()
@@ -191,6 +189,8 @@ private class Controller : Initializable {
 
     FXML
     private fun declareUrl() {
+        method = (this.requestMethod.getSelectedToggle() as RadioButton).getText()
+
         val urlValue: String = if (requestUrlChoice.getValue() == null)
             requestUrlChoice.getPromptText()
         else
@@ -332,10 +332,11 @@ private class Controller : Initializable {
 
     FXML
     private fun saveRequest() {
-        val requestUrl = requestUrlChoice.getSelectionModel().getSelectedItem()
+        declareUrl()
 
-        val clientRequestModel = ClientRequestModel.Builder(LocalTime.now().format(DateTimeFormatter.ISO_TIME))
-                .url(requestUrl).body(requestBody.getText())
+        val requestName = "$method: ${url.getHost()}${url.getPath()}"
+        val clientRequestModel = ClientRequestModel.Builder(requestName)
+                .url(url.toString()).body(requestBody.getText())
                 .headers(requestHeaderData.getText())
                 .parameters(if (requestParameterData.getText() == null) "" else requestParameterData.getText()).build()
 
