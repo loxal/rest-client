@@ -14,7 +14,7 @@ import javafx.stage.Stage
 import java.io.IOException
 import java.util.logging.Logger
 
-public class App : Application() {
+class App : Application() {
 
     override fun start(stage: Stage) {
         val loader = FXMLLoader()

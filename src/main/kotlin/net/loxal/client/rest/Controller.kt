@@ -51,7 +51,7 @@ import javafx.scene.control.Tooltip
 import javafx.event.ActionEvent
 import java.time.Instant
 
-class Controller : Initializable {
+private class Controller : Initializable {
     private val files: ObservableList<File> = FXCollections.observableArrayList<File>()
     private val clientRequestModels = FXCollections.observableArrayList<ClientRequestModel>()
 
@@ -127,7 +127,7 @@ class Controller : Initializable {
     }
 
     private fun setShortcutForArrowKeySelection() {
-        queryTable.setOnKeyPressed { keyEvent ->
+        queryTable.setOnKeyReleased { keyEvent ->
             if (keyEvent.getCode().equals(KeyCode.UP).or(keyEvent.getCode().equals(KeyCode.DOWN)))
                 loadSavedRequest()
         }
