@@ -13,7 +13,6 @@ import javafx.stage.Stage
 
 import java.io.IOException
 import java.util.logging.Logger
-import kotlin.platform.platformStatic
 
 public class App : Application() {
 
@@ -41,7 +40,9 @@ public class App : Application() {
     }
 
     class object {
-        platformStatic val LOG = Logger.getGlobal()
+        val LOG = Logger.getGlobal()
+        val SAVE_AS = "Save request as:"
+        val APP_HOME_DIRECTORY = System.getenv("HOME") + "/.loxal/restClient/request"
 
         public fun main(vararg args: String) {
             Application.launch(*args)

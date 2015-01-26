@@ -47,10 +47,8 @@ import java.io.ObjectInputStream
 import java.io.FileInputStream
 import javafx.scene.control.cell.PropertyValueFactory
 import javafx.scene.control.cell.TextFieldTableCell
-import java.util.logging.Logger
 import javafx.scene.control.Tooltip
 import javafx.event.ActionEvent
-import kotlin.platform.platformStatic
 import java.time.Instant
 
 class Controller : Initializable {
@@ -159,12 +157,12 @@ class Controller : Initializable {
             FileInputStream(fullFilePath).use { fileInputStream ->
                 ObjectInputStream(fileInputStream).use { objectInputStream ->
                     val clientRequestModel = objectInputStream.readObject() as ClientRequestModel
-                    Controller.LOG.info("Load request: ${clientRequestModel.name}")
+                    App.LOG.info("Load request: ${clientRequestModel.name}")
                     loadSavedRequests()
                 }
             }
         } catch (e: ClassNotFoundException) {
-            Controller.LOG.severe(e.getMessage())
+            App.LOG.severe(e.getMessage())
         }
 
     }
@@ -204,7 +202,7 @@ class Controller : Initializable {
         } catch (e: MalformedURLException) {
             val invalidUrlMessage = "Invalid URL: ${e.getMessage()}"
             notification.setText(invalidUrlMessage)
-            LOG.info(invalidUrlMessage)
+            App.LOG.info(invalidUrlMessage)
         }
 
         requestParameterData.setText(this.url.getQuery())
@@ -252,7 +250,7 @@ class Controller : Initializable {
             showResponseHeaders(getResponse)
             showStatus(getResponse)
         } catch (e: ProcessingException) {
-            LOG.severe(e.getMessage())
+            App.LOG.severe(e.getMessage())
             notification.setText(e.getMessage())
         }
     }
@@ -275,7 +273,7 @@ class Controller : Initializable {
             showResponseHeaders(response)
             showStatus(response)
         } catch (e: ProcessingException) {
-            LOG.severe(e.getMessage())
+            App.LOG.severe(e.getMessage())
             notification.setText(e.getMessage())
         }
 
@@ -291,7 +289,7 @@ class Controller : Initializable {
             showResponseHeaders(response)
             showStatus(response)
         } catch (e: ProcessingException) {
-            LOG.severe(e.getMessage())
+            App.LOG.severe(e.getMessage())
             notification.setText(e.getMessage())
         }
 
@@ -342,8 +340,8 @@ class Controller : Initializable {
                 .parameters(if (requestParameterData.getText() == null) "" else requestParameterData.getText()).build()
 
 
-        val fullFilePath = APP_HOME_DIRECTORY + "/" + UUID.randomUUID() + "-save.serialized"
-        val appHomeDirectory = File(APP_HOME_DIRECTORY)
+        val fullFilePath = App.APP_HOME_DIRECTORY + "/" + UUID.randomUUID() + "-save.serialized"
+        val appHomeDirectory = File(App.APP_HOME_DIRECTORY)
         Util.createAppHome(appHomeDirectory)
         try {
             FileOutputStream(fullFilePath).use { fileOutputStream ->
@@ -351,13 +349,13 @@ class Controller : Initializable {
                     Util.createSaveFile(fullFilePath)
 
                     objectOutputStream.writeObject(clientRequestModel)
-                    LOG.info("${SAVE_AS} ${clientRequestModel.name}")
+                    App.LOG.info("${App.SAVE_AS} ${clientRequestModel.name}")
 
                     loadSavedQuery(fullFilePath)
                 }
             }
         } catch (e: IOException) {
-            LOG.severe("Could not serialize object: ${e.getMessage()}")
+            App.LOG.severe("Could not serialize object: ${e.getMessage()}")
         }
 
 
@@ -368,7 +366,7 @@ class Controller : Initializable {
         files.clear()
         clientRequestModels.clear()
 
-        val appHomeDirectory = File(APP_HOME_DIRECTORY)
+        val appHomeDirectory = File(App.APP_HOME_DIRECTORY)
         Util.createAppHome(appHomeDirectory)
 
         appHomeDirectory.listFiles().forEach { file ->
@@ -396,7 +394,7 @@ class Controller : Initializable {
                     objectOutputStream ->
                     objectOutputStream.writeObject(t.getTableView().getItems().get(t.getTablePosition().getRow()))
                     loadSavedRequests()
-                    LOG.info("${SAVE_AS} ${t.getTableView().getItems().get(t.getTablePosition().getRow()).name}")
+                    App.LOG.info("${App.SAVE_AS} ${t.getTableView().getItems().get(t.getTablePosition().getRow()).name}")
                 }
             }
         })
@@ -416,9 +414,9 @@ class Controller : Initializable {
         if (selectedIndex != -1) {
             val fileToDelete: File = files.get(selectedIndex)
             if (fileToDelete.delete()) {
-                LOG.info("Saved request deleted: $fileToDelete")
+                App.LOG.info("Saved request deleted: $fileToDelete")
             } else {
-                LOG.severe("Saved request not deleted: $fileToDelete")
+                App.LOG.severe("Saved request not deleted: $fileToDelete")
             }
         }
     }
@@ -441,12 +439,6 @@ class Controller : Initializable {
         initializeRequestUrlChoice()
     }
 
-    class object {
-        platformStatic val LOG = Logger.getGlobal()
-        platformStatic val SAVE_AS = "Save request as:"
-        private val APP_HOME_DIRECTORY = System.getenv("HOME") + "/.loxal/restClient/request"
-    }
-
     fun doHeadRequest() {
         try {
             val response = prepareRequest().head()
@@ -455,7 +447,7 @@ class Controller : Initializable {
             showResponseHeaders(response)
             showStatus(response)
         } catch (e: ProcessingException) {
-            LOG.severe(e.getMessage())
+            App.LOG.severe(e.getMessage())
             notification.setText(e.getMessage())
         }
     }
@@ -468,7 +460,7 @@ class Controller : Initializable {
             showResponseHeaders(response)
             showStatus(response)
         } catch (e: ProcessingException) {
-            LOG.severe(e.getMessage())
+            App.LOG.severe(e.getMessage())
             notification.setText(e.getMessage())
         }
     }

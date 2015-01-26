@@ -26,9 +26,9 @@ final class Util {
         final fun createAppHome(appHomeDirectory: File) {
             if (!appHomeDirectory.exists()) {
                 if (appHomeDirectory.mkdirs()) {
-                    Controller.LOG.info(lang.String.format("%s created", appHomeDirectory))
+                    App.LOG.info(lang.String.format("%s created", appHomeDirectory))
                 } else {
-                    Controller.LOG.severe(lang.String.format("%s creation failed", appHomeDirectory))
+                    App.LOG.severe(lang.String.format("%s creation failed", appHomeDirectory))
                 }
             }
         }
@@ -38,12 +38,12 @@ final class Util {
             if (!saveFile.exists()) {
                 try {
                     if (saveFile.createNewFile()) {
-                        Controller.LOG.info("$saveFile created")
+                        App.LOG.info("$saveFile created")
                     } else {
-                        Controller.LOG.severe("$saveFile creation failed")
+                        App.LOG.severe("$saveFile creation failed")
                     }
                 } catch (e: IOException) {
-                    Controller.LOG.severe(e.getMessage())
+                    App.LOG.severe(e.getMessage())
                 }
 
             }
@@ -88,8 +88,8 @@ final class Util {
             try {
                 jsonElement = JsonParser().parse(json)
             } catch (e: JsonSyntaxException) {
-                Controller.LOG.warning(e.getMessage())
-                Controller.LOG.warning(e.getCause().toString())
+                App.LOG.warning(e.getMessage())
+                App.LOG.warning(e.getCause().toString())
                 return json
             }
             return GsonBuilder().setPrettyPrinting().create().toJson(jsonElement)
