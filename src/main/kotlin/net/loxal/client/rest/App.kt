@@ -43,7 +43,13 @@ class App : Application() {
         val SAMPLE_URL = "https://example.com"
         val LOG = Logger.getGlobal()
         val SAVE_AS = "Save request as:"
-        val APP_HOME_DIRECTORY = System.getenv("HOME") + "/.loxal/restClient/request"
+
+        // TODO on Windows, resolves HOME to null
+        val APP_HOME_DIRECTORY = if (System.getenv("HOME") == null) {
+            System.getenv("USERPROFILE")
+        } else {
+            System.getenv("HOME")
+        } + "/.loxal/rest-client/request"
 
         public fun main(vararg args: String) {
             Application.launch(*args)
