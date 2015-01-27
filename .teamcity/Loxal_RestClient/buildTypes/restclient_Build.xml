@@ -4,7 +4,7 @@
   <description />
   <settings ref="Build">
     <options>
-      <option name="artifactRules" value="target/**/*.* =&gt; out" />
+      <option name="artifactRules" value="target/**/*.* =&gt; out&#xA;target/artifacts/Epvin/**/*.* =&gt; out1" />
     </options>
     <disabled-settings>
       <setting-ref ref="RUNNER_5" />
