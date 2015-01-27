@@ -40,8 +40,8 @@ class App : Application() {
     }
 
     class object {
-        val SAMPLE_URL = "https://example.com"
         val LOG = Logger.getGlobal()
+        val SAMPLE_URL = "https://example.com"
         val SAVE_AS = "Save request as:"
 
         // TODO on Windows, resolves HOME to null
