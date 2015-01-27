@@ -82,7 +82,6 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <mainClass>net.loxal.client.rest.App</mainClass>
-                            <name>ddd</name>
                         </manifest>
                     </archive>
                     <descriptorRefs>
