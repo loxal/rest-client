@@ -1,7 +1,6 @@
 Manifest-Version: 1.0
 
 Name: ${project.groupId}/
-Application-Name: ${project.name}
 Implementation-Title: ${project.name}
 Specification-Title: ${project.description}
 Implementation-Version: ${project.version}
@@ -13,7 +12,5 @@ Implementation-Vendor-Id: ${build.number}
 Implementation-URL: ${project.url}
 Class-Path: ${project.groupId}/
 JavaFX-Application-Class: net.loxal.client.rest.App
-Sealed: true
-Build-Jdk: ${java.version}
-Built-By: ${user.name}
 Created-By: Apache Maven ${maven.version}
+
