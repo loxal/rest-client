@@ -13,7 +13,8 @@
     <build-runners order="RUNNER_5, RUNNER_6, RUNNER_1">
       <runner id="RUNNER_6" name="Build Artifact" type="JPS">
         <parameters>
-          <param name="artifactsToBuild" value="Epvinn" />
+          <param name="artifactsToBuild"><![CDATA[Epvin
+Release Epvin]]></param>
           <param name="incrementalMake" value="true" />
           <param name="iprInfoRunParam"><![CDATA[<iprInfo path-to-ipr="" should-load-iml="true">
   <Jdk name="1.8" path-to-library="%env.JDK_18%" is-used="true" type="JavaSDK" path-to-jdk="%env.JDK_18%">
