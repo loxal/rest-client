@@ -51,14 +51,8 @@ class App : Application() {
             System.getenv("HOME")
         } + "/.loxal/rest-client/request"
 
-        // TODO change this to a vararg version
-        public fun main(args: Array<String>) {
+        fun main(vararg args: String) {
             Application.launch(*args)
         }
-    }
-
-    // TODO change this to a vararg version, or better: remove it
-    public fun main(args: Array<String>) {
-        Application.launch(*args)
     }
 }

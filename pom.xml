@@ -81,8 +81,9 @@
                 </configuration>
             </plugin>
             <plugin>
-                <!--TODO remove this-->
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.5.3</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -92,18 +93,15 @@
                     </execution>
                 </executions>
                 <configuration>
-
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <mainClass>net.loxal.client.rest.App</mainClass>
                         </manifest>
                     </archive>
-
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-
                 </configuration>
             </plugin>
             <plugin>
