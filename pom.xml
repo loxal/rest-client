@@ -80,6 +80,7 @@
                 <configuration>
                     <archive>
                         <manifest>
+                            <packageName>${project.artifactId}</packageName>
                             <addClasspath>true</addClasspath>
                             <mainClass>net.loxal.client.rest.App</mainClass>
                         </manifest>
