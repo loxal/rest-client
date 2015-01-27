@@ -28,7 +28,7 @@ class App : Application() {
 
             stage.setTitle("Epvin")
             // TODO can be attached in a declarative way via *.fxml?
-            stage.getIcons().add(Image("/net/loxal/client/rest/view/tool-icon-32.png"))
+            stage.getIcons().add(Image("/net/loxal/client/rest/view/tool-icon-256.png"))
             rootNode.requestFocus()
             stage.show()
 
