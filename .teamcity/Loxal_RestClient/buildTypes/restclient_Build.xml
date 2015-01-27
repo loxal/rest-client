@@ -10,7 +10,7 @@
       <setting-ref ref="RUNNER_5" />
     </disabled-settings>
     <parameters />
-    <build-runners order="RUNNER_5, RUNNER_6, RUNNER_1">
+    <build-runners order="RUNNER_5, RUNNER_1, RUNNER_6">
       <runner id="RUNNER_6" name="Build Artifact" type="JPS">
         <parameters>
           <param name="artifactsToBuild"><![CDATA[Epvin
