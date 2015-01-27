@@ -1,5 +1,0 @@
-Manifest-Version: 1.0
-
-Name: ${project.groupId}
-Class-Path: ${project.groupId}
-
