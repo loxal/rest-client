@@ -18,7 +18,7 @@ import javafx.scene.control.Tooltip
 
 final class Util {
     class object {
-        final fun createShortcut(control: Control, keyCodeCombination: KeyCodeCombination, action: Runnable) {
+        final fun assignShortcut(control: Control, keyCodeCombination: KeyCodeCombination, action: Runnable) {
             control.getScene().getAccelerators().put(keyCodeCombination, action)
             control.setTooltip(Tooltip("${keyCodeCombination.getDisplayText()}"))
         }

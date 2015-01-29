@@ -48,11 +48,15 @@ import javafx.scene.control.cell.TextFieldTableCell
 import javafx.scene.control.Tooltip
 import javafx.event.ActionEvent
 import java.time.Instant
+import javafx.scene.control.TextField
 
 private class Controller : Initializable {
     private val files: ObservableList<File> = FXCollections.observableArrayList<File>()
     private val clientRequestModels = FXCollections.observableArrayList<ClientRequestModel>()
+    private val clientRequestModelsBackup = FXCollections.observableArrayList<ClientRequestModel>()
 
+    FXML
+    private var find: TextField = TextField()
     FXML
     private var requestUrlChoice: ComboBox<String> = ComboBox()
     FXML
@@ -98,31 +102,65 @@ private class Controller : Initializable {
     FXML
     private private var requestMethod: ToggleGroup = ToggleGroup()
 
-    private var request: ClientRequestModel = ClientRequestModel.Builder("[Init Request]")
-            .build()
-
+    private var request: ClientRequestModel = ClientRequestModel.Builder("[Init Request]").build()
     private var startRequest: Instant = Instant.now()
 
     fun setAccelerators() {
-        Util.createShortcut(requestUrlChoice, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN), Runnable { requestUrlChoice.requestFocus() })
-        Util.createShortcut(clearButton, KeyCodeCombination(KeyCode.K, KeyCombination.SHORTCUT_DOWN), Runnable { clearButton.fire() })
-        Util.createShortcut(requestPerformer, KeyCodeCombination(KeyCode.ENTER, KeyCombination.SHORTCUT_DOWN), Runnable { requestPerformer.fire() })
-        Util.createShortcut(getMethodRadio, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { getMethodRadio.fire() })
-        Util.createShortcut(postMethodRadio, KeyCodeCombination(KeyCode.P, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { postMethodRadio.fire() })
-        Util.createShortcut(deleteMethodRadio, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { deleteMethodRadio.fire() })
-        Util.createShortcut(putMethodRadio, KeyCodeCombination(KeyCode.U, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { putMethodRadio.fire() })
-        Util.createShortcut(headMethodRadio, KeyCodeCombination(KeyCode.E, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { headMethodRadio.fire() })
-        Util.createShortcut(optionsMethodRadio, KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { optionsMethodRadio.fire() })
-        Util.createShortcut(requestHeaderData, KeyCodeCombination(KeyCode.DIGIT1, KeyCombination.SHORTCUT_DOWN), Runnable { requestHeaderData.requestFocus() })
-        Util.createShortcut(requestParameterData, KeyCodeCombination(KeyCode.DIGIT2, KeyCombination.SHORTCUT_DOWN), Runnable { requestParameterData.requestFocus() })
-        Util.createShortcut(requestBody, KeyCodeCombination(KeyCode.DIGIT3, KeyCombination.SHORTCUT_DOWN), Runnable { requestBody.requestFocus() })
-        Util.createShortcut(responseBody, KeyCodeCombination(KeyCode.DIGIT4, KeyCombination.SHORTCUT_DOWN), Runnable { responseBody.requestFocus() })
-        Util.createShortcut(responseHeaders, KeyCodeCombination(KeyCode.DIGIT5, KeyCombination.SHORTCUT_DOWN), Runnable { responseHeaders.requestFocus() })
-        Util.createShortcut(queryTable, KeyCodeCombination(KeyCode.DIGIT6, KeyCombination.SHORTCUT_DOWN), Runnable { queryTable.requestFocus() })
-        Util.createShortcut(requestDeleter, KeyCodeCombination(KeyCode.BACK_SPACE, KeyCombination.SHORTCUT_DOWN), Runnable { requestDeleter.fire() })
-        Util.createShortcut(requestSaver, KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN), Runnable { requestSaver.fire() })
+        Util.assignShortcut(requestUrlChoice, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN), Runnable { requestUrlChoice.requestFocus() })
+        Util.assignShortcut(clearButton, KeyCodeCombination(KeyCode.K, KeyCombination.SHORTCUT_DOWN), Runnable { clearButton.fire() })
+        Util.assignShortcut(requestPerformer, KeyCodeCombination(KeyCode.ENTER, KeyCombination.SHORTCUT_DOWN), Runnable { requestPerformer.fire() })
+        Util.assignShortcut(getMethodRadio, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { getMethodRadio.fire() })
+        Util.assignShortcut(postMethodRadio, KeyCodeCombination(KeyCode.P, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { postMethodRadio.fire() })
+        Util.assignShortcut(deleteMethodRadio, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { deleteMethodRadio.fire() })
+        Util.assignShortcut(putMethodRadio, KeyCodeCombination(KeyCode.U, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { putMethodRadio.fire() })
+        Util.assignShortcut(headMethodRadio, KeyCodeCombination(KeyCode.E, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { headMethodRadio.fire() })
+        Util.assignShortcut(optionsMethodRadio, KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { optionsMethodRadio.fire() })
+        Util.assignShortcut(requestHeaderData, KeyCodeCombination(KeyCode.DIGIT1, KeyCombination.SHORTCUT_DOWN), Runnable { requestHeaderData.requestFocus() })
+        Util.assignShortcut(requestParameterData, KeyCodeCombination(KeyCode.DIGIT2, KeyCombination.SHORTCUT_DOWN), Runnable { requestParameterData.requestFocus() })
+        Util.assignShortcut(requestBody, KeyCodeCombination(KeyCode.DIGIT3, KeyCombination.SHORTCUT_DOWN), Runnable { requestBody.requestFocus() })
+        Util.assignShortcut(responseBody, KeyCodeCombination(KeyCode.DIGIT4, KeyCombination.SHORTCUT_DOWN), Runnable { responseBody.requestFocus() })
+        Util.assignShortcut(responseHeaders, KeyCodeCombination(KeyCode.DIGIT5, KeyCombination.SHORTCUT_DOWN), Runnable { responseHeaders.requestFocus() })
+        Util.assignShortcut(queryTable, KeyCodeCombination(KeyCode.DIGIT6, KeyCombination.SHORTCUT_DOWN), Runnable { queryTable.requestFocus() })
+        Util.assignShortcut(requestDeleter, KeyCodeCombination(KeyCode.BACK_SPACE, KeyCombination.SHORTCUT_DOWN), Runnable { requestDeleter.fire() })
+        Util.assignShortcut(requestSaver, KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN), Runnable { requestSaver.fire() })
+        Util.assignShortcut(find, KeyCodeCombination(KeyCode.F, KeyCombination.SHORTCUT_DOWN), Runnable { find.requestFocus() })
 
         setShortcutForArrowKeySelection()
+
+        reloadRequestBackup()
+
+        enableFinder()
+    }
+
+    private fun reloadRequestBackup() {
+        clientRequestModelsBackup.clear()
+        clientRequestModelsBackup.addAll(clientRequestModels)
+    }
+
+    private fun enableFinder() {
+        find.setOnKeyReleased { keyEvent ->
+            resetFind()
+            populateFindings()
+        }
+    }
+
+    private fun populateFindings() {
+        val clientRequestModelsForSearch = clientRequestModels.copyToArray()
+        clientRequestModels.clear()
+        clientRequestModelsForSearch.forEach { savedRequest ->
+            if (found(savedRequest)) {
+                clientRequestModels.add(savedRequest)
+            }
+        }
+    }
+
+    private fun found(savedRequest: ClientRequestModel) =
+            savedRequest.name.toLowerCase().contains(find.getText().toLowerCase())
+
+
+    private fun resetFind() {
+        clientRequestModels.clear()
+        clientRequestModels.addAll(clientRequestModelsBackup)
     }
 
     private fun setShortcutForArrowKeySelection() {
@@ -364,6 +402,7 @@ private class Controller : Initializable {
 
 
         queryTable.getSelectionModel().select(0)
+        reloadRequestBackup()
     }
 
     private fun loadSavedRequests() {
@@ -487,6 +526,5 @@ private class Controller : Initializable {
         val requestDuration = Instant.now().minusMillis(startRequest.toEpochMilli()).toEpochMilli()
         responseStatus.setText("${response.getStatusInfo().getStatusCode()} ${response.getStatusInfo().getReasonPhrase()} in $requestDuration ms")
         responseStatus.setTooltip(Tooltip(response.getStatusInfo().getFamily().name()))
-
     }
 }
