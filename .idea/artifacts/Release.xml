@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact name="Release">
+    <output-path>$USER_HOME$/Google Drive/public/Epvin</output-path>
+    <root id="root">
+      <element id="file-copy" path="$PROJECT_DIR$/target/rest-client-1.0.1-RELEASE-jar-with-dependencies.jar" />
+    </root>
+  </artifact>
+</component>

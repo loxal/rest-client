@@ -356,6 +356,7 @@ private class Controller : Initializable {
     private fun cleanupPreviousResponse() {
         responseHeaders.clear()
         responseBody.clear()
+        responseStatus.setText("")
     }
 
     override fun initialize(url: URL?, resourceBundle: ResourceBundle?) {
@@ -374,7 +375,7 @@ private class Controller : Initializable {
     private fun saveRequest() {
         declareUrl()
 
-        val requestName = "${request.method}: ${request.url.getHost()}${request.url.getPath()}"
+        val requestName = "${request.url.getHost()}${request.url.getPath()} ${request.method}"
         val clientRequestModel = ClientRequestModel.Builder(requestName)
                 .method(request.method)
                 .url(request.url)
