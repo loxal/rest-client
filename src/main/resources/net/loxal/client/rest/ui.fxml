@@ -32,8 +32,8 @@
                 <String fx:value="test"/>
             </styleClass>
         </ComboBox>
-        <Button fx:id="requestPerformer" cancelButton="true" defaultButton="true" layoutX="853.0" layoutY="9.0"
-                mnemonicParsing="false" onAction="#doRequest" pickOnBounds="false" prefHeight="26.0" prefWidth="119.0"
+        <Button fx:id="requestPerformer" cancelButton="true" defaultButton="true" layoutX="793.0" layoutY="9.0"
+                mnemonicParsing="false" onAction="#doRequest" pickOnBounds="false" prefHeight="26.0" prefWidth="172.0"
                 text="Request"/>
         <RadioButton fx:id="getMethodRadio" layoutX="23.0" layoutY="58.0" mnemonicParsing="false" selected="true" styleClass="request-alt" text="GET" wrapText="true">
             <toggleGroup>
@@ -80,6 +80,6 @@
         </Label>
         <Label fx:id="responseStatus" layoutX="257.0" layoutY="571.0" prefHeight="16.0" prefWidth="245.0"
                wrapText="true"/>
-        <TextField fx:id="find" layoutX="974.0" layoutY="62.0" prefHeight="26.0" prefWidth="232.0" promptText="Find"/>
+        <TextField fx:id="find" layoutX="974.0" layoutY="62.0" prefHeight="26.0" prefWidth="292.0" promptText="Find"/>
     </children>
 </AnchorPane>
