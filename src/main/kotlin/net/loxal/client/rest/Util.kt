@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ */
+
 package net.loxal.client.rest
 
 import com.google.gson.JsonElement
