@@ -63,7 +63,7 @@
         <Text layoutX="3.0" layoutY="584.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Response Headers" />
         <TextArea fx:id="responseHeaders" layoutX="11.0" layoutY="593.0" prefHeight="197.0" prefWidth="467.0"
                   promptText="Location: https://api.example.com/entity/id"/>
-        <Label fx:id="notification" layoutX="89.0" layoutY="42.0" prefHeight="16.0" prefWidth="727.0" textFill="#dd6611"
+        <Label fx:id="notification" layoutX="89.0" layoutY="35.0" prefHeight="16.0" prefWidth="727.0" textFill="#dd6611"
                wrapText="true"/>
         <TextArea fx:id="requestParameterData" layoutX="489.0" layoutY="102.0" prefHeight="123.0" prefWidth="477.0" promptText="fristParameter=firstValue&amp;&#10;secondParameter=secondValue&#10;&amp;3Parameter=3Value" styleClass="request" />
         <RadioButton fx:id="deleteMethodRadio" layoutX="212.0" layoutY="58.0" mnemonicParsing="false"

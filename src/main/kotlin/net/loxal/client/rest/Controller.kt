@@ -236,12 +236,10 @@ private class Controller : Initializable {
                     .method((requestMethod.getSelectedToggle() as RadioButton).getText())
                     .url(URL(urlValue))
                     .build()
-
-            notification.setText("")
         } catch (e: MalformedURLException) {
             val invalidUrlMessage = "Invalid URL: ${e.getMessage()}"
-            notification.setText(invalidUrlMessage)
             App.LOG.info(invalidUrlMessage)
+            notification.setText(invalidUrlMessage)
         }
 
         requestParameterData.setText(request.url.getQuery())
@@ -356,6 +354,7 @@ private class Controller : Initializable {
         responseHeaders.clear()
         responseBody.clear()
         responseStatus.setText("")
+        notification.setText("")
     }
 
     override fun initialize(url: URL?, resourceBundle: ResourceBundle?) {
