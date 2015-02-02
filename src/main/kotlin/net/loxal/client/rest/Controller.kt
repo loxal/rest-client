@@ -8,7 +8,6 @@ import javafx.fxml.Initializable
 import java.io.File
 import javafx.collections.ObservableList
 import net.loxal.client.rest.model.ClientRequestModel
-import javafx.scene.control.ComboBox
 import javafx.scene.control.TextArea
 import javafx.scene.control.Label
 import javafx.scene.control.Button
@@ -58,7 +57,7 @@ private class Controller : Initializable {
     FXML
     private var find: TextField = TextField()
     FXML
-    private var requestUrlChoice: ComboBox<String> = ComboBox()
+    private var requestUrlChoice: TextField = TextField(App.SAMPLE_URL)
     FXML
     private var requestHeaderData: TextArea = TextArea("")
     FXML
@@ -227,10 +226,10 @@ private class Controller : Initializable {
 
     FXML
     private fun declareUrl() {
-        val urlValue: String = if (requestUrlChoice.getValue() == null)
+        val urlValue: String = if (requestUrlChoice.getText() == null)
             requestUrlChoice.getPromptText()
         else
-            requestUrlChoice.getValue()
+            requestUrlChoice.getText()
 
         try {
             request = ClientRequestModel.Builder("[Current Request]")
@@ -365,9 +364,6 @@ private class Controller : Initializable {
     }
 
     private fun initializeRequestUrlChoice() {
-        requestUrlChoice.getItems().add(App.SAMPLE_URL)
-        requestUrlChoice.getSelectionModel().select(0)
-
         declareUrl()
     }
 
@@ -492,8 +488,7 @@ private class Controller : Initializable {
     }
 
     private fun setNewTarget() {
-        requestUrlChoice.getItems().clear()
-        requestUrlChoice.getItems().add(request.url.toString())
+        requestUrlChoice.clear()
         initializeRequestUrlChoice()
     }
 
