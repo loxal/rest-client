@@ -497,7 +497,7 @@ private class Controller : Initializable {
         initializeRequestUrlChoice()
     }
 
-    fun doHeadRequest() {
+    private fun doHeadRequest() {
         try {
             val response = prepareRequest().head()
 
@@ -510,7 +510,7 @@ private class Controller : Initializable {
         }
     }
 
-    fun doOptionsRequest() {
+    private fun doOptionsRequest() {
         try {
             val response = prepareRequest().options()
 
