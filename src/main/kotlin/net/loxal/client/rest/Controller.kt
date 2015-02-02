@@ -30,7 +30,6 @@ import javafx.collections.FXCollections
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyCodeCombination
-import org.apache.commons.lang3.StringUtils
 import javax.ws.rs.HttpMethod
 import javax.ws.rs.client.ClientBuilder
 import org.glassfish.jersey.client.ClientProperties
@@ -269,7 +268,7 @@ private class Controller : Initializable {
 
     private fun declareRequestBody(): String {
         val reqBody = requestBody.getText()
-        if (StringUtils.EMPTY == reqBody) {
+        if ("".equals(reqBody)) {
             return requestBody.getPromptText()
         } else {
             return requestBody.getText()
@@ -341,8 +340,8 @@ private class Controller : Initializable {
     private fun declareRequestParameters(): String {
         val requestParameterContent: String
 
-        if (StringUtils.EMPTY == requestParameterData.getText() || null == requestParameterData.getText()) {
-            requestParameterContent = StringUtils.EMPTY
+        if ("".equals(requestParameterData.getText()) || null == requestParameterData.getText()) {
+            requestParameterContent = ""
         } else {
             requestParameterContent = requestParameterData.getText()
         }
