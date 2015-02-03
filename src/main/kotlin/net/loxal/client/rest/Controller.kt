@@ -18,8 +18,6 @@ import javafx.scene.control.TableColumn
 import javafx.fxml.FXML
 import javafx.scene.control.ToggleGroup
 import javax.ws.rs.client.Invocation
-import javax.ws.rs.client.WebTarget
-import net.loxal.client.rest.model.RequestParameter
 import java.net.MalformedURLException
 import javax.ws.rs.ProcessingException
 import net.loxal.client.rest.model.Header
@@ -206,21 +204,11 @@ private class Controller : Initializable {
 
         client.property(ClientProperties.CONNECT_TIMEOUT, 2000)
         client.property(ClientProperties.READ_TIMEOUT, 2000)
-        val target = applyUrlRequestParameters(client.target(request.url.toString()),
+        val target = Util.applyUrlRequestParameters(client.target(request.url.toString()),
                 Util.extractRequestParameters(declareRequestParameters()))
         val request = target.request(MediaType.APPLICATION_JSON_TYPE)
 
-        return applyHeaderInfo(Util.extractHeaderData(requestHeaderData.getText()), request)
-    }
-
-    private fun applyUrlRequestParameters(webTarget: WebTarget, requestParameters: List<RequestParameter>): WebTarget {
-        var target = webTarget
-
-        requestParameters.forEach { requestParameter ->
-            target = target.queryParam(requestParameter.paramName, requestParameter.paramValue)
-        }
-
-        return target
+        return Util.applyHeaderInfo(Util.extractHeaderData(requestHeaderData.getText()), request)
     }
 
     FXML
@@ -331,16 +319,10 @@ private class Controller : Initializable {
 
     }
 
-    private fun applyHeaderInfo(headers: Set<Header>, request: Invocation.Builder): Invocation.Builder {
-        headers.forEach { header -> request.header(header.name, header.value) }
-
-        return request
-    }
-
     private fun declareRequestParameters(): String {
         val requestParameterContent: String
 
-        if ("".equals(requestParameterData.getText()) || null == requestParameterData.getText()) {
+        if ("".equals(requestParameterData.getText()) || null === requestParameterData.getText()) {
             requestParameterContent = ""
         } else {
             requestParameterContent = requestParameterData.getText()
@@ -357,12 +339,8 @@ private class Controller : Initializable {
     }
 
     override fun initialize(url: URL?, resourceBundle: ResourceBundle?) {
-        initializeRequestUrlChoice()
-        loadSavedRequests()
-    }
-
-    private fun initializeRequestUrlChoice() {
         declareUrl()
+        loadSavedRequests()
     }
 
     FXML
@@ -487,7 +465,7 @@ private class Controller : Initializable {
 
     private fun setNewTarget() {
         requestUrlChoice.clear()
-        initializeRequestUrlChoice()
+        declareUrl()
     }
 
     private fun doHeadRequest() {

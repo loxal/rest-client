@@ -19,6 +19,8 @@ import java.io.IOException
 import javafx.scene.control.Control
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.control.Tooltip
+import javax.ws.rs.client.WebTarget
+import javax.ws.rs.client.Invocation
 
 final class Util {
     class object {
@@ -97,6 +99,22 @@ final class Util {
                 return json
             }
             return GsonBuilder().setPrettyPrinting().create().toJson(jsonElement)
+        }
+
+        final fun applyHeaderInfo(headers: Set<Header>, request: Invocation.Builder): Invocation.Builder {
+            headers.forEach { header -> request.header(header.name, header.value) }
+
+            return request
+        }
+
+        final fun applyUrlRequestParameters(webTarget: WebTarget, requestParameters: List<RequestParameter>): WebTarget {
+            var target = webTarget
+
+            requestParameters.forEach { requestParameter ->
+                target = target.queryParam(requestParameter.paramName, requestParameter.paramValue)
+            }
+
+            return target
         }
     }
 }
