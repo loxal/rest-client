@@ -92,11 +92,11 @@ private class Controller : Initializable {
     FXML
     private var requestSaver: Button = Button()
     FXML
-    private private var requestBody: TextArea = TextArea()
+    private var requestBody: TextArea = TextArea()
     FXML
-    private private var responseBody: TextArea = TextArea()
+    private var responseBody: TextArea = TextArea()
     FXML
-    private private var requestMethod: ToggleGroup = ToggleGroup()
+    private var requestMethod: ToggleGroup = ToggleGroup()
 
     private var request: ClientRequestModel = ClientRequestModel.Builder("[Init Request]").build()
     private var startRequest: Instant = Instant.now()
