@@ -54,7 +54,7 @@ private class Controller : Initializable {
     FXML
     private var find: TextField = TextField()
     FXML
-    private var requestUrlChoice: TextField = TextField(App.SAMPLE_URL)
+    private var endpointUrl: TextField = TextField(App.SAMPLE_URL)
     FXML
     private var requestHeaderData: TextArea = TextArea("")
     FXML
@@ -102,7 +102,7 @@ private class Controller : Initializable {
     private var startRequest: Instant = Instant.now()
 
     fun setAccelerators() {
-        Util.assignShortcut(requestUrlChoice, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN), Runnable { requestUrlChoice.requestFocus() })
+        Util.assignShortcut(endpointUrl, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN), Runnable { endpointUrl.requestFocus() })
         Util.assignShortcut(clearButton, KeyCodeCombination(KeyCode.K, KeyCombination.SHORTCUT_DOWN), Runnable { clearButton.fire() })
         Util.assignShortcut(requestPerformer, KeyCodeCombination(KeyCode.ENTER, KeyCombination.SHORTCUT_DOWN), Runnable { requestPerformer.fire() })
         Util.assignShortcut(getMethodRadio, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { getMethodRadio.fire() })
@@ -168,7 +168,7 @@ private class Controller : Initializable {
 
     FXML
     private fun doRequest() {
-        declareUrl()
+        declareEndpoint()
 
         cleanupPreviousResponse()
         startRequest = Instant.now()
@@ -212,27 +212,30 @@ private class Controller : Initializable {
     }
 
     FXML
-    private fun declareUrl() {
-        val urlValue: String = if (requestUrlChoice.getText() == null)
-            requestUrlChoice.getPromptText()
-        else
-            requestUrlChoice.getText()
+    private fun declareEndpoint() {
+        if (endpointUrl.getText() == null || endpointUrl.getText().isEmpty()) {
+            showNotification("Endpoint URL required")
+        }
 
         try {
+            val targetUrl: URL = URL(endpointUrl.getText())
             request = ClientRequestModel.Builder("[Current Request]")
                     .method((requestMethod.getSelectedToggle() as RadioButton).getText())
-                    .url(URL(urlValue))
+                    .url(targetUrl)
                     .build()
         } catch (e: MalformedURLException) {
-            val invalidUrlMessage = "Invalid URL: ${e.getMessage()}"
-            App.LOG.info(invalidUrlMessage)
-            notification.setText(invalidUrlMessage)
+            showNotification("Invalid endpoint URL: ${e.getMessage()}")
         }
 
         requestParameterData.setText(request.url.getQuery())
 
         requestParameterData.fireEvent(ActionEvent())
-        requestUrlChoice.fireEvent(ActionEvent())
+        endpointUrl.fireEvent(ActionEvent())
+    }
+
+    private fun showNotification(message: String) {
+        App.LOG.info(message)
+        notification.setText(message)
     }
 
     private fun doPostRequest() {
@@ -339,14 +342,13 @@ private class Controller : Initializable {
     }
 
     override fun initialize(url: URL?, resourceBundle: ResourceBundle?) {
-        declareUrl()
+        declareEndpoint()
         loadSavedRequests()
     }
 
     FXML
     private fun saveRequest() {
-        declareUrl()
-
+        declareEndpoint()
         val requestName = "${request.url.getHost()}${request.url.getPath()} ${request.method}"
         val clientRequestModel = ClientRequestModel.Builder(requestName)
                 .method(request.method)
@@ -447,8 +449,7 @@ private class Controller : Initializable {
             requestHeaderData.setText(request.headers)
             requestParameterData.setText(request.url.getQuery())
             requestBody.setText(request.body)
-
-            setNewTarget()
+            endpointUrl.setText(request.url.toString())
         }
     }
 
@@ -461,11 +462,6 @@ private class Controller : Initializable {
             HttpMethod.HEAD -> requestMethod.selectToggle(headMethodRadio)
             HttpMethod.OPTIONS -> requestMethod.selectToggle(optionsMethodRadio)
         }
-    }
-
-    private fun setNewTarget() {
-        requestUrlChoice.clear()
-        declareUrl()
     }
 
     private fun doHeadRequest() {
@@ -494,7 +490,7 @@ private class Controller : Initializable {
         }
     }
 
-    fun showStatus(response: Response) {
+    private fun showStatus(response: Response) {
         val requestDuration = Instant.now().minusMillis(startRequest.toEpochMilli()).toEpochMilli()
         responseStatus.setText("${response.getStatusInfo().getStatusCode()} ${response.getStatusInfo().getReasonPhrase()} in $requestDuration ms")
         responseStatus.setTooltip(Tooltip(response.getStatusInfo().getFamily().name()))
