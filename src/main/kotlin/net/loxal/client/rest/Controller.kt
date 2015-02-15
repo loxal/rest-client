@@ -47,6 +47,7 @@ import java.time.Instant
 import javafx.scene.control.TextField
 
 private class Controller : Initializable {
+    private var validEndpoint: Boolean = false
     private val files: ObservableList<File> = FXCollections.observableArrayList<File>()
     private val clientRequestModels = FXCollections.observableArrayList<ClientRequestModel>()
     private val clientRequestModelsBackup = FXCollections.observableArrayList<ClientRequestModel>()
@@ -170,15 +171,17 @@ private class Controller : Initializable {
     private fun doRequest() {
         declareEndpoint()
 
-        cleanupPreviousResponse()
-        startRequest = Instant.now()
-        when (request.method) {
-            HttpMethod.GET -> doGetRequest()
-            HttpMethod.POST -> doPostRequest()
-            HttpMethod.PUT -> doPutRequest()
-            HttpMethod.DELETE -> doDeleteRequest()
-            HttpMethod.HEAD -> doHeadRequest()
-            HttpMethod.OPTIONS -> doOptionsRequest()
+        if (validEndpoint) {
+            cleanupPreviousResponse()
+            startRequest = Instant.now()
+            when (request.method) {
+                HttpMethod.GET -> doGetRequest()
+                HttpMethod.POST -> doPostRequest()
+                HttpMethod.PUT -> doPutRequest()
+                HttpMethod.DELETE -> doDeleteRequest()
+                HttpMethod.HEAD -> doHeadRequest()
+                HttpMethod.OPTIONS -> doOptionsRequest()
+            }
         }
     }
 
@@ -213,8 +216,10 @@ private class Controller : Initializable {
 
     FXML
     private fun declareEndpoint() {
-        if (endpointUrl.getText() == null || endpointUrl.getText().isEmpty()) {
+        if (endpointUrl.getText().isEmpty()) {
             showNotification("Endpoint URL required")
+            validEndpoint = false
+            return
         }
 
         try {
@@ -225,12 +230,15 @@ private class Controller : Initializable {
                     .build()
         } catch (e: MalformedURLException) {
             showNotification("Invalid endpoint URL: ${e.getMessage()}")
+            validEndpoint = false
+            return
         }
 
         requestParameterData.setText(request.url.getQuery())
 
         requestParameterData.fireEvent(ActionEvent())
         endpointUrl.fireEvent(ActionEvent())
+        validEndpoint = true
     }
 
     private fun showNotification(message: String) {
