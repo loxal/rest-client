@@ -203,10 +203,6 @@ private class Controller : Initializable {
     }
 
     private fun prepareRequest(): Invocation.Builder {
-        val client = ClientBuilder.newClient()
-
-        client.property(ClientProperties.CONNECT_TIMEOUT, 2000)
-        client.property(ClientProperties.READ_TIMEOUT, 2000)
         val target = Util.applyUrlRequestParameters(client.target(request.url.toString()),
                 Util.extractRequestParameters(declareRequestParameters()))
         val request = target.request(MediaType.APPLICATION_JSON_TYPE)
@@ -502,5 +498,14 @@ private class Controller : Initializable {
         val requestDuration = Instant.now().minusMillis(startRequest.toEpochMilli()).toEpochMilli()
         responseStatus.setText("${response.getStatusInfo().getStatusCode()} ${response.getStatusInfo().getReasonPhrase()} in $requestDuration ms")
         responseStatus.setTooltip(Tooltip(response.getStatusInfo().getFamily().name()))
+    }
+
+    {
+        client.property(ClientProperties.CONNECT_TIMEOUT, 500)
+        client.property(ClientProperties.READ_TIMEOUT, 4000)
+    }
+
+    class object {
+        private val client = ClientBuilder.newClient()
     }
 }
