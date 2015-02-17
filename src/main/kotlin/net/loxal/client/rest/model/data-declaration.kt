@@ -17,16 +17,25 @@ data class Header(val name: String, val value: List<Any>) {
 
 data class RequestParameter(val paramName: String, val paramValue: Any)
 
+data class RestCode private() {
+    val method: String = HttpMethod.GET
+    val url: URL = App.SAMPLE_URL
+    val headers: List<Map<String, List<Any>>> = emptyList()
+    val body: Map<String, Any> = emptyMap()
+    val name: String = "Unnamed"
+}
+
 data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializable {
     val method: String = builder.method
     val url: URL = builder.url
+    // TODO lookup the true type of headers => MultiValueMap<String, List<String>>)?
     val headers: String = builder.headers
     val body: String = builder.body
     var name: String = builder.name
 
     public class Builder(val name: String) {
         var method: String = HttpMethod.GET
-        var url: URL = URL(App.SAMPLE_URL)
+        var url: URL = App.SAMPLE_URL
         var headers: String = ""
         var body: String = ""
 

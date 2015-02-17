@@ -13,6 +13,7 @@ import javafx.stage.Stage
 
 import java.io.IOException
 import java.util.logging.Logger
+import java.net.URL
 
 class App : Application() {
 
@@ -41,7 +42,7 @@ class App : Application() {
 
     class object {
         val LOG = Logger.getGlobal()
-        val SAMPLE_URL = "https://example.com"
+        val SAMPLE_URL = URL("https://example.com")
         val SAVE_AS = "Save request as:"
 
         val APP_HOME_DIRECTORY = if (System.getenv("HOME") == null) {

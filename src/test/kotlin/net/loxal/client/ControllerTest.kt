@@ -13,7 +13,7 @@ import org.junit.BeforeClass
 import org.junit.Test
 import kotlin.test.assertEquals
 
-public class ControllerTest {
+class ControllerTest {
     Before
     public fun setUp() {
     }

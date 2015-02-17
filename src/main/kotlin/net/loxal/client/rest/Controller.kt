@@ -55,7 +55,7 @@ private class Controller : Initializable {
     FXML
     private var find: TextField = TextField()
     FXML
-    private var endpointUrl: TextField = TextField(App.SAMPLE_URL)
+    private var endpointUrl: TextField = TextField(App.SAMPLE_URL.toString())
     FXML
     private var requestHeaderData: TextArea = TextArea("")
     FXML
