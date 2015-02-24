@@ -45,6 +45,8 @@ import javafx.scene.control.Tooltip
 import javafx.event.ActionEvent
 import java.time.Instant
 import javafx.scene.control.TextField
+import java.io.InvalidClassException
+import java.io.WriteAbortedException
 
 private class Controller : Initializable {
     private var validEndpoint: Boolean = false
@@ -357,8 +359,8 @@ private class Controller : Initializable {
         val clientRequestModel = ClientRequestModel.Builder(requestName)
                 .method(request.method)
                 .url(request.url)
-                .body(requestBody.getText())
-                .headers(requestHeaderData.getText())
+                .body(ClientRequestModel.bodyFromText(requestBody.getText()))// TODO unit test
+                .headers(ClientRequestModel.headersFromText(requestHeaderData.getText())) // TODO unit test
                 .build()
 
         val fullFilePath = App.APP_HOME_DIRECTORY + "/" + UUID.randomUUID() + "-save.serialized"
@@ -395,8 +397,16 @@ private class Controller : Initializable {
             files.add(file)
             FileInputStream(file).use { fileInputStream ->
                 ObjectInputStream(fileInputStream).use { objectInputStream ->
-                    val clientRequestModel: ClientRequestModel = objectInputStream.readObject() as ClientRequestModel
-                    clientRequestModels.add(clientRequestModel)
+                    try {
+                        val clientRequestModel: ClientRequestModel = objectInputStream.readObject() as ClientRequestModel
+                        clientRequestModels.add(clientRequestModel)
+                    } catch(e: ClassCastException) {
+                        App.LOG.severe("$e")
+                    } catch(e: InvalidClassException) {
+                        App.LOG.severe("$e")
+                    } catch(e: WriteAbortedException) {
+                        App.LOG.severe("$e")
+                    }
                 }
             }
         }
@@ -450,9 +460,11 @@ private class Controller : Initializable {
             request = selectedRequest
 
             setMethodInUi(request.method)
-            requestHeaderData.setText(request.headers)
+            // TODO request.headers.toString() might be not enough, a stringify method might be required
+            requestHeaderData.setText(request.headers.toString())
             requestParameterData.setText(request.url.getQuery())
-            requestBody.setText(request.body)
+            // TODO request.body.toString() might be not enough, a stringify method might be required
+            requestBody.setText(request.body.toString())
             endpointUrl.setText(request.url.toString())
         }
     }
