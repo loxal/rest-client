@@ -21,18 +21,18 @@
         <element id="library" level="project" name="Maven: javax.annotation:javax.annotation-api:1.2" />
         <element id="library" level="project" name="Maven: javax.ws.rs:javax.ws.rs-api:2.0.1" />
         <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.3.2" />
-        <element id="library" level="project" name="Maven: org.glassfish.hk2.external:aopalliance-repackaged:2.4.0-b06" />
-        <element id="library" level="project" name="Maven: org.glassfish.hk2.external:javax.inject:2.4.0-b06" />
-        <element id="library" level="project" name="Maven: org.glassfish.hk2:hk2-api:2.4.0-b06" />
-        <element id="library" level="project" name="Maven: org.glassfish.hk2:hk2-locator:2.4.0-b06" />
-        <element id="library" level="project" name="Maven: org.glassfish.hk2:hk2-utils:2.4.0-b06" />
         <element id="library" level="project" name="Maven: org.glassfish.hk2:osgi-resource-locator:1.0.1" />
         <element id="library" level="project" name="Maven: org.javassist:javassist:3.18.1-GA" />
         <element id="library" level="project" name="Maven: org.jetbrains.kotlin:kotlin-runtime:0.10.770" />
         <element id="library" level="project" name="Maven: org.jetbrains.kotlin:kotlin-stdlib:0.10.770" />
-        <element id="library" level="project" name="Maven: org.glassfish.jersey.core:jersey-client:2.15" />
-        <element id="library" level="project" name="Maven: org.glassfish.jersey.core:jersey-common:2.15" />
-        <element id="library" level="project" name="Maven: org.glassfish.jersey.bundles.repackaged:jersey-guava:2.15" />
+        <element id="library" level="project" name="Maven: org.glassfish.jersey.core:jersey-client:2.16" />
+        <element id="library" level="project" name="Maven: org.glassfish.jersey.core:jersey-common:2.16" />
+        <element id="library" level="project" name="Maven: org.glassfish.jersey.bundles.repackaged:jersey-guava:2.16" />
+        <element id="library" level="project" name="Maven: org.glassfish.hk2:hk2-api:2.4.0-b09" />
+        <element id="library" level="project" name="Maven: org.glassfish.hk2:hk2-utils:2.4.0-b09" />
+        <element id="library" level="project" name="Maven: org.glassfish.hk2.external:aopalliance-repackaged:2.4.0-b09" />
+        <element id="library" level="project" name="Maven: org.glassfish.hk2.external:javax.inject:2.4.0-b09" />
+        <element id="library" level="project" name="Maven: org.glassfish.hk2:hk2-locator:2.4.0-b09" />
       </element>
     </root>
   </artifact>

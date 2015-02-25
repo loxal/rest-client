@@ -59,7 +59,7 @@ private class Controller : Initializable {
     FXML
     private var endpointUrl: TextField = TextField(App.SAMPLE_URL.toString())
     FXML
-    private var requestHeaderData: TextArea = TextArea("")
+    private var requestHeaderData: TextArea = TextArea()
     FXML
     private var responseHeaders: TextArea = TextArea()
     FXML
@@ -370,7 +370,6 @@ private class Controller : Initializable {
             FileOutputStream(fullFilePath).use { fileOutputStream ->
                 ObjectOutputStream(fileOutputStream).use { objectOutputStream ->
                     Util.createSaveFile(fullFilePath)
-
                     objectOutputStream.writeObject(clientRequestModel)
                     App.LOG.info("${App.SAVE_AS} ${clientRequestModel.name}")
 

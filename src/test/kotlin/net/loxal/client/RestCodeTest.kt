@@ -14,6 +14,9 @@ import javax.ws.rs.HttpMethod
 import net.loxal.client.rest.RestCodeUtil
 
 class RestCodeTest {
+    /**
+     * TODO This test might be superfluous as #parseRestCode is called in #mapToClientRequest.
+     */
     Test
     fun mapRestCode() {
         val restCode: RestCode = RestCodeUtil.parseRestCode(url)
@@ -39,6 +42,12 @@ class RestCodeTest {
         assertEquals(method, clientRequest.method)
         assertEquals(name, clientRequest.name)
         assertEquals(endPointUrl, clientRequest.url.toString())
+    }
+
+    Test
+    fun bodyFromText() {
+        assertEquals("{}", ClientRequestModel.bodyFromText("{}"))
+        assertEquals("[]", ClientRequestModel.bodyFromText("[]"))
     }
 
     class object {

@@ -9,6 +9,8 @@ import javax.ws.rs.HttpMethod
 import java.net.URL
 import net.loxal.client.rest.App
 import com.fasterxml.jackson.databind.ObjectMapper
+import java.util.Collections
+import com.fasterxml.jackson.databind.JsonMappingException
 
 data class Header(val name: String, val value: List<Any>) {
     override public fun toString(): String {
@@ -66,29 +68,38 @@ data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializabl
     }
 
     class object {
-        val serialVersionUID = 5979696652154735184
+        private val serialVersionUID = 5979696652154735184
+        private val headerKeyValueSeparator = ":"
 
         // TODO unit test this
         fun headersFromText(text: String): List<Map<String, List<Any>>> {
-            val headersFromText: List<Map<String, List<Any>>> = emptyList()
+            val headersFromText: List<Map<String, List<Any>>> = Collections.emptyList()
             if (!text.isEmpty()) {
                 text.split("\n").forEach { e ->
-                    val (key, value) = e.split(":")
-                    headersFromText.plus(mapOf(Pair(key, value)))
+                    if (e.contains(headerKeyValueSeparator)) {
+                        val (key, value) = e.split(headerKeyValueSeparator)
+                        headersFromText.plus(mapOf(Pair(key, value)))
+                    }
                 }
             }
 
             return headersFromText
         }
 
+        private val mapper = ObjectMapper()
         // TODO body can stay text/string?!
         // TODO uni test this
         fun bodyFromText(text: String): Map<String, Any> {
             if (text.isEmpty())
-                return emptyMap()
+                return Collections.emptyMap()
             else {
-                val mapper: ObjectMapper = ObjectMapper()
-                val bodyFromText: Map<String, Any> = mapper.readValue(text, javaClass<Map<String, Any>>())
+                val bodyFromText: Map<String, Any>
+                try {
+                    bodyFromText = mapper.readValue(text, javaClass<Map<String, Any>>())
+                } catch(e: JsonMappingException) {
+                    App.LOG.warning(e.getMessage())
+                    return Collections.emptyMap()
+                }
 
                 return bodyFromText
             }
