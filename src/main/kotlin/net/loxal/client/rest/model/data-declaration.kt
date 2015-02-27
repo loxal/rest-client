@@ -11,9 +11,7 @@ import net.loxal.client.rest.App
 import java.util.Collections
 
 data class Header(val name: String, val value: List<Any>) {
-    override public fun toString(): String {
-        return "$name: ${value.joinToString(separator = "###")}"
-    }
+    override public fun toString(): String = "$name: ${value.joinToString(separator = "###")}"
 }
 
 data class RequestParameter(val paramName: String, val paramValue: Any)
@@ -58,9 +56,7 @@ data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializabl
             return this
         }
 
-        public fun build(): ClientRequestModel {
-            return ClientRequestModel(this)
-        }
+        public fun build(): ClientRequestModel = ClientRequestModel(this)
     }
 
     class object {
