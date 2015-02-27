@@ -10,9 +10,7 @@ import com.google.gson.JsonSyntaxException
 import com.google.gson.GsonBuilder
 import net.loxal.client.rest.model.RequestParameter
 import java.util.ArrayList
-import org.apache.commons.lang3.StringUtils
 import net.loxal.client.rest.model.Header
-import java.util.HashSet
 import java.io.File
 import java.lang
 import java.io.IOException
@@ -21,6 +19,7 @@ import javafx.scene.input.KeyCodeCombination
 import javafx.scene.control.Tooltip
 import javax.ws.rs.client.WebTarget
 import javax.ws.rs.client.Invocation
+import net.loxal.client.rest.model.ClientRequestModel
 
 final class Util {
     class object {
@@ -55,16 +54,15 @@ final class Util {
             }
         }
 
-        final fun extractHeaderData(rawHeaderData: String): Set<Header> {
-            val headerNameIdx = 0
-            val headerValueIdx = 1
-            val headers = HashSet<Header>()
-
+        final fun extractHeaderData(rawHeaderData: String): List<Header> {
+            fun containsHeaderDeclaration(headerDataPair: List<String>): Boolean = headerDataPair.size() > 1
+            val headers = ArrayList<Header>()
             if (!rawHeaderData.isEmpty()) {
-                for (rawHeaderLine in rawHeaderData.split("\\n")) {
-                    val headerDataPair = rawHeaderLine.split(":\\s")
-                    val header = Header(headerDataPair[headerNameIdx], listOf(headerDataPair[headerValueIdx]))
-                    headers.add(header)
+                rawHeaderData.split(ClientRequestModel.lineBreak).forEach { header ->
+                    if (header.contains(ClientRequestModel.headerKeyValueSeparator)) {
+                        val (headerName, headerValue) = header.split(ClientRequestModel.headerKeyValueSeparator)
+                        headers.plus(mapOf(Pair(headerName, headerValue)))
+                    }
                 }
             }
 
@@ -74,8 +72,8 @@ final class Util {
         final fun extractRequestParameters(requestParameterContent: String): List<RequestParameter> {
             val requestParameters = ArrayList<RequestParameter>()
 
-            if (StringUtils.EMPTY != requestParameterContent) {
-                val parameterPairSeparatorRegex = "&\n|&"
+            if (!requestParameterContent.isEmpty()) {
+                val parameterPairSeparatorRegex = "&${ClientRequestModel.lineBreak}|&"
                 val parameterPairs = requestParameterContent.split(parameterPairSeparatorRegex)
                 val parameterPairEntrySeparatorRegex = "="
                 parameterPairs.forEach { parameterPair ->
@@ -101,7 +99,7 @@ final class Util {
             return GsonBuilder().setPrettyPrinting().create().toJson(jsonElement)
         }
 
-        final fun applyHeaderInfo(headers: Set<Header>, request: Invocation.Builder): Invocation.Builder {
+        final fun applyHeaderInfo(headers: List<Header>, request: Invocation.Builder): Invocation.Builder {
             headers.forEach { header -> request.header(header.name, header.value) }
 
             return request

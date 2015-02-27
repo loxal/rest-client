@@ -253,7 +253,7 @@ private class Controller : Initializable {
             val stringHeaders = response.getHeaders()
 
             for (header in stringHeaders.entrySet()) {
-                responseHeaders.appendText(header.getKey() + ": " + header.getValue() + "\n")
+                responseHeaders.appendText(header.getKey() + ": " + header.getValue() + ClientRequestModel.lineBreak)
             }
         } else {
             responseBody.appendText(response.getStatusInfo().getReasonPhrase())
@@ -290,7 +290,7 @@ private class Controller : Initializable {
 
     private fun showResponseHeaders(getResponse: Response) {
         getResponse.getHeaders().forEach { header ->
-            responseHeaders.appendText("${Header(header.getKey(), header.getValue())} \n")
+            responseHeaders.appendText("${Header(header.getKey(), header.getValue())} ${ClientRequestModel.lineBreak}")
         }
     }
 
@@ -359,7 +359,7 @@ private class Controller : Initializable {
         val clientRequestModel = ClientRequestModel.Builder(requestName)
                 .method(request.method)
                 .url(request.url)
-                .body(ClientRequestModel.bodyFromText(requestBody.getText()))// TODO unit test
+                .body(requestBody.getText())// TODO unit test
                 .headers(ClientRequestModel.headersFromText(requestHeaderData.getText())) // TODO unit test
                 .build()
 
@@ -462,8 +462,7 @@ private class Controller : Initializable {
             // TODO request.headers.toString() might be not enough, a stringify method might be required
             requestHeaderData.setText(request.headers.toString())
             requestParameterData.setText(request.url.getQuery())
-            // TODO request.body.toString() might be not enough, a stringify method might be required
-            requestBody.setText(request.body.toString())
+            requestBody.setText(request.body)
             endpointUrl.setText(request.url.toString())
         }
     }

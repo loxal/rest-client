@@ -27,7 +27,7 @@ class RestCodeTest {
         assertEquals(method, restCode.method)
         assertEquals(name, restCode.name)
         assertEquals(headers, restCode.headers)
-        assertEquals(body, restCode.body)
+        assertEquals(bodyJson, restCode.body)
     }
 
     Test
@@ -38,16 +38,10 @@ class RestCodeTest {
 
     private fun validateClientRequest(clientRequest: ClientRequestModel) {
         assertEquals(headers, clientRequest.headers)
-        assertEquals(body, clientRequest.body)
+        assertEquals(bodyJson, clientRequest.body)
         assertEquals(method, clientRequest.method)
         assertEquals(name, clientRequest.name)
         assertEquals(endPointUrl, clientRequest.url.toString())
-    }
-
-    Test
-    fun bodyFromText() {
-        assertEquals("{}", ClientRequestModel.bodyFromText("{}"))
-        assertEquals("[]", ClientRequestModel.bodyFromText("[]"))
     }
 
     class object {
@@ -55,18 +49,16 @@ class RestCodeTest {
 
         private val method: String = HttpMethod.POST
         private val name: String = "Test Example"
-
         private val endPointUrl: String = "https://example.com:440/endpoint/"
 
-        private val bodyJson: String = "{\"key\": \"value\", \"key1\": \"value\", \"key2\": [\"value\", 42.24, false], \"key3\": {\"key3.1\": true}}"
-        private val body: Map<String, Any> = mapper.readValue(bodyJson, javaClass<Map<String, Any>>())
+        private val bodyJson: String = "{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}"
 
         private val headersJson: String = "[{\"header\": [\"value\", \"value1\", 42.0, true]}, {\"header1\": [\"0\", 1, false, \"false\"]}, {}, {\"header2\": []}, {\"header3\": [\"value3\"]}]"
         private val headers: List<Map<String, List<Any>>> = mapper.readValue(headersJson, javaClass<List<Map<String, List<Any>>>>())
 
         private val restCodeUrl: String = "$endPointUrl#${RestCodeUtil.restCodeToken}{" +
                 "\"headers\": ${headersJson}," +
-                "\"body\": ${bodyJson}," +
+                "\"body\": \"${bodyJson}\"," +
                 "\"method\": \"${HttpMethod.POST}\"," +
                 "\"name\": \"$name\"" +
                 "}"
