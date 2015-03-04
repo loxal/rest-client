@@ -295,7 +295,7 @@ private class Controller : Initializable {
 
     private fun showResponseHeaders(getResponse: Response) {
         getResponse.getHeaders().forEach { header ->
-            responseHeaders.appendText("${Header(header.getKey(), header.getValue())} ${ClientRequestModel.lineBreak}")
+            responseHeaders.appendText("${Header.new(header.getKey(), header.getValue())} ${ClientRequestModel.lineBreak}")
         }
     }
 

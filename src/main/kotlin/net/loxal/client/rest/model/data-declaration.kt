@@ -9,16 +9,29 @@ import javax.ws.rs.HttpMethod
 import java.net.URL
 import net.loxal.client.rest.App
 import java.util.Collections
+import javax.ws.rs.core.MultivaluedHashMap
 
-data class Header(val name: String, val value: List<Any>) {
+data class Header private() : MultivaluedHashMap<String, Any>() {
+    var name: String = ""
+    val value: List<Any> = emptyList()
+
     override public fun toString(): String = "$name: ${value.joinToString(separator = "###")}"
+    class object {
+        fun new(name: String, value: List<Any>): Header {
+            val h: Header = Header()
+            h.name = name
+            value.plus(value)
+
+            return h
+        }
+    }
 }
 
 data class RequestParameter(val paramName: String, val paramValue: Any)
 
 data class RestCode private() {
     val method: String = HttpMethod.GET
-    val headers: Map<String, List<Any>> = emptyMap()
+    val headers: List<Header> = emptyList()
     val body: String = ""
     val name: String = "Unnamed"
 }
@@ -26,15 +39,14 @@ data class RestCode private() {
 data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializable {
     val method: String = builder.method
     val url: URL = builder.url
-    // TODO make Map<String, List<Any>> to List<Header>
-    val headers: Map<String, List<Any>> = builder.headers
+    val headers: List<Header> = builder.headers
     val body: String = builder.body
     var name: String = builder.name
 
     public class Builder(val name: String) {
         var method: String = HttpMethod.GET
         var url: URL = App.SAMPLE_URL
-        var headers: Map<String, List<Any>> = emptyMap()
+        var headers: List<Header> = emptyList()
         var body: String = ""
 
         fun method(method: String): Builder {
@@ -47,7 +59,7 @@ data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializabl
             return this
         }
 
-        public fun headers(headers: Map<String, List<Any>>): Builder {
+        public fun headers(headers: List<Header>): Builder {
             this.headers = headers
             return this
         }
@@ -61,18 +73,17 @@ data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializabl
     }
 
     class object {
-        private val serialVersionUID = 5979696652154735185
+        private val serialVersionUID = 5979696652154735186
         val headerKeyValueSeparator = ":"
         val lineBreak = "\n"
 
-        // TODO unit test this
-        fun headersFromText(text: String): Map<String, List<Any>> {
-            val headersFromText: Map<String, List<Any>> = Collections.emptyMap()
+        fun headersFromText(text: String): List<Header> {
+            val headersFromText: List<Header> = Collections.emptyList()
             if (!text.isEmpty()) {
                 text.split(lineBreak).forEach { header ->
                     if (header.contains(headerKeyValueSeparator)) {
                         val (headerName, headerValue) = header.split(headerKeyValueSeparator)
-                        headersFromText.entrySet().plus(mapOf(Pair(headerName, headerValue)))
+                        headersFromText.plus(Pair(headerName, headerValue))
                     }
                 }
             }
