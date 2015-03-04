@@ -53,8 +53,8 @@ class RestCodeTest {
 
         private val bodyJson: String = "{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}"
 
-        private val headersJson: String = "[{\"header\": [\"value\", \"value1\", 42.0, true]}, {\"header1\": [\"0\", 1, false, \"false\"]}, {}, {\"header2\": []}, {\"header3\": [\"value3\"]}]"
-        private val headers: List<Map<String, List<Any>>> = mapper.readValue(headersJson, javaClass<List<Map<String, List<Any>>>>())
+        private val headersJson: String = "{\"header\": [\"value\", \"value1\", 42.0, true], \"header1\": [\"0\", 1, false, \"false\"], \"header2\": [], \"header3\": [\"value3\"]}"
+        private val headers: Map<String, List<Any>> = mapper.readValue(headersJson, javaClass<Map<String, List<Any>>>())
 
         private val restCodeUrl: String = "$endPointUrl#${RestCodeUtil.restCodeToken}{" +
                 "\"headers\": ${headersJson}," +

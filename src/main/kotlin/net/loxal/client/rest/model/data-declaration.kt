@@ -18,7 +18,7 @@ data class RequestParameter(val paramName: String, val paramValue: Any)
 
 data class RestCode private() {
     val method: String = HttpMethod.GET
-    val headers: List<Map<String, List<Any>>> = emptyList()
+    val headers: Map<String, List<Any>> = emptyMap()
     val body: String = ""
     val name: String = "Unnamed"
 }
@@ -26,15 +26,15 @@ data class RestCode private() {
 data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializable {
     val method: String = builder.method
     val url: URL = builder.url
-    // TODO make List<Map<String, List<Any>>> to List<Header>
-    val headers: List<Map<String, List<Any>>> = builder.headers
+    // TODO make Map<String, List<Any>> to List<Header>
+    val headers: Map<String, List<Any>> = builder.headers
     val body: String = builder.body
     var name: String = builder.name
 
     public class Builder(val name: String) {
         var method: String = HttpMethod.GET
         var url: URL = App.SAMPLE_URL
-        var headers: List<Map<String, List<Any>>> = emptyList()
+        var headers: Map<String, List<Any>> = emptyMap()
         var body: String = ""
 
         fun method(method: String): Builder {
@@ -47,7 +47,7 @@ data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializabl
             return this
         }
 
-        public fun headers(headers: List<Map<String, List<Any>>>): Builder {
+        public fun headers(headers: Map<String, List<Any>>): Builder {
             this.headers = headers
             return this
         }
@@ -61,18 +61,18 @@ data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializabl
     }
 
     class object {
-        private val serialVersionUID = 5979696652154735184
+        private val serialVersionUID = 5979696652154735185
         val headerKeyValueSeparator = ":"
         val lineBreak = "\n"
 
         // TODO unit test this
-        fun headersFromText(text: String): List<Map<String, List<Any>>> {
-            val headersFromText: List<Map<String, List<Any>>> = Collections.emptyList()
+        fun headersFromText(text: String): Map<String, List<Any>> {
+            val headersFromText: Map<String, List<Any>> = Collections.emptyMap()
             if (!text.isEmpty()) {
                 text.split(lineBreak).forEach { header ->
                     if (header.contains(headerKeyValueSeparator)) {
                         val (headerName, headerValue) = header.split(headerKeyValueSeparator)
-                        headersFromText.plus(mapOf(Pair(headerName, headerValue)))
+                        headersFromText.entrySet().plus(mapOf(Pair(headerName, headerValue)))
                     }
                 }
             }
