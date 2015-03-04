@@ -45,6 +45,13 @@ class RestCodeTest {
         assertEquals(endPointUrl, clientRequest.url.toString())
     }
 
+    Test
+    fun clientRequestModelToCurl() {
+        val clientRequest = RestCodeUtil.mapToClientRequest(url)
+
+        assertEquals("curl -X \"POST\" \"https://example.com:440/endpoint/\" -d $'{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}'", clientRequest.toCurlCliCommand())
+    }
+
     class object {
         private val mapper: ObjectMapper = ObjectMapper()
 

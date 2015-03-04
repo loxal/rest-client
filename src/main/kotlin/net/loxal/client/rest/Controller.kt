@@ -230,7 +230,7 @@ private class Controller : Initializable {
                     .headers(ClientRequestModel.headersFromText(requestHeaderData.getText()))
                     .url(targetUrl)
                     .build()
-            declareCurlCommand()
+            declareCurlCliCommand()
         } catch (e: MalformedURLException) {
             showNotification("Invalid endpoint URL: ${e.getMessage()}")
             validEndpoint = false
@@ -295,7 +295,7 @@ private class Controller : Initializable {
 
     private fun showResponseHeaders(getResponse: Response) {
         getResponse.getHeaders().forEach { header ->
-            responseHeaders.appendText("${Header.new(header.getKey(), header.getValue())} ${ClientRequestModel.lineBreak}")
+            responseHeaders.appendText("${Header.new(header.key, header.value)} ${ClientRequestModel.lineBreak}")
         }
     }
 
@@ -524,13 +524,7 @@ private class Controller : Initializable {
         private val client = ClientBuilder.newClient()
     }
 
-    private fun declareCurlCommand() {
-        val headers: StringBuilder = StringBuilder()
-        request.headers.forEach { header ->
-            headers.append("-H \"${header}\"")
-        }
-        val curlCliCommand = "curl -X \"${request.method}\" \"${request.url}\"\n ${headers.toString()} -d $'${request.body}'"
-
-        curlCommand.setText(curlCliCommand)
+    private fun declareCurlCliCommand() {
+        curlCommand.setText(request.toCurlCliCommand())
     }
 }

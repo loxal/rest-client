@@ -13,13 +13,15 @@ import javax.ws.rs.core.MultivaluedHashMap
 
 data class Header private() : MultivaluedHashMap<String, Any>() {
     var name: String = ""
-    val value: List<Any> = emptyList()
+    var value: List<Any> = emptyList()
+
+    override fun toString(): String = "$name: ${if (value.size() > 1) value.toString() else value.first().toString()}"
 
     class object {
         fun new(name: String, value: List<Any>): Header {
             val h: Header = Header()
             h.name = name
-            value.plus(value)
+            h.value = value
 
             return h
         }
@@ -69,6 +71,17 @@ data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializabl
         }
 
         fun build(): ClientRequestModel = ClientRequestModel(this)
+    }
+
+    fun toCurlCliCommand(): String {
+        val headers: StringBuilder = StringBuilder()
+        this.headers.forEach { header ->
+            headers.append("-H \"${header}\"")
+        }
+
+        val curlCliCommand = "curl -X \"${this.method}\" \"${this.url}\" -d $'${this.body}'"
+
+        return curlCliCommand
     }
 
     class object {
