@@ -26,6 +26,7 @@ data class RestCode private() {
 data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializable {
     val method: String = builder.method
     val url: URL = builder.url
+    // TODO make List<Map<String, List<Any>>> to List<Header>
     val headers: List<Map<String, List<Any>>> = builder.headers
     val body: String = builder.body
     var name: String = builder.name

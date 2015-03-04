@@ -10,7 +10,7 @@
     <parent>
         <groupId>net.loxal</groupId>
         <artifactId>meta</artifactId>
-        <version>1.2.4</version>
+        <version>1.2.6</version>
     </parent>
 
     <artifactId>rest-client</artifactId>
@@ -53,12 +53,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.3.2</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
@@ -85,10 +79,11 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <finalName>${project.name}-v${project.version}</finalName>
                     <archive>
                         <manifest>
                             <packageName>${project.artifactId}</packageName>
-                            <addClasspath>true</addClasspath>
+                            <addClasspath>false</addClasspath>
                             <mainClass>net.loxal.client.rest.App</mainClass>
                         </manifest>
                     </archive>
@@ -100,7 +95,7 @@
             <plugin>
                 <groupId>pl.project13.maven</groupId>
                 <artifactId>git-commit-id-plugin</artifactId>
-                <version>2.1.11</version>
+                <version>2.1.12</version>
                 <executions>
                     <execution>
                         <goals>

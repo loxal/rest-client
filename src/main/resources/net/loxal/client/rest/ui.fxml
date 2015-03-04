@@ -4,14 +4,7 @@
   ~ Copyright 2015 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
   -->
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -57,7 +50,7 @@
         <TextArea fx:id="requestBody" layoutX="11.0" layoutY="254.0" prefHeight="300.0" prefWidth="467.0" promptText="{&quot;jsonKey&quot;: &quot;jsonValue&quot;}" styleClass="request" wrapText="true" />
         <Text layoutX="5.0" layoutY="245.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request Body" />
         <TextArea fx:id="requestHeaderData" layoutX="11.0" layoutY="102.0" prefHeight="123.0" prefWidth="467.0"
-                  promptText="Content-Type: application/json&#xD;User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2)"
+                  promptText="Content-Type: application/json&#13;User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2)"
                   styleClass="request" wrapText="true"/>
         <Text layoutX="5.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request Headers" wrappingWidth="109.0" />
         <Text layoutX="3.0" layoutY="584.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Response Headers" />
@@ -94,5 +87,9 @@
         <Label fx:id="responseStatus" layoutX="489.0" layoutY="254.0" prefHeight="16.0" prefWidth="477.0"
                wrapText="true"/>
         <TextField fx:id="find" layoutX="974.0" layoutY="62.0" prefHeight="26.0" prefWidth="292.0" promptText="Find"/>
+        <TextArea fx:id="curlCommand" editable="false" layoutX="489.0" layoutY="317.0" prefHeight="200.0"
+                  prefWidth="477.0" wrapText="true"/>
+        <Text layoutX="487.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" text="curl Command"
+              wrappingWidth="109.0"/>
     </children>
 </AnchorPane>

@@ -63,6 +63,8 @@ private class Controller : Initializable {
     FXML
     private var responseHeaders: TextArea = TextArea()
     FXML
+    private var curlCommand: TextArea = TextArea()
+    FXML
     private var notification: Label = Label()
     FXML
     private var responseStatus: Label = Label()
@@ -224,8 +226,11 @@ private class Controller : Initializable {
             val targetUrl: URL = URL(endpointUrl.getText())
             request = ClientRequestModel.Builder("[Current Request]")
                     .method((requestMethod.getSelectedToggle() as RadioButton).getText())
+                    .body(requestBody.getText())
+                    .headers(ClientRequestModel.headersFromText(requestHeaderData.getText()))
                     .url(targetUrl)
                     .build()
+            declareCurlCommand()
         } catch (e: MalformedURLException) {
             showNotification("Invalid endpoint URL: ${e.getMessage()}")
             validEndpoint = false
@@ -515,7 +520,17 @@ private class Controller : Initializable {
         client.property(ClientProperties.READ_TIMEOUT, 4000)
     }
 
-    class object {
+    private class object {
         private val client = ClientBuilder.newClient()
+    }
+
+    private fun declareCurlCommand() {
+        val headers: StringBuilder = StringBuilder()
+        request.headers.forEach { header ->
+            headers.append("-H \"${header}\"")
+        }
+        val curlCliCommand = "curl -X \"${request.method}\" \"${request.url}\"\n ${headers.toString()} -d $'${request.body}'"
+
+        curlCommand.setText(curlCliCommand)
     }
 }
