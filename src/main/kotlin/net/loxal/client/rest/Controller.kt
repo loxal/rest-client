@@ -364,7 +364,7 @@ private class Controller : Initializable {
         val clientRequestModel = ClientRequestModel.Builder(requestName)
                 .method(request.method)
                 .url(request.url)
-                .body(requestBody.getText())// TODO unit test
+                .body(requestBody.getText()) // TODO unit test
                 .headers(ClientRequestModel.headersFromText(requestHeaderData.getText())) // TODO unit test
                 .build()
 

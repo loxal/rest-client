@@ -15,7 +15,6 @@ data class Header private() : MultivaluedHashMap<String, Any>() {
     var name: String = ""
     val value: List<Any> = emptyList()
 
-    override public fun toString(): String = "$name: ${value.joinToString(separator = "###")}"
     class object {
         fun new(name: String, value: List<Any>): Header {
             val h: Header = Header()
@@ -37,13 +36,13 @@ data class RestCode private() {
 }
 
 data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializable {
-    val method: String = builder.method
     val url: URL = builder.url
+    val method: String = builder.method
     val headers: List<Header> = builder.headers
     val body: String = builder.body
     var name: String = builder.name
 
-    public class Builder(val name: String) {
+    class Builder(val name: String) {
         var method: String = HttpMethod.GET
         var url: URL = App.SAMPLE_URL
         var headers: List<Header> = emptyList()
@@ -54,22 +53,22 @@ data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializabl
             return this
         }
 
-        public fun url(url: URL): Builder {
+        fun url(url: URL): Builder {
             this.url = url
             return this
         }
 
-        public fun headers(headers: List<Header>): Builder {
+        fun headers(headers: List<Header>): Builder {
             this.headers = headers
             return this
         }
 
-        public fun body(body: String): Builder {
+        fun body(body: String): Builder {
             this.body = body
             return this
         }
 
-        public fun build(): ClientRequestModel = ClientRequestModel(this)
+        fun build(): ClientRequestModel = ClientRequestModel(this)
     }
 
     class object {
