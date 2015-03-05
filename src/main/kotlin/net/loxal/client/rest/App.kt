@@ -14,6 +14,7 @@ import javafx.stage.Stage
 import java.io.IOException
 import java.util.logging.Logger
 import java.net.URL
+import java.util.Properties
 
 class App : Application() {
 
@@ -27,8 +28,7 @@ class App : Application() {
             scene = Scene(rootNode)
             stage.setScene(scene)
 
-            stage.setTitle("Epvin")
-            // TODO can be attached in a declarative way via *.fxml?
+            stage.setTitle("Epvin v${properties.getProperty("project.version")}")
             stage.getIcons().add(Image("/net/loxal/client/rest/view/tool-icon-256.png"))
             rootNode.requestFocus()
             stage.show()
@@ -40,10 +40,15 @@ class App : Application() {
         }
     }
 
+    {
+        properties.load(javaClass.getResourceAsStream("/app.properties"))
+    }
+
     class object {
         val LOG = Logger.getGlobal()
         val SAMPLE_URL = URL("https://example.com")
         val SAVE_AS = "Save request as:"
+        private val properties = Properties()
 
         val APP_HOME_DIRECTORY = if (System.getenv("HOME") == null) {
             System.getenv("USERPROFILE")
