@@ -10,7 +10,7 @@ import com.google.gson.JsonSyntaxException
 import com.google.gson.GsonBuilder
 import net.loxal.client.rest.model.RequestParameter
 import java.util.ArrayList
-import net.loxal.client.rest.model.Header
+import net.loxal.client.rest.model.Headers
 import java.io.File
 import java.lang
 import java.io.IOException
@@ -54,7 +54,7 @@ final class Util {
             }
         }
 
-        final fun extractHeaderData(rawHeaderData: String): List<Header> {
+        final fun extractHeaderData(rawHeaderData: String): List<Headers> {
             return ClientRequestModel.toHeaders(rawHeaderData)
         }
 
@@ -88,8 +88,8 @@ final class Util {
             return GsonBuilder().setPrettyPrinting().create().toJson(jsonElement)
         }
 
-        final fun applyHeaderInfo(headers: List<Header>, request: Invocation.Builder): Invocation.Builder {
-            headers.forEach { header -> request.header(header.name, header.value) }
+        final fun applyHeaderInfo(headers: List<Headers>, request: Invocation.Builder): Invocation.Builder {
+            headers.forEach { header -> request.header(header.keySet().first(), header.values().first()) }
 
             return request
         }

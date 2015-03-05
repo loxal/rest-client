@@ -11,25 +11,24 @@ import net.loxal.client.rest.App
 import java.util.Collections
 import javax.ws.rs.core.MultivaluedHashMap
 
-data class Header private() : MultivaluedHashMap<String, Any>() {
-    var name: String = ""
-    var value: List<Any> = Collections.emptyList()
-
+data class Headers private() : MultivaluedHashMap<String, Any>() {
     override fun toString(): String {
         val prettyFormatHeaderValue =
-                if (value.isEmpty()) value.toString()
-                else if (value.size() > 1)
-                    value.toString()
-                else value.first().toString()
+                if (!isEmpty()) {
+                    if (values().first().isEmpty()) values().first().toString()
+                    else if (values().first().size() > 2)
+                        values().first().toString()
+                    else values().first().first().toString()
+                } else
+                    return ""
 
-        return "$name: ${prettyFormatHeaderValue}"
+        return "${keySet().first()}: ${prettyFormatHeaderValue}"
     }
 
     class object {
-        fun new(name: String, value: List<Any>): Header {
-            val h: Header = Header()
-            h.name = name
-            h.value = value
+        fun new(name: String, value: Any): Headers {
+            val h: Headers = Headers()
+            h.add(name, value)
 
             return h
         }
@@ -40,7 +39,7 @@ data class RequestParameter(val paramName: String, val paramValue: Any)
 
 data class RestCode private() {
     val method: String = HttpMethod.GET
-    val headers: List<Header> = Collections.emptyList()
+    val headers: List<Headers> = Collections.emptyList()
     val body: String = ""
     val name: String = "Unnamed"
 }
@@ -48,14 +47,14 @@ data class RestCode private() {
 data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializable {
     val url: URL = builder.url
     val method: String = builder.method
-    val headers: List<Header> = builder.headers
+    val headers: List<Headers> = builder.headers
     val body: String = builder.body
     var name: String = builder.name
 
     class Builder(val name: String) {
         var method: String = HttpMethod.GET
         var url: URL = App.SAMPLE_URL
-        var headers: List<Header> = Collections.emptyList()
+        var headers: List<Headers> = Collections.emptyList()
         var body: String = ""
 
         fun method(method: String): Builder {
@@ -68,7 +67,7 @@ data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializabl
             return this
         }
 
-        fun headers(headers: List<Header>): Builder {
+        fun headers(headers: List<Headers>): Builder {
             this.headers = headers
             return this
         }
@@ -89,7 +88,7 @@ data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializabl
             }
         }
 
-        val curlCliCommand = "curl -X \"${method}\" \\ $lineBreak \"${url}\" \\ $lineBreak ${headers.toString()} \\ $lineBreak -d $'${body}'"
+        val curlCliCommand = "curl -X \"${method}\" \\ $lineBreak\"${url}\" \\ $lineBreak${headers}-d $'${body}'"
 
         return curlCliCommand
     }
@@ -99,13 +98,13 @@ data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializabl
         val headerKeyValueSeparator = ":"
         val lineBreak = "\n"
 
-        fun toHeaders(text: String): List<Header> {
-            val headers: MutableList<Header> = arrayListOf()
+        fun toHeaders(text: String): List<Headers> {
+            val headers: MutableList<Headers> = arrayListOf()
             text.split(lineBreak).forEach { header ->
                 if (header.contains(headerKeyValueSeparator)) {
                     val headerName = header.substringBefore(headerKeyValueSeparator)
                     val headerValue = header.substringAfter(headerKeyValueSeparator)
-                    headers.add(Header.new(headerName.trim(), listOf(headerValue.trim())))
+                    headers.add(Headers.new(headerName.trim(), headerValue.trim()))
                 }
             }
 

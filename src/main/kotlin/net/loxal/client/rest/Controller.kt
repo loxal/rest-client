@@ -20,7 +20,7 @@ import javafx.scene.control.ToggleGroup
 import javax.ws.rs.client.Invocation
 import java.net.MalformedURLException
 import javax.ws.rs.ProcessingException
-import net.loxal.client.rest.model.Header
+import net.loxal.client.rest.model.Headers
 import java.net.URL
 import java.util.ResourceBundle
 import java.io.IOException
@@ -295,7 +295,7 @@ private class Controller : Initializable {
 
     private fun showResponseHeaders(getResponse: Response) {
         getResponse.getHeaders().forEach { header ->
-            responseHeaders.appendText("${Header.new(header.key, header.value)} ${ClientRequestModel.lineBreak}")
+            responseHeaders.appendText("${Headers.new(header.key, header.value)} ${ClientRequestModel.lineBreak}")
         }
     }
 
