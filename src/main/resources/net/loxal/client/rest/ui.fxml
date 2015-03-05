@@ -9,87 +9,57 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import java.lang.String?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="rootPane" fx:id="rootContainer" cacheShape="false"
-            maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
-            prefWidth="1280.0" scaleShape="false" snapToPixel="false"
-            stylesheets="/net/loxal/client/rest/view/style.css" xmlns="http://javafx.com/javafx/8"
-            fx:controller="net.loxal.client.rest.Controller">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="rootPane" fx:id="rootContainer" cacheShape="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" scaleShape="false" snapToPixel="false" stylesheets="/net/loxal/client/rest/view/style.css" xmlns="http://javafx.com/javafx/8" fx:controller="net.loxal.client.rest.Controller">
     <children>
-        <TextField id="request-url-bar" fx:id="endpointUrl" cacheShape="false" centerShape="false"
-                   focusTraversable="false" layoutX="89.0" layoutY="8.0" onKeyReleased="#declareEndpoint"
-                   pickOnBounds="false" prefWidth="727.0" promptText="https://api.example.com" scaleShape="false"
-                   text="http://rest-kit-test-v1.test.cf.hybris.com/dilbert-quote/dev-excuse">
+        <TextField id="request-url-bar" fx:id="endpointUrl" cacheShape="false" centerShape="false" focusTraversable="false" layoutX="89.0" layoutY="8.0" onKeyReleased="#declareEndpoint" pickOnBounds="false" prefWidth="727.0" promptText="https://api.example.com" scaleShape="false" text="http://rest-kit-test-v1.test.cf.hybris.com/dilbert-quote/dev-excuse">
             <styleClass>
-                <String fx:value="request"/>
-                <String fx:value="test"/>
+                <String fx:value="request" />
+                <String fx:value="test" />
             </styleClass>
         </TextField>
-        <Button fx:id="requestPerformer" cancelButton="true" defaultButton="true" layoutX="820.0" layoutY="8.0"
-                mnemonicParsing="false" onAction="#doRequest" pickOnBounds="false" prefHeight="26.0" prefWidth="145.0"
-                text="Request"/>
-        <RadioButton fx:id="getMethodRadio" layoutX="89.0" layoutY="58.0" mnemonicParsing="false" selected="true"
-                     styleClass="request-alt" text="GET" wrapText="true">
+        <Button fx:id="requestPerformer" cancelButton="true" defaultButton="true" layoutX="820.0" layoutY="8.0" mnemonicParsing="false" onAction="#doRequest" pickOnBounds="false" prefHeight="26.0" prefWidth="145.0" text="Request" />
+        <RadioButton fx:id="getMethodRadio" layoutX="89.0" layoutY="58.0" mnemonicParsing="false" selected="true" styleClass="request-alt" text="GET" wrapText="true">
             <toggleGroup>
                 <ToggleGroup fx:id="requestMethod" />
             </toggleGroup>
         </RadioButton>
-        <Button fx:id="clearButton" cancelButton="true" defaultButton="true" layoutX="820.0" layoutY="528.0"
-                mnemonicParsing="false" onAction="#cleanupPreviousResponse" pickOnBounds="false" prefWidth="145.0"
-                text="Clear"/>
-        <RadioButton fx:id="postMethodRadio" layoutX="148.0" layoutY="58.0" mnemonicParsing="false"
-                     styleClass="request-alt" text="POST" toggleGroup="$requestMethod"/>
-        <Text layoutX="485.0" layoutY="584.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Response Body"
-              wrappingWidth="112.54776000976562"/>
-        <TextArea fx:id="responseBody" layoutX="489.0" layoutY="593.0" pickOnBounds="false" prefHeight="197.0"
-                  prefWidth="477.0" promptText="{&quot;jsonKey&quot;: &quot;jsonValue&quot;}" snapToPixel="false"/>
+        <Button fx:id="clearButton" cancelButton="true" defaultButton="true" layoutX="820.0" layoutY="528.0" mnemonicParsing="false" onAction="#cleanupPreviousResponse" pickOnBounds="false" prefWidth="145.0" text="Clear Response" />
+        <RadioButton fx:id="postMethodRadio" layoutX="148.0" layoutY="58.0" mnemonicParsing="false" styleClass="request-alt" text="POST" toggleGroup="$requestMethod" />
+        <Text layoutX="485.0" layoutY="584.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Response Body" wrappingWidth="112.54776000976562" />
+        <TextArea fx:id="responseBody" layoutX="489.0" layoutY="593.0" pickOnBounds="false" prefHeight="197.0" prefWidth="477.0" promptText="{&quot;jsonKey&quot;: &quot;jsonValue&quot;}" snapToPixel="false" />
         <Text layoutX="10.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Endpoint">
             <font>
-                <Font size="18.0"/>
+                <Font size="18.0" />
             </font>
         </Text>
         <TextArea fx:id="requestBody" layoutX="11.0" layoutY="254.0" prefHeight="300.0" prefWidth="467.0" promptText="{&quot;jsonKey&quot;: &quot;jsonValue&quot;}" styleClass="request" wrapText="true" />
         <Text layoutX="5.0" layoutY="245.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request Body" />
-        <TextArea fx:id="requestHeaderData" layoutX="11.0" layoutY="102.0" prefHeight="123.0" prefWidth="467.0"
-                  promptText="Content-Type: application/json&#13;User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2)"
-                  styleClass="request" wrapText="true"/>
+        <TextArea fx:id="requestHeaderData" layoutX="11.0" layoutY="102.0" prefHeight="123.0" prefWidth="467.0" promptText="Content-Type: application/json&#13;User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2)" styleClass="request" wrapText="true" />
         <Text layoutX="5.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request Headers" wrappingWidth="109.0" />
         <Text layoutX="3.0" layoutY="584.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Response Headers" />
-        <TextArea fx:id="responseHeaders" layoutX="11.0" layoutY="593.0" prefHeight="197.0" prefWidth="467.0"
-                  promptText="Location: https://api.example.com/entity/id"/>
-        <Label fx:id="notification" layoutX="89.0" layoutY="35.0" prefHeight="16.0" prefWidth="727.0" textFill="#dd6611"
-               wrapText="true"/>
+        <TextArea fx:id="responseHeaders" layoutX="11.0" layoutY="593.0" prefHeight="197.0" prefWidth="467.0" promptText="Location: https://api.example.com/entity/id" />
+        <Label fx:id="notification" layoutX="89.0" layoutY="35.0" prefHeight="16.0" prefWidth="727.0" textFill="#dd6611" wrapText="true" />
         <TextArea fx:id="requestParameterData" layoutX="489.0" layoutY="102.0" prefHeight="123.0" prefWidth="477.0" promptText="fristParameter=firstValue&amp;&#10;secondParameter=secondValue&#10;&amp;3Parameter=3Value" styleClass="request" />
-        <RadioButton fx:id="deleteMethodRadio" layoutX="212.0" layoutY="58.0" mnemonicParsing="false"
-                     styleClass="request-alt" text="DELETE" toggleGroup="$requestMethod"/>
-        <RadioButton fx:id="putMethodRadio" layoutX="290.0" layoutY="58.0" mnemonicParsing="false"
-                     styleClass="request-alt" text="PUT" toggleGroup="$requestMethod"/>
+        <RadioButton fx:id="deleteMethodRadio" layoutX="212.0" layoutY="58.0" mnemonicParsing="false" styleClass="request-alt" text="DELETE" toggleGroup="$requestMethod" />
+        <RadioButton fx:id="putMethodRadio" layoutX="290.0" layoutY="58.0" mnemonicParsing="false" styleClass="request-alt" text="PUT" toggleGroup="$requestMethod" />
         <Text layoutX="485.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="URL Parameters" />
-        <Button fx:id="requestSaver" layoutX="974.0" layoutY="9.0" mnemonicParsing="false" onAction="#saveRequest"
-                prefHeight="26.0" prefWidth="145.0" text="Save Request"/>
-        <TableView fx:id="queryTable" editable="true" layoutX="974.0" layoutY="100.0" maxWidth="398.0"
-                   onMouseReleased="#loadSavedRequest" prefHeight="690.0" prefWidth="292.0">
+        <Button fx:id="requestSaver" layoutX="974.0" layoutY="9.0" mnemonicParsing="false" onAction="#saveRequest" prefHeight="26.0" prefWidth="145.0" text="Save Request" />
+        <TableView fx:id="queryTable" editable="true" layoutX="974.0" layoutY="100.0" maxWidth="398.0" onMouseReleased="#loadSavedRequest" prefHeight="690.0" prefWidth="292.0">
             <columns>
-                <TableColumn fx:id="requestColumn" maxWidth="290.0" prefWidth="292.0" text="Request"/>
+                <TableColumn fx:id="requestColumn" maxWidth="290.0" prefWidth="292.0" text="Request" />
             </columns>
         </TableView>
-        <Button fx:id="requestDeleter" layoutX="1121.0" layoutY="9.0" mnemonicParsing="false" onAction="#deleteRequest"
-                prefHeight="26.0" prefWidth="145.0" text="Delete Request"/>
-        <RadioButton fx:id="optionsMethodRadio" layoutX="347.0" layoutY="58.0" mnemonicParsing="false"
-                     styleClass="request-alt" text="OPTIONS" toggleGroup="$requestMethod"/>
-        <RadioButton fx:id="headMethodRadio" layoutX="440.0" layoutY="58.0" mnemonicParsing="false"
-                     styleClass="request-alt" text="HEAD" toggleGroup="$requestMethod"/>
-        <Label layoutX="485.0" layoutY="232.0" prefHeight="16.0" prefWidth="113.0" text="Response Status:"
-               textFill="#2525a1">
+        <Button fx:id="requestDeleter" layoutX="1121.0" layoutY="9.0" mnemonicParsing="false" onAction="#deleteRequest" prefHeight="26.0" prefWidth="145.0" text="Delete Request" />
+        <RadioButton fx:id="optionsMethodRadio" layoutX="347.0" layoutY="58.0" mnemonicParsing="false" styleClass="request-alt" text="OPTIONS" toggleGroup="$requestMethod" />
+        <RadioButton fx:id="headMethodRadio" layoutX="440.0" layoutY="58.0" mnemonicParsing="false" styleClass="request-alt" text="HEAD" toggleGroup="$requestMethod" />
+        <Label layoutX="485.0" layoutY="232.0" prefHeight="16.0" prefWidth="113.0" text="Response Status:" textFill="#2525a1">
             <font>
-                <Font name="System Bold" size="13.0"/>
+                <Font name="System Bold" size="13.0" />
             </font>
         </Label>
-        <Label fx:id="responseStatus" layoutX="489.0" layoutY="254.0" prefHeight="16.0" prefWidth="477.0"
-               wrapText="true"/>
-        <TextField fx:id="find" layoutX="974.0" layoutY="62.0" prefHeight="26.0" prefWidth="292.0" promptText="Find"/>
-        <TextArea fx:id="curlCommand" editable="false" layoutX="489.0" layoutY="317.0" prefHeight="200.0"
-                  prefWidth="477.0" wrapText="true"/>
-        <Text layoutX="487.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" text="curl Command"
-              wrappingWidth="109.0"/>
+        <Label fx:id="responseStatus" layoutX="489.0" layoutY="254.0" prefHeight="16.0" prefWidth="477.0" wrapText="true" />
+        <TextField fx:id="find" layoutX="974.0" layoutY="62.0" prefHeight="26.0" prefWidth="292.0" promptText="Find" />
+        <TextArea fx:id="curlCommand" editable="false" layoutX="489.0" layoutY="317.0" prefHeight="200.0" prefWidth="477.0" wrapText="true" />
+        <Text layoutX="487.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" text="curl Command" wrappingWidth="109.0" />
     </children>
 </AnchorPane>
