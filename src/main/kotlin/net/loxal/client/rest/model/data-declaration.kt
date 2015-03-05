@@ -9,14 +9,15 @@ import javax.ws.rs.HttpMethod
 import java.net.URL
 import net.loxal.client.rest.App
 import java.util.Collections
+import javax.ws.rs.core.MultivaluedHashMap
 
-data class Header private() {
+data class Header private() : MultivaluedHashMap<String, Any>() {
     var name: String = ""
     var value: List<Any> = Collections.emptyList()
 
     override fun toString(): String = "$name: ${if (value.size() > 1) value.toString() else value.first().toString()}"
 
-    override fun hashCode(): Int = (name.hashCode() * 3) + (value.hashCode() * 2)
+    override fun hashCode(): Int = name.hashCode() * 3 + value.hashCode() * 2
 
     class object {
         fun new(name: String, value: List<Any>): Header {
