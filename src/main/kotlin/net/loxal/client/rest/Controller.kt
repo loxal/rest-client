@@ -227,7 +227,7 @@ private class Controller : Initializable {
             request = ClientRequestModel.Builder("[Current Request]")
                     .method((requestMethod.getSelectedToggle() as RadioButton).getText())
                     .body(requestBody.getText())
-                    .headers(ClientRequestModel.headersFromText(requestHeaderData.getText()))
+                    .headers(ClientRequestModel.toHeaders(requestHeaderData.getText()))
                     .url(targetUrl)
                     .build()
             declareCurlCliCommand()
@@ -364,8 +364,8 @@ private class Controller : Initializable {
         val clientRequestModel = ClientRequestModel.Builder(requestName)
                 .method(request.method)
                 .url(request.url)
-                .body(requestBody.getText()) // TODO unit test
-                .headers(ClientRequestModel.headersFromText(requestHeaderData.getText())) // TODO unit test
+                .body(requestBody.getText())
+                .headers(ClientRequestModel.toHeaders(requestHeaderData.getText()))
                 .build()
 
         val fullFilePath = App.APP_HOME_DIRECTORY + "/" + UUID.randomUUID() + "-save.serialized"

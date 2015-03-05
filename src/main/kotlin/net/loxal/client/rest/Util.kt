@@ -55,18 +55,7 @@ final class Util {
         }
 
         final fun extractHeaderData(rawHeaderData: String): List<Header> {
-            fun containsHeaderDeclaration(headerDataPair: List<String>): Boolean = headerDataPair.size() > 1
-            val headers = ArrayList<Header>()
-            if (!rawHeaderData.isEmpty()) {
-                rawHeaderData.split(ClientRequestModel.lineBreak).forEach { header ->
-                    if (header.contains(ClientRequestModel.headerKeyValueSeparator)) {
-                        val (headerName, headerValue) = header.split(ClientRequestModel.headerKeyValueSeparator)
-                        headers.plus(mapOf(Pair(headerName, headerValue)))
-                    }
-                }
-            }
-
-            return headers
+            return ClientRequestModel.toHeaders(rawHeaderData)
         }
 
         final fun extractRequestParameters(requestParameterContent: String): List<RequestParameter> {

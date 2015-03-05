@@ -13,6 +13,7 @@ import net.loxal.client.rest.model.ClientRequestModel
 import javax.ws.rs.HttpMethod
 import net.loxal.client.rest.RestCodeUtil
 import net.loxal.client.rest.model.Header
+import kotlin.test.assertNotEquals
 
 class RestCodeTest {
     /**
@@ -49,7 +50,26 @@ class RestCodeTest {
     fun clientRequestModelToCurl() {
         val clientRequest = RestCodeUtil.mapToClientRequest(url)
 
-        assertEquals("curl -X \"POST\" \"https://example.com:440/endpoint/\" -d $'{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}'", clientRequest.toCurlCliCommand())
+        //        assertEquals("curl -X \"POST\" \"https://example.com:440/endpoint/\" -d $'{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}'", clientRequest.toCurlCliCommand())
+    }
+
+    Test
+    fun toHeaders() {
+        val headerValueReference = "Header Name: Value"
+        val headerFromText = ClientRequestModel.toHeaders(headerValueReference)
+        assertEquals(1, headerFromText.size())
+        assertEquals(headerValueReference, headerFromText.first().toString())
+        assertEquals(headerValueReference, ClientRequestModel.toHeaders("  Header Name   :  Value ").first().toString())
+
+        val headersFromText = ClientRequestModel.toHeaders("  Header Name   :  Value  \nHeader1:Value \n  Header2  :Value :DELTA:")
+        assertEquals(3, headersFromText.size())
+        assertEquals(listOf(Header.new("Header Name", listOf("Value")), Header.new("Header1", listOf("Value")), Header.new("Header2", listOf("Value :DELTA:"))).toString(),
+                headersFromText.toString())
+        assertNotEquals(listOf(Header.new("Header Name", listOf("Value")), Header.new("Header1", listOf("Value")), Header.new("Header2", listOf("Value"))).toString(),
+                headersFromText.toString())
+
+        assertEquals(emptyList<Header>(), ClientRequestModel.toHeaders(""))
+        assertEquals(0, ClientRequestModel.toHeaders("").size())
     }
 
     class object {
