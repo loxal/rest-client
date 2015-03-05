@@ -47,6 +47,7 @@ import java.time.Instant
 import javafx.scene.control.TextField
 import java.io.InvalidClassException
 import java.io.WriteAbortedException
+import net.loxal.client.rest.model.Constant
 
 private class Controller : Initializable {
     private var validEndpoint: Boolean = false
@@ -258,7 +259,7 @@ private class Controller : Initializable {
             val stringHeaders = response.getHeaders()
 
             for (header in stringHeaders.entrySet()) {
-                responseHeaders.appendText(header.getKey() + ": " + header.getValue() + ClientRequestModel.lineBreak)
+                responseHeaders.appendText(header.getKey() + ": " + header.getValue() + Constant.lineBreak)
             }
         } else {
             responseBody.appendText(response.getStatusInfo().getReasonPhrase())
@@ -295,7 +296,7 @@ private class Controller : Initializable {
 
     private fun showResponseHeaders(getResponse: Response) {
         getResponse.getHeaders().forEach { header ->
-            responseHeaders.appendText("${Headers.new(header.key, header.value)} ${ClientRequestModel.lineBreak}")
+            responseHeaders.appendText("${Headers.new(header.key, header.value)} ${Constant.lineBreak}")
         }
     }
 

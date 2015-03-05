@@ -20,6 +20,7 @@ import javafx.scene.control.Tooltip
 import javax.ws.rs.client.WebTarget
 import javax.ws.rs.client.Invocation
 import net.loxal.client.rest.model.ClientRequestModel
+import net.loxal.client.rest.model.Constant
 
 final class Util {
     class object {
@@ -62,7 +63,7 @@ final class Util {
             val requestParameters = ArrayList<RequestParameter>()
 
             if (!requestParameterContent.isEmpty()) {
-                val parameterPairSeparatorRegex = "&${ClientRequestModel.lineBreak}|&"
+                val parameterPairSeparatorRegex = "&${Constant.lineBreak}|&"
                 val parameterPairs = requestParameterContent.split(parameterPairSeparatorRegex)
                 val parameterPairEntrySeparatorRegex = "="
                 parameterPairs.forEach { parameterPair ->

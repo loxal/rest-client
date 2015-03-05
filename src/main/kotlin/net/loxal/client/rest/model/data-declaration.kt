@@ -25,6 +25,15 @@ data class Headers private() : MultivaluedHashMap<String, Any>() {
         return "${keySet().first()}: ${prettyFormatHeaderValue}"
     }
 
+    //    override fun toString(): String {
+    //        val string = StringBuilder()
+    //        this.forEach { entry ->
+    //            string.append("${Constant.lineBreak}")
+    //        }
+    //
+    //        return string.toString()
+    //    }
+
     class object {
         fun new(name: String, value: Any): Headers {
             val h: Headers = Headers()
@@ -84,11 +93,11 @@ data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializabl
         val headers: StringBuilder = StringBuilder()
         if (!this.headers.isEmpty()) {
             this.headers.forEach { header ->
-                headers.append("-H \"${header}\" \\ $lineBreak")
+                headers.append("-H \"${header}\" \\ ${Constant.lineBreak}")
             }
         }
 
-        val curlCliCommand = "curl -X \"${method}\" \\ $lineBreak\"${url}\" \\ $lineBreak${headers}-d $'${body}'"
+        val curlCliCommand = "curl -X \"${method}\" \\ ${Constant.lineBreak}\"${url}\" \\ ${Constant.lineBreak}${headers}-d $'${body}'"
 
         return curlCliCommand
     }
@@ -96,11 +105,10 @@ data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializabl
     class object {
         private val serialVersionUID = 5979696652154735187
         val headerKeyValueSeparator = ":"
-        val lineBreak = "\n"
 
         fun toHeaders(text: String): List<Headers> {
             val headers: MutableList<Headers> = arrayListOf()
-            text.split(lineBreak).forEach { header ->
+            text.split(Constant.lineBreak).forEach { header ->
                 if (header.contains(headerKeyValueSeparator)) {
                     val headerName = header.substringBefore(headerKeyValueSeparator)
                     val headerValue = header.substringAfter(headerKeyValueSeparator)
@@ -111,4 +119,8 @@ data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializabl
             return headers
         }
     }
+}
+
+object Constant {
+    val lineBreak = "\n"
 }

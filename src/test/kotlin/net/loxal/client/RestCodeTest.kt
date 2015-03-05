@@ -14,6 +14,7 @@ import javax.ws.rs.HttpMethod
 import net.loxal.client.rest.RestCodeUtil
 import net.loxal.client.rest.model.Headers
 import kotlin.test.assertNotEquals
+import net.loxal.client.rest.model.Constant
 
 class RestCodeTest {
     /**
@@ -49,7 +50,7 @@ class RestCodeTest {
     Test
     fun clientRequestModelToCurl() {
         val clientRequest = RestCodeUtil.mapToClientRequest(url)
-        val consoleBreak = "\\ ${ClientRequestModel.lineBreak}"
+        val consoleBreak = "\\ ${Constant.lineBreak}"
         assertEquals("curl -X \"POST\" $consoleBreak"
                 + "\"https://example.com:440/endpoint/\" $consoleBreak"
                 + "-H \"header: [value, value1, 42.0, true]\" $consoleBreak"
