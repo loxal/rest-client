@@ -49,8 +49,14 @@ class RestCodeTest {
     Test
     fun clientRequestModelToCurl() {
         val clientRequest = RestCodeUtil.mapToClientRequest(url)
-
-        //        assertEquals("curl -X \"POST\" \"https://example.com:440/endpoint/\" -d $'{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}'", clientRequest.toCurlCliCommand())
+        //        assertEquals("curl -X \"POST\" \"https://example.com:440/endpoint/\" \\ ${ClientRequestModel.lineBreak}"
+        //                + "-H \"header: [value, value1, 42.0, true]\" \\ ${ClientRequestModel.lineBreak}"
+        //                + "-H \"header1: [0, 1, false, false]\" \\ ${ClientRequestModel.lineBreak}"
+        //                + "-H \"\" \\ ${ClientRequestModel.lineBreak}"
+        //                + "-H \"header2: \" \\ ${ClientRequestModel.lineBreak}"
+        //                + "-H \"header3: value3\" \\ ${ClientRequestModel.lineBreak}"
+        //                + "-d $'{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}'",
+        //                clientRequest.toCurlCliCommand())
     }
 
     Test

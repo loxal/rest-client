@@ -15,9 +15,15 @@ data class Header private() : MultivaluedHashMap<String, Any>() {
     var name: String = ""
     var value: List<Any> = Collections.emptyList()
 
-    override fun toString(): String = "$name: ${if (value.size() > 1) value.toString() else value.first().toString()}"
+    override fun toString(): String {
+        val prettyFormatHeaderValue =
+                if (value.isEmpty()) value.toString()
+                else if (value.size() > 1)
+                    value.toString()
+                else value.first().toString()
 
-    override fun hashCode(): Int = name.hashCode() * 3 + value.hashCode() * 2
+        return "$name: ${prettyFormatHeaderValue}"
+    }
 
     class object {
         fun new(name: String, value: List<Any>): Header {
@@ -83,7 +89,7 @@ data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializabl
             }
         }
 
-        val curlCliCommand = "curl -X \"${method}\" \\ $lineBreak \"${url}\" \\ $lineBreak ${headers} \\ $lineBreak -d $'${body}'"
+        val curlCliCommand = "curl -X \"${method}\" \\ $lineBreak \"${url}\" \\ $lineBreak ${headers.toString()} \\ $lineBreak -d $'${body}'"
 
         return curlCliCommand
     }
