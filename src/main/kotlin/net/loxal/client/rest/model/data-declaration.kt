@@ -94,12 +94,12 @@ data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializabl
         val lineBreak = "\n"
 
         fun toHeaders(text: String): List<Header> {
-            var headers: List<Header> = Collections.emptyList()
+            val headers: MutableList<Header> = arrayListOf()
             text.split(lineBreak).forEach { header ->
                 if (header.contains(headerKeyValueSeparator)) {
                     val headerName = header.substringBefore(headerKeyValueSeparator)
                     val headerValue = header.substringAfter(headerKeyValueSeparator)
-                    headers = headers.plus(Header.new(headerName.trim(), listOf(headerValue.trim())))
+                    headers.add(Header.new(headerName.trim(), listOf(headerValue.trim())))
                 }
             }
 
