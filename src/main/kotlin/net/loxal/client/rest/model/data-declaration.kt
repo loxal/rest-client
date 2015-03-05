@@ -13,26 +13,18 @@ import javax.ws.rs.core.MultivaluedHashMap
 
 data class Headers private() : MultivaluedHashMap<String, Any>() {
     override fun toString(): String {
-        val prettyFormatHeaderValue =
-                if (!isEmpty()) {
-                    if (values().first().isEmpty()) values().first().toString()
-                    else if (values().first().size() > 2)
-                        values().first().toString()
-                    else values().first().first().toString()
-                } else
-                    return ""
+        val string = StringBuilder()
+        this.forEach { entry ->
+            val prettyFormatHeaderValue =
+                    if (entry.value.isEmpty()) entry.value.toString()
+                    else if (entry.value.size() > 1)
+                        entry.value.toString()
+                    else entry.value.first().toString()
+            string.append("${entry.key}: ${prettyFormatHeaderValue}")
+        }
 
-        return "${keySet().first()}: ${prettyFormatHeaderValue}"
+        return string.toString()
     }
-
-    //    override fun toString(): String {
-    //        val string = StringBuilder()
-    //        this.forEach { entry ->
-    //            string.append("${Constant.lineBreak}")
-    //        }
-    //
-    //        return string.toString()
-    //    }
 
     class object {
         fun new(name: String, value: Any): Headers {
