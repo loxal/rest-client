@@ -70,19 +70,18 @@ class RestCodeTest {
         assertEquals(headerValueReference, headerFromText.toString())
         assertEquals(headerValueReference, ClientRequestModel.toHeaders("  Header Name   :  Value ").toString())
 
-        val headersFromText = ClientRequestModel.toHeaders("  Header Name   :  Value  \nHeader1:Value \n  Header2  :Value :DELTA:")
-        assertEquals(3, headersFromText.size())
+        val headersFromText = ClientRequestModel.toHeaders("  Header Name   :  Value  \nHeader1:Value "
+                + " \n  Header2  :Value :DELTA:\nMultivalue-Header :[First Value, Second Value, Another Value]")
+        assertEquals(4, headersFromText.size())
         val headers = Headers()
         headers.add("Header Name", "Value")
-        //        headers.add("Header11", listOf("Value", "Value1")) // TODO add this kind of data
         headers.add("Header1", "Value")
+        headers.add("Multivalue-Header", listOf("First Value", "Second Value", "Another Value"))
         headers.add("Header2", "Value :DELTA:")
         assertEquals(headers.toString(), headersFromText.toString())
 
-        val headersOdd = Headers()
-        headersOdd.add("Header Name", "Value")
-        headersOdd.add("Header1", "Value")
-        headersOdd.add("Header2", "Value :DELTA:ODD")
+        val headersOdd = headers
+        headersOdd.add("Additional", "Entry")
         assertNotEquals(headersOdd.toString(), headersFromText.toString())
 
         assertEquals(Headers(), ClientRequestModel.toHeaders(""))
