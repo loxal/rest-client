@@ -9,7 +9,7 @@ import javax.ws.rs.HttpMethod
 import java.net.URL
 import net.loxal.client.rest.App
 import javax.ws.rs.core.MultivaluedHashMap
-import net.loxal.client.rest.RestCodeUtil
+import com.fasterxml.jackson.databind.ObjectMapper
 
 data class Headers() : MultivaluedHashMap<String, Any>() {
     override fun toString(): String {
@@ -52,6 +52,19 @@ data class RestCode private() {
     val headers: Headers = Headers()
     val body: String = ""
     val name: String = Constant.unnamed
+
+    class object {
+        val restCodeToken = "RESTcode:"
+
+        fun parseRestCode(url: URL): RestCode {
+            val restCodeRaw = url.getRef()
+            val restCodeData = restCodeRaw.substring(restCodeToken.length())
+            val mapper = ObjectMapper()
+            val restCode = mapper.readValue(restCodeData, javaClass<RestCode>())
+
+            return restCode
+        }
+    }
 }
 
 data class ClientRequest(builder: ClientRequest.Builder) : Serializable {
@@ -102,8 +115,8 @@ data class ClientRequest(builder: ClientRequest.Builder) : Serializable {
     }
 
     override fun toString() = // TODO uni test
-            "${url}#${RestCodeUtil.restCodeToken}{" +
-                    "\"headers\": ${headers}, " +
+            "${url}#${RestCode.restCodeToken}{" +
+                    "\"headers\": {${headers}}, " +
                     "\"body\": \"${body}\", " +
                     "\"method\": \"${method}\", " +
                     "\"name\": \"$name\"" +
@@ -124,6 +137,26 @@ data class ClientRequest(builder: ClientRequest.Builder) : Serializable {
             }
 
             return headers
+        }
+
+        fun toClientRequest(url: URL): ClientRequest {
+            val restCode = RestCode.parseRestCode(url)
+            val clientRequest: ClientRequest = createClientRequest(url, restCode)
+
+            return clientRequest
+        }
+
+        private fun createClientRequest(url: URL, restCode: RestCode): ClientRequest {
+            val urlRoot = "${url.getProtocol()}://${url.getHost()}${if (url.getPort() == -1) "" else ":" + url.getPort()}${url.getPath()}"
+
+            val clientRequest = ClientRequest.Builder(restCode.name)
+                    .method(restCode.method)
+                    .headers(restCode.headers)
+                    .body(restCode.body)
+                    .url(URL(urlRoot))
+                    .build()
+
+            return clientRequest
         }
     }
 }
