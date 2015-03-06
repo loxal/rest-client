@@ -53,11 +53,11 @@ class RestCodeTest {
         val consoleBreak = "\\ ${Constant.lineBreak}"
         assertEquals("curl -X \"POST\" $consoleBreak"
                 + "\"https://example.com:440/endpoint/\" $consoleBreak"
-                + "-H \"header: [value, value1, 42.0, true]\" $consoleBreak"
-                + "-H \"header1: [0, 1, false, false]\" $consoleBreak"
-                + "-H \"\" $consoleBreak"
-                + "-H \"header2: []\" $consoleBreak"
+                //                + "-H \"\" $consoleBreak"
                 + "-H \"header3: value3\" $consoleBreak"
+                + "-H \"header2: []\" $consoleBreak"
+                + "-H \"header1: [0, 1, false, false]\" $consoleBreak"
+                + "-H \"header: [value, value1, 42.0, true]\" $consoleBreak"
                 + "-d $'{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}'",
                 clientRequest.toCurlCliCommand())
     }
@@ -67,17 +67,25 @@ class RestCodeTest {
         val headerValueReference = "Header Name: Value"
         val headerFromText = ClientRequestModel.toHeaders(headerValueReference)
         assertEquals(1, headerFromText.size())
-        assertEquals(headerValueReference, headerFromText.first().toString())
-        assertEquals(headerValueReference, ClientRequestModel.toHeaders("  Header Name   :  Value ").first().toString())
+        assertEquals(headerValueReference, headerFromText.toString())
+        assertEquals(headerValueReference, ClientRequestModel.toHeaders("  Header Name   :  Value ").toString())
 
         val headersFromText = ClientRequestModel.toHeaders("  Header Name   :  Value  \nHeader1:Value \n  Header2  :Value :DELTA:")
         assertEquals(3, headersFromText.size())
-        assertEquals(listOf(Headers.new("Header Name", "Value"), Headers.new("Header1", "Value"), Headers.new("Header2", "Value :DELTA:")).toString(),
-                headersFromText.toString())
-        assertNotEquals(listOf(Headers.new("Header Name", listOf("Value")), Headers.new("Header1", listOf("Value")), Headers.new("Header2", listOf("Value"))).toString(),
-                headersFromText.toString())
+        val headers = Headers()
+        headers.add("Header Name", "Value")
+        //        headers.add("Header11", listOf("Value", "Value1")) // TODO add this kind of data
+        headers.add("Header1", "Value")
+        headers.add("Header2", "Value :DELTA:")
+        assertEquals(headers.toString(), headersFromText.toString())
 
-        assertEquals(emptyList<Headers>(), ClientRequestModel.toHeaders(""))
+        val headersOdd = Headers()
+        headersOdd.add("Header Name", "Value")
+        headersOdd.add("Header1", "Value")
+        headersOdd.add("Header2", "Value :DELTA:ODD")
+        assertNotEquals(headersOdd.toString(), headersFromText.toString())
+
+        assertEquals(Headers(), ClientRequestModel.toHeaders(""))
         assertEquals(0, ClientRequestModel.toHeaders("").size())
     }
 
@@ -90,8 +98,9 @@ class RestCodeTest {
 
         private val bodyJson: String = "{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}"
 
-        private val headersJson: String = "[{\"header\": [\"value\", \"value1\", 42.0, true]}, {\"header1\": [\"0\", 1, false, \"false\"]}, {}, {\"header2\": []}, {\"header3\": [\"value3\"]}]"
-        private val headers: List<Headers> = mapper.readValue(headersJson, javaClass<List<Headers>>())
+        //        private val headersJson: String = "{\"header\": [\"value\", \"value1\", 42.0, true], \"header1\": [\"0\", 1, false, \"false\"], \"header2\": [], \"\": [], \"header3\": [\"value3\"]}"
+        private val headersJson: String = "{\"header\": [\"value\", \"value1\", 42.0, true], \"header1\": [\"0\", 1, false, \"false\"], \"header2\": [], \"header3\": [\"value3\"]}"
+        private val headers: Headers = mapper.readValue(headersJson, javaClass<Headers>())
 
         private val restCodeUrl: String = "$endPointUrl#${RestCodeUtil.restCodeToken}{" +
                 "\"headers\": ${headersJson}," +

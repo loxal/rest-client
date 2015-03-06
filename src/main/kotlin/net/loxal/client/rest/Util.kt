@@ -55,7 +55,7 @@ final class Util {
             }
         }
 
-        final fun extractHeaderData(rawHeaderData: String): List<Headers> {
+        final fun extractHeaderData(rawHeaderData: String): Headers {
             return ClientRequestModel.toHeaders(rawHeaderData)
         }
 
@@ -89,8 +89,8 @@ final class Util {
             return GsonBuilder().setPrettyPrinting().create().toJson(jsonElement)
         }
 
-        final fun applyHeaderInfo(headers: List<Headers>, request: Invocation.Builder): Invocation.Builder {
-            headers.forEach { header -> request.header(header.keySet().first(), header.values().first()) }
+        final fun applyHeaderInfo(headers: Headers, request: Invocation.Builder): Invocation.Builder {
+            headers.forEach { entry -> request.header(entry.key, entry.value) }
 
             return request
         }
