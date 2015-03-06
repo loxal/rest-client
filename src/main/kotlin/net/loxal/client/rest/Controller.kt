@@ -48,8 +48,8 @@ import java.time.format.DateTimeFormatter
 private class Controller : Initializable {
     private var validEndpoint: Boolean = false
     private val files: ObservableList<File> = FXCollections.observableArrayList<File>()
-    private val clientRequestModels = FXCollections.observableArrayList<ClientRequest>()
-    private val clientRequestModelsBackup = FXCollections.observableArrayList<ClientRequest>()
+    private val clientRequests = FXCollections.observableArrayList<ClientRequest>()
+    private val clientRequestsBackup = FXCollections.observableArrayList<ClientRequest>()
 
     FXML
     private var find: TextField = TextField()
@@ -66,7 +66,7 @@ private class Controller : Initializable {
     FXML
     private var responseStatus: Label = Label()
     FXML
-    private var requestParameterData: TextArea = TextArea("")
+    private var requestParameterData: TextArea = TextArea()
     FXML
     private var requestPerformer: Button = Button()
     FXML
@@ -103,7 +103,12 @@ private class Controller : Initializable {
     private var request: ClientRequest = ClientRequest.Builder("[Init Request]").build()
     private var startRequest: Instant = Instant.now()
 
-    fun setAccelerators() {
+    override fun initialize(url: URL?, resourceBundle: ResourceBundle?) {
+        updateEndpoint()
+        loadSavedRequests()
+    }
+
+    fun initAccelerators() {
         Util.assignShortcut(endpointUrl, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN), Runnable { endpointUrl.requestFocus() })
         Util.assignShortcut(clearButton, KeyCodeCombination(KeyCode.K, KeyCombination.SHORTCUT_DOWN), Runnable { clearButton.fire() })
         Util.assignShortcut(requestPerformer, KeyCodeCombination(KeyCode.ENTER, KeyCombination.SHORTCUT_DOWN), Runnable { requestPerformer.fire() })
@@ -131,8 +136,8 @@ private class Controller : Initializable {
     }
 
     private fun reloadRequestBackup() {
-        clientRequestModelsBackup.clear()
-        clientRequestModelsBackup.addAll(clientRequestModels)
+        clientRequestsBackup.clear()
+        clientRequestsBackup.addAll(clientRequests)
     }
 
     private fun enableFinder() =
@@ -142,11 +147,11 @@ private class Controller : Initializable {
             }
 
     private fun populateFindings() {
-        val clientRequestModelsForSearch = clientRequestModels.copyToArray()
-        clientRequestModels.clear()
+        val clientRequestModelsForSearch = clientRequests.copyToArray()
+        clientRequests.clear()
         clientRequestModelsForSearch.forEach { savedRequest ->
             if (found(savedRequest)) {
-                clientRequestModels.add(savedRequest)
+                clientRequests.add(savedRequest)
             }
         }
     }
@@ -156,8 +161,8 @@ private class Controller : Initializable {
 
 
     private fun resetFind() {
-        clientRequestModels.clear()
-        clientRequestModels.addAll(clientRequestModelsBackup)
+        clientRequests.clear()
+        clientRequests.addAll(clientRequestsBackup)
     }
 
     private fun setShortcutForArrowKeySelection() =
@@ -301,7 +306,7 @@ private class Controller : Initializable {
     }
 
     private fun declareRequestParameters() =
-            if (null === requestParameterData.getText() || requestParameterData.getText().isEmpty())
+            if (null identityEquals requestParameterData.getText())
                 ""
             else
                 requestParameterData.getText()
@@ -312,11 +317,6 @@ private class Controller : Initializable {
         responseBody.clear()
         responseStatus.setText("")
         notification.setText("")
-    }
-
-    override fun initialize(url: URL?, resourceBundle: ResourceBundle?) {
-        updateEndpoint()
-        loadSavedRequests()
     }
 
     FXML
@@ -338,21 +338,21 @@ private class Controller : Initializable {
 
     private fun loadSavedRequests() {
         files.clear()
-        clientRequestModels.clear()
+        clientRequests.clear()
 
         val appHomeDirectory = File(App.APP_HOME_DIRECTORY)
         Util.createAppHome(appHomeDirectory)
 
         appHomeDirectory.listFiles().forEach { file ->
             files.add(file)
-            clientRequestModels.add(Util.loadFromFile(file))
+            clientRequests.add(Util.loadFromFile(file))
         }
 
         requestColumn.setCellValueFactory(PropertyValueFactory<ClientRequest, String>("name"))
         requestColumn.setCellFactory(TextFieldTableCell.forTableColumn<ClientRequest>())
 
         onEditClientRequestListener()
-        queryTable.setItems(clientRequestModels)
+        queryTable.setItems(clientRequests)
     }
 
     FXML

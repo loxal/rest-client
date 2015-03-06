@@ -34,7 +34,7 @@ class App : Application() {
             stage.show()
 
             val controller = loader.getController<Controller>()
-            controller.setAccelerators()
+            controller.initAccelerators()
         } catch (e: IOException) {
             LOG.severe("${e.getCause()}\n ${e.getMessage()}")
         }
@@ -50,14 +50,12 @@ class App : Application() {
         val SAVE_AS = "Save request as:"
         private val properties = Properties()
 
-        val APP_HOME_DIRECTORY = if (System.getenv("HOME") == null) {
+        val APP_HOME_DIRECTORY = if (System.getenv("HOME").identityEquals(null)) {
             System.getenv("USERPROFILE")
         } else {
             System.getenv("HOME")
         } + "/.loxal/rest-client/request"
 
-        fun main(vararg args: String) {
-            Application.launch(*args)
-        }
+        fun main(vararg args: String) = Application.launch(*args)
     }
 }
