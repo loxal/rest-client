@@ -209,7 +209,7 @@ private class Controller : Initializable {
                     .headers(ClientRequest.toHeaders(requestHeaderData.getText()))
                     .url(targetUrl)
                     .build()
-            setCurlCliCommand()
+            updateCurlCliCommand()
         } catch (e: MalformedURLException) {
             showNotification("Invalid endpoint URL: ${e.getMessage()}")
             validEndpoint = false
@@ -249,7 +249,6 @@ private class Controller : Initializable {
     private fun doGetRequest() {
         try {
             val getResponse = prepareRequest().get()
-            // TODO support XML
 
             val responseBodyPayload = Util.formatJson(getResponse.readEntity(javaClass<String>()))
             responseBody.appendText(responseBodyPayload)
@@ -461,11 +460,9 @@ private class Controller : Initializable {
         })
     }
 
+    private val updateCurlCliCommand = { curlCommand.setText(request.toCurlCliCommand()) }
+
     private class object {
         private val client = ClientBuilder.newClient()
-    }
-
-    private fun setCurlCliCommand() {
-        curlCommand.setText(request.toCurlCliCommand())
     }
 }
