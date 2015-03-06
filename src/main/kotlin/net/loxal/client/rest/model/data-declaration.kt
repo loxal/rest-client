@@ -8,10 +8,10 @@ import java.io.Serializable
 import javax.ws.rs.HttpMethod
 import java.net.URL
 import net.loxal.client.rest.App
-import javax.ws.rs.core.MultivaluedHashMap
 import com.fasterxml.jackson.databind.ObjectMapper
+import java.util.HashMap
 
-data class Headers() : MultivaluedHashMap<String, Any>() {
+data class Headers() : HashMap<String, List<Any>>() {
     override fun toString(): String {
         val string = StringBuilder()
         var idx = 0
@@ -28,12 +28,16 @@ data class Headers() : MultivaluedHashMap<String, Any>() {
         return string.toString()
     }
 
+    fun put(key: String, value: Any): List<Any>? {
+        return super.put(key, listOf(value))
+    }
+
     class object {
         private val serialVersionUID = 3979696252154731188
 
         fun new(name: String, value: Any): Headers {
             val h: Headers = Headers()
-            h.add(name, value)
+            h.put(name, listOf(value))
 
             return h
         }
@@ -138,7 +142,7 @@ data class ClientRequest(builder: ClientRequest.Builder) : Serializable {
                 if (header.contains(headerKeyValueSeparator)) {
                     val headerName = header.substringBefore(headerKeyValueSeparator)
                     val headerValue = header.substringAfter(headerKeyValueSeparator)
-                    headers.add(headerName.trim(), headerValue.trim())
+                    headers.put(headerName.trim(), listOf(headerValue.trim()))
                 }
             }
 

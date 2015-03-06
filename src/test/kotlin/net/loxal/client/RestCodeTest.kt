@@ -95,14 +95,14 @@ class RestCodeTest {
                 + " \n  Header2  :Value :DELTA:\nMultivalue-Header :[First Value, Second Value, Another Value]")
         assertEquals(4, headersFromText.size())
         val headers = Headers()
-        headers.add("Header Name", "Value")
-        headers.add("Header1", "Value")
-        headers.add("Multivalue-Header", listOf("First Value", "Second Value", "Another Value"))
-        headers.add("Header2", "Value :DELTA:")
+        headers.put("Header Name", "Value")
+        headers.put("Header1", "Value")
+        headers.put("Multivalue-Header", listOf("First Value", "Second Value", "Another Value"))
+        headers.put("Header2", "Value :DELTA:")
         assertEquals(headers.toString(), headersFromText.toString())
 
         val headersOdd = headers
-        headersOdd.add("Additional", "Entry")
+        headersOdd.put("Additional", "Entry")
         assertNotEquals(headersOdd.toString(), headersFromText.toString())
 
         assertEquals(Headers(), ClientRequest.toHeaders(""))
