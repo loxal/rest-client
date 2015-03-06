@@ -14,9 +14,15 @@ import com.fasterxml.jackson.databind.ObjectMapper
 data class Headers() : MultivaluedHashMap<String, Any>() {
     override fun toString(): String {
         val string = StringBuilder()
+        var idx = 0
         this.forEach { entry ->
             val prettyFormatHeaderValue = prettyFormatHeaderValue(entry.value)
             string.append("${entry.key}: ${prettyFormatHeaderValue}")
+
+            val notLastElement = size() > ++idx
+            if (notLastElement) {
+                string.append(", ")
+            }
         }
 
         return string.toString()
