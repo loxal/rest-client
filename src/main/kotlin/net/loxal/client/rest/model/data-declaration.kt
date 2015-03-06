@@ -82,7 +82,7 @@ data class ClientRequest(builder: ClientRequest.Builder) : Serializable {
     val method: String = builder.method
     val headers: Headers = builder.headers
     val body: String = builder.body
-    var name: String = builder.name
+    val name: String = builder.name
 
     class Builder(val name: String = Constant.unnamed) {
         var method: String = HttpMethod.GET

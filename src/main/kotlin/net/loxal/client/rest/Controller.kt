@@ -135,12 +135,11 @@ private class Controller : Initializable {
         clientRequestModelsBackup.addAll(clientRequestModels)
     }
 
-    private fun enableFinder() {
-        find.setOnKeyReleased { keyEvent ->
-            resetFind()
-            populateFindings()
-        }
-    }
+    private fun enableFinder() =
+            find.setOnKeyReleased { keyEvent ->
+                resetFind()
+                populateFindings()
+            }
 
     private fun populateFindings() {
         val clientRequestModelsForSearch = clientRequestModels.copyToArray()
@@ -161,16 +160,16 @@ private class Controller : Initializable {
         clientRequestModels.addAll(clientRequestModelsBackup)
     }
 
-    private fun setShortcutForArrowKeySelection() {
-        queryTable.setOnKeyReleased { keyEvent ->
-            if (keyEvent.getCode().equals(KeyCode.UP).or(keyEvent.getCode().equals(KeyCode.DOWN)))
-                loadSavedRequest()
-        }
-    }
+    private fun setShortcutForArrowKeySelection() =
+            queryTable.setOnKeyReleased { keyEvent ->
+                if (keyEvent.getCode().equals(KeyCode.UP).or(keyEvent.getCode().equals(KeyCode.DOWN)))
+                    loadSavedRequest()
+            }
+
 
     FXML
     private fun doRequest() {
-        declareEndpoint()
+        updateEndpoint()
 
         if (validEndpoint) {
             cleanupPreviousResponse()
@@ -195,7 +194,7 @@ private class Controller : Initializable {
     }
 
     FXML
-    private fun declareEndpoint() {
+    private fun updateEndpoint() {
         if (endpointUrl.getText().isEmpty()) {
             showNotification("Endpoint URL required")
             validEndpoint = false
@@ -210,7 +209,7 @@ private class Controller : Initializable {
                     .headers(ClientRequest.toHeaders(requestHeaderData.getText()))
                     .url(targetUrl)
                     .build()
-            declareCurlCliCommand()
+            setCurlCliCommand()
         } catch (e: MalformedURLException) {
             showNotification("Invalid endpoint URL: ${e.getMessage()}")
             validEndpoint = false
@@ -230,15 +229,14 @@ private class Controller : Initializable {
     }
 
     private fun doPostRequest() {
-        val response = prepareRequest().post(Entity.json<String>(declareRequestBody()))
+        val response = prepareRequest().post(Entity.json<String>(request.body))
 
         if (response.getStatus() == Response.Status.CREATED.getStatusCode() && response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
-
             responseBody.appendText(Util.formatJson(response.readEntity<String>(javaClass<String>())))
             val stringHeaders = response.getHeaders()
 
-            for (header in stringHeaders.entrySet()) {
-                responseHeaders.appendText(header.getKey() + ": " + header.getValue() + Constant.lineBreak)
+            stringHeaders.entrySet().forEach { header ->
+                responseHeaders.appendText("${header.getKey()}: ${header.getValue()}${Constant.lineBreak}")
             }
         } else {
             responseBody.appendText(response.getStatusInfo().getReasonPhrase())
@@ -246,15 +244,6 @@ private class Controller : Initializable {
 
         showResponseHeaders(response)
         showStatus(response)
-    }
-
-    private fun declareRequestBody(): String {
-        val reqBody = requestBody.getText()
-        if ("".equals(reqBody)) {
-            return requestBody.getPromptText()
-        } else {
-            return requestBody.getText()
-        }
     }
 
     private fun doGetRequest() {
@@ -281,7 +270,7 @@ private class Controller : Initializable {
 
     private fun doPutRequest() {
         try {
-            val response = prepareRequest().put(Entity.json<String>(" {  \"key\" : \"value\" }"))
+            val response = prepareRequest().put(Entity.json<String>(request.body))
 
             if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
                 responseBody.appendText(Util.formatJson(response.readEntity<String>(javaClass<String>())))
@@ -294,7 +283,6 @@ private class Controller : Initializable {
             App.LOG.severe(e.getMessage())
             notification.setText(e.getMessage())
         }
-
     }
 
     private fun doDeleteRequest() {
@@ -313,16 +301,11 @@ private class Controller : Initializable {
 
     }
 
-    private fun declareRequestParameters(): String {
-        val requestParameterContent: String
-
-        if (null === requestParameterData.getText() || requestParameterData.getText().isEmpty()) {
-            requestParameterContent = ""
-        } else {
-            requestParameterContent = requestParameterData.getText()
-        }
-        return requestParameterContent
-    }
+    private fun declareRequestParameters() =
+            if (null === requestParameterData.getText() || requestParameterData.getText().isEmpty())
+                ""
+            else
+                requestParameterData.getText()
 
     FXML
     private fun cleanupPreviousResponse() {
@@ -333,13 +316,13 @@ private class Controller : Initializable {
     }
 
     override fun initialize(url: URL?, resourceBundle: ResourceBundle?) {
-        declareEndpoint()
+        updateEndpoint()
         loadSavedRequests()
     }
 
     FXML
     private fun saveRequest() {
-        declareEndpoint()
+        updateEndpoint()
         val requestName = "${LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))} ${request.url.getHost()}${request.url.getPath()} ${request.method}"
         val clientRequest = ClientRequest.Builder(requestName)
                 .method(request.method)
@@ -369,25 +352,7 @@ private class Controller : Initializable {
         requestColumn.setCellValueFactory(PropertyValueFactory<ClientRequest, String>("name"))
         requestColumn.setCellFactory(TextFieldTableCell.forTableColumn<ClientRequest>())
 
-        val onEditClientRequestListener = {
-            requestColumn.setOnEditCommit({ t ->
-                t.getTableView().getItems().get(t.getTablePosition().getRow()).name = t.getNewValue();
-
-                val file = files.get(t.getTablePosition().getRow());
-
-                FileOutputStream(file).use {
-                    fileOutputStream ->
-                    ObjectOutputStream(fileOutputStream).use {
-                        objectOutputStream ->
-                        objectOutputStream.writeObject(t.getTableView().getItems().get(t.getTablePosition().getRow()))
-                        loadSavedRequests()
-                        App.LOG.info("${App.SAVE_AS} ${t.getTableView().getItems().get(t.getTablePosition().getRow()).name}")
-                    }
-                }
-            })
-        }
         onEditClientRequestListener()
-
         queryTable.setItems(clientRequestModels)
     }
 
@@ -473,11 +438,34 @@ private class Controller : Initializable {
         client.property(ClientProperties.READ_TIMEOUT, 4000)
     }
 
+    private val onEditClientRequestListener = {
+        requestColumn.setOnEditCommit({ clientRequest ->
+            val newClientRequestName = clientRequest.getNewValue()
+            val clientRequestCopy = clientRequest.getTableView().getItems().get(clientRequest.getTablePosition().getRow())
+            val clientRequestRenamed = ClientRequest.Builder(newClientRequestName)
+                    .url(clientRequestCopy.url)
+                    .headers(clientRequestCopy.headers)
+                    .body(clientRequestCopy.body)
+                    .method(clientRequestCopy.method)
+                    .build()
+            clientRequest.getTableView().getItems().set(clientRequest.getTablePosition().getRow(), clientRequestRenamed)
+
+            val file = files.get(clientRequest.getTablePosition().getRow());
+            FileOutputStream(file).use { fileOutputStream ->
+                ObjectOutputStream(fileOutputStream).use { objectOutputStream ->
+                    objectOutputStream.writeObject(clientRequest.getTableView().getItems().get(clientRequest.getTablePosition().getRow()))
+                    loadSavedRequests()
+                    App.LOG.info("${App.SAVE_AS} ${clientRequest.getTableView().getItems().get(clientRequest.getTablePosition().getRow()).name}")
+                }
+            }
+        })
+    }
+
     private class object {
         private val client = ClientBuilder.newClient()
     }
 
-    private fun declareCurlCliCommand() {
+    private fun setCurlCliCommand() {
         curlCommand.setText(request.toCurlCliCommand())
     }
 }
