@@ -53,12 +53,14 @@ class RestCodeTest {
         val consoleBreak = "\\ ${Constant.lineBreak}"
         assertEquals("curl -X \"POST\" $consoleBreak"
                 + "\"https://example.com:440/endpoint/\" $consoleBreak"
-                //                + "-H \"\" $consoleBreak"
+                + "-H \": []\" $consoleBreak" // TODO do no output [] but empty
+                + "-H \"number: 1\" $consoleBreak"
                 + "-H \"header3: value3\" $consoleBreak"
                 + "-H \"header2: []\" $consoleBreak"
                 + "-H \"header1: [0, 1, false, false]\" $consoleBreak"
                 + "-H \"header: [value, value1, 42.0, true]\" $consoleBreak"
                 + "-d $'{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}'",
+
                 clientRequest.toCurlCliCommand())
     }
 
@@ -97,8 +99,9 @@ class RestCodeTest {
 
         private val bodyJson: String = "{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}"
 
-        //        private val headersJson: String = "{\"header\": [\"value\", \"value1\", 42.0, true], \"header1\": [\"0\", 1, false, \"false\"], \"header2\": [], \"\": [], \"header3\": [\"value3\"]}"
-        private val headersJson: String = "{\"header\": [\"value\", \"value1\", 42.0, true], \"header1\": [\"0\", 1, false, \"false\"], \"header2\": [], \"header3\": [\"value3\"]}"
+        private val headersJson: String = "{\"header\": [\"value\", \"value1\", 42.0, true], " +
+                "\"header1\": [\"0\", 1, false, \"false\"], \"header2\": [], " +
+                "\"number\": [1], \"\": [], \"header3\": [\"value3\"]}"
         private val headers: Headers = mapper.readValue(headersJson, javaClass<Headers>())
 
         private val restCodeUrl: String = "$endPointUrl#${RestCodeUtil.restCodeToken}{" +
