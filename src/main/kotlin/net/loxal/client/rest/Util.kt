@@ -21,6 +21,13 @@ import javax.ws.rs.client.WebTarget
 import javax.ws.rs.client.Invocation
 import net.loxal.client.rest.model.ClientRequest
 import net.loxal.client.rest.model.Constant
+import java.util.UUID
+import java.io.FileOutputStream
+import java.io.ObjectOutputStream
+import java.io.FileInputStream
+import java.io.ObjectInputStream
+import java.io.InvalidClassException
+import java.io.WriteAbortedException
 
 final class Util {
     class object {
@@ -37,6 +44,44 @@ final class Util {
                     App.LOG.severe(lang.String.format("%s creation failed", appHomeDirectory))
                 }
             }
+        }
+
+        final fun loadFromFile(clientRequest: File): ClientRequest {
+            FileInputStream(clientRequest).use { fileInputStream ->
+                ObjectInputStream(fileInputStream).use { objectInputStream ->
+                    try {
+                        return objectInputStream.readObject() as ClientRequest
+                    } catch(e: ClassCastException) {
+                        App.LOG.severe("$e")
+                    } catch(e: InvalidClassException) {
+                        App.LOG.severe("$e")
+                    } catch(e: WriteAbortedException) {
+                        App.LOG.severe("$e")
+                    }
+                }
+            }
+
+            throw RuntimeException("Could not load ${clientRequest}")
+        }
+
+        final fun saveToFile(clientRequest: ClientRequest): Boolean {
+            val fullFilePath = App.APP_HOME_DIRECTORY + "/" + UUID.randomUUID() + "-save.serialized"
+            val appHomeDirectory = File(App.APP_HOME_DIRECTORY)
+            Util.createAppHome(appHomeDirectory)
+            try {
+                FileOutputStream(fullFilePath).use { fileOutputStream ->
+                    ObjectOutputStream(fileOutputStream).use { objectOutputStream ->
+                        Util.createSaveFile(fullFilePath)
+                        objectOutputStream.writeObject(clientRequest)
+                        App.LOG.info("${App.SAVE_AS} ${clientRequest.name}: $fullFilePath")
+
+                        return true
+                    }
+                }
+            } catch (e: IOException) {
+                App.LOG.severe("Could not serialize object: ${e.getMessage()}")
+            }
+            return false
         }
 
         final fun createSaveFile(fullFilePath: String) {

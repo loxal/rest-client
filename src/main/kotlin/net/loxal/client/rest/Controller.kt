@@ -23,7 +23,6 @@ import javax.ws.rs.ProcessingException
 import net.loxal.client.rest.model.Headers
 import java.net.URL
 import java.util.ResourceBundle
-import java.io.IOException
 import javafx.collections.FXCollections
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCombination
@@ -34,21 +33,15 @@ import org.glassfish.jersey.client.ClientProperties
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.client.Entity
 import javax.ws.rs.core.Response
-import java.util.UUID
 import java.io.ObjectOutputStream
 import java.io.FileOutputStream
-import java.io.ObjectInputStream
-import java.io.FileInputStream
 import javafx.scene.control.cell.PropertyValueFactory
 import javafx.scene.control.cell.TextFieldTableCell
 import javafx.scene.control.Tooltip
 import javafx.event.ActionEvent
 import java.time.Instant
 import javafx.scene.control.TextField
-import java.io.InvalidClassException
-import java.io.WriteAbortedException
 import net.loxal.client.rest.model.Constant
-import java.io.OptionalDataException
 
 private class Controller : Initializable {
     private var validEndpoint: Boolean = false
@@ -188,24 +181,6 @@ private class Controller : Initializable {
                 HttpMethod.HEAD -> doHeadRequest()
                 HttpMethod.OPTIONS -> doOptionsRequest()
             }
-        }
-    }
-
-    throws(javaClass<IOException>())
-    private fun loadSavedQuery(fullFilePath: String) {
-        files.clear()
-        try {
-            FileInputStream(fullFilePath).use { fileInputStream ->
-                ObjectInputStream(fileInputStream).use { objectInputStream ->
-                    val clientRequestModel = objectInputStream.readObject() as ClientRequest
-                    App.LOG.info("Load request: ${clientRequestModel.name} from $fullFilePath")
-                    loadSavedRequests()
-                }
-            }
-        } catch (e: ClassNotFoundException) {
-            App.LOG.severe(e.getMessage())
-        } catch (e: OptionalDataException) {
-            App.LOG.severe(e.getMessage())
         }
     }
 
@@ -364,30 +339,14 @@ private class Controller : Initializable {
     private fun saveRequest() {
         declareEndpoint()
         val requestName = "${request.url.getHost()}${request.url.getPath()} ${request.method}"
-        val clientRequestModel = ClientRequest.Builder(requestName)
+        val clientRequest = ClientRequest.Builder(requestName)
                 .method(request.method)
                 .url(request.url)
                 .body(requestBody.getText())
                 .headers(ClientRequest.toHeaders(requestHeaderData.getText()))
                 .build()
 
-        val fullFilePath = App.APP_HOME_DIRECTORY + "/" + UUID.randomUUID() + "-save.serialized"
-        val appHomeDirectory = File(App.APP_HOME_DIRECTORY)
-        Util.createAppHome(appHomeDirectory)
-        try {
-            FileOutputStream(fullFilePath).use { fileOutputStream ->
-                ObjectOutputStream(fileOutputStream).use { objectOutputStream ->
-                    Util.createSaveFile(fullFilePath)
-                    objectOutputStream.writeObject(clientRequestModel)
-                    App.LOG.info("${App.SAVE_AS} ${clientRequestModel.name}: $fullFilePath")
-
-                    loadSavedQuery(fullFilePath)
-                }
-            }
-        } catch (e: IOException) {
-            App.LOG.severe("Could not serialize object: ${e.getMessage()}")
-        }
-
+        if (Util saveToFile clientRequest) loadSavedRequests()
 
         queryTable.getSelectionModel().select(0)
         reloadRequestBackup()
@@ -402,22 +361,8 @@ private class Controller : Initializable {
 
         appHomeDirectory.listFiles().forEach { file ->
             files.add(file)
-            FileInputStream(file).use { fileInputStream ->
-                ObjectInputStream(fileInputStream).use { objectInputStream ->
-                    try {
-                        val clientRequestModel: ClientRequest = objectInputStream.readObject() as ClientRequest
-                        clientRequestModels.add(clientRequestModel)
-                    } catch(e: ClassCastException) {
-                        App.LOG.severe("$e")
-                    } catch(e: InvalidClassException) {
-                        App.LOG.severe("$e")
-                    } catch(e: WriteAbortedException) {
-                        App.LOG.severe("$e")
-                    }
-                }
-            }
+            clientRequestModels.add(Util.loadFromFile(file))
         }
-
 
         requestColumn.setCellValueFactory(PropertyValueFactory<ClientRequest, String>("name"))
         requestColumn.setCellFactory(TextFieldTableCell.forTableColumn<ClientRequest>())
