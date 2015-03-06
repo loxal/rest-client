@@ -19,7 +19,7 @@ import javafx.scene.input.KeyCodeCombination
 import javafx.scene.control.Tooltip
 import javax.ws.rs.client.WebTarget
 import javax.ws.rs.client.Invocation
-import net.loxal.client.rest.model.ClientRequestModel
+import net.loxal.client.rest.model.ClientRequest
 import net.loxal.client.rest.model.Constant
 
 final class Util {
@@ -55,7 +55,7 @@ final class Util {
         }
 
         final fun extractHeaderData(rawHeaderData: String): Headers {
-            return ClientRequestModel.toHeaders(rawHeaderData)
+            return ClientRequest.toHeaders(rawHeaderData)
         }
 
         final fun extractRequestParameters(requestParameterContent: String): List<RequestParameter> {

@@ -7,7 +7,7 @@ package net.loxal.client.rest
 import java.net.URL
 import com.fasterxml.jackson.databind.ObjectMapper
 import net.loxal.client.rest.model.RestCode
-import net.loxal.client.rest.model.ClientRequestModel
+import net.loxal.client.rest.model.ClientRequest
 
 
 // TODO move this methods to data DTO’s class object scope
@@ -24,17 +24,17 @@ class RestCodeUtil {
             return restCode
         }
 
-        fun mapToClientRequest(url: URL): ClientRequestModel {
+        fun mapToClientRequest(url: URL): ClientRequest {
             val restCode: RestCode = parseRestCode(url)
-            val clientRequest: ClientRequestModel = convertToClientRequest(url, restCode)
+            val clientRequest: ClientRequest = convertToClientRequest(url, restCode)
 
             return clientRequest
         }
 
-        private fun convertToClientRequest(url: URL, restCode: RestCode): ClientRequestModel {
+        private fun convertToClientRequest(url: URL, restCode: RestCode): ClientRequest {
             val urlRoot = "${url.getProtocol()}://${url.getHost()}${if (url.getPort() == -1) "" else ":" + url.getPort()}${url.getPath()}"
 
-            val clientRequest = ClientRequestModel.Builder(restCode.name)
+            val clientRequest = ClientRequest.Builder(restCode.name)
                     .method(restCode.method)
                     .headers(restCode.headers)
                     .body(restCode.body)

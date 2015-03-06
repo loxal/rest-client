@@ -9,6 +9,7 @@ import javax.ws.rs.HttpMethod
 import java.net.URL
 import net.loxal.client.rest.App
 import javax.ws.rs.core.MultivaluedHashMap
+import net.loxal.client.rest.RestCodeUtil
 
 data class Headers() : MultivaluedHashMap<String, Any>() {
     override fun toString(): String {
@@ -22,7 +23,7 @@ data class Headers() : MultivaluedHashMap<String, Any>() {
     }
 
     class object {
-        private val serialVersionUID = 5979696252154731188
+        private val serialVersionUID = 3979696252154731188
 
         fun new(name: String, value: Any): Headers {
             val h: Headers = Headers()
@@ -50,17 +51,17 @@ data class RestCode private() {
     val method: String = HttpMethod.GET
     val headers: Headers = Headers()
     val body: String = ""
-    val name: String = "Unnamed"
+    val name: String = Constant.unnamed
 }
 
-data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializable {
+data class ClientRequest(builder: ClientRequest.Builder) : Serializable {
     val url: URL = builder.url
     val method: String = builder.method
     val headers: Headers = builder.headers
     val body: String = builder.body
     var name: String = builder.name
 
-    class Builder(val name: String) {
+    class Builder(val name: String = Constant.unnamed) {
         var method: String = HttpMethod.GET
         var url: URL = App.SAMPLE_URL
         var headers: Headers = Headers()
@@ -86,7 +87,7 @@ data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializabl
             return this
         }
 
-        fun build(): ClientRequestModel = ClientRequestModel(this)
+        fun build(): ClientRequest = ClientRequest(this)
     }
 
     fun toCurlCliCommand(): String {
@@ -99,6 +100,14 @@ data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializabl
 
         return curlCliCommand
     }
+
+    override fun toString() = // TODO uni test
+            "${url}#${RestCodeUtil.restCodeToken}{" +
+                    "\"headers\": ${headers}," +
+                    "\"body\": \"${body}\"," +
+                    "\"method\": \"${method}\"," +
+                    "\"name\": \"$name\"" +
+                    "}"
 
     class object {
         private val serialVersionUID = 5979696652154735188
@@ -122,5 +131,5 @@ data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializabl
 object Constant {
     val lineBreak = "\n"
     val consoleBreak = "\\$lineBreak"
-
+    val unnamed = "Unnamed"
 }

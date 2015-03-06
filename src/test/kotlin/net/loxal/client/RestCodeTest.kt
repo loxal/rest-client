@@ -9,7 +9,7 @@ import kotlin.test.assertEquals
 import java.net.URL
 import com.fasterxml.jackson.databind.ObjectMapper
 import net.loxal.client.rest.model.RestCode
-import net.loxal.client.rest.model.ClientRequestModel
+import net.loxal.client.rest.model.ClientRequest
 import javax.ws.rs.HttpMethod
 import net.loxal.client.rest.RestCodeUtil
 import net.loxal.client.rest.model.Headers
@@ -21,7 +21,7 @@ class RestCodeTest {
      */
     Test
     fun mapRestCode() {
-        val restCode: RestCode = RestCodeUtil.parseRestCode(url)
+        val restCode: RestCode = RestCodeUtil.parseRestCode(restCodeUrl)
         validateRestCode(restCode)
     }
 
@@ -34,21 +34,21 @@ class RestCodeTest {
 
     Test
     fun fromRestCodeModelToClientRequestModel() {
-        val clientRequest: ClientRequestModel = RestCodeUtil.mapToClientRequest(url)
+        val clientRequest: ClientRequest = RestCodeUtil.mapToClientRequest(restCodeUrl)
         validateClientRequest(clientRequest)
     }
 
-    private fun validateClientRequest(clientRequest: ClientRequestModel) {
+    private fun validateClientRequest(clientRequest: ClientRequest) {
         assertEquals(headers, clientRequest.headers)
         assertEquals(bodyJson, clientRequest.body)
         assertEquals(method, clientRequest.method)
         assertEquals(name, clientRequest.name)
-        assertEquals(endPointUrl, clientRequest.url.toString())
+        assertEquals(endpointUrl, clientRequest.url.toString())
     }
 
     Test
     fun clientRequestModelToCurl() {
-        val clientRequest = RestCodeUtil.mapToClientRequest(url)
+        val clientRequest = RestCodeUtil.mapToClientRequest(restCodeUrl)
 
         assertEquals(
                 """curl -X "POST" "https://example.com:440/endpoint/" \
@@ -64,7 +64,7 @@ class RestCodeTest {
     }
 
     Test
-    fun `toString with lineBreak`() {
+    fun `Headers’ toString with lineBreak`() {
         val showHeaders = "Server: RESTkit v1\n"
         val header = Headers.new("Server", "RESTkit v1").entrySet().first()
 
@@ -74,14 +74,22 @@ class RestCodeTest {
     }
 
     Test
+    fun `ClientRequest’s toString`() {
+        val clientRequest = ClientRequest.Builder().url(URL(endpointUrl)).headers(headers).body(bodyJson).method(method).build()
+        val clientRequest1 = ClientRequest.Builder(name).url(URL(endpointUrl)).headers(headers).body(bodyJson).method(method).build()
+        //        assertEquals("""https://example.com:440/endpoint/#RESTcode:{"headers": : number: 1header3: value3header2: header1: [0, 1, false, false]header: [value, value1, 42.0, true],"body": "{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}","method": "POST","name": "Test Example"}""",
+        //                clientRequest.toString())
+    }
+
+    Test
     fun toHeaders() {
         val headerValueReference = "Header Name: Value"
-        val headerFromText = ClientRequestModel.toHeaders(headerValueReference)
+        val headerFromText = ClientRequest.toHeaders(headerValueReference)
         assertEquals(1, headerFromText.size())
         assertEquals(headerValueReference, headerFromText.toString())
-        assertEquals(headerValueReference, ClientRequestModel.toHeaders("  Header Name   :  Value ").toString())
+        assertEquals(headerValueReference, ClientRequest.toHeaders("  Header Name   :  Value ").toString())
 
-        val headersFromText = ClientRequestModel.toHeaders("  Header Name   :  Value  \nHeader1:Value "
+        val headersFromText = ClientRequest.toHeaders("  Header Name   :  Value  \nHeader1:Value "
                 + " \n  Header2  :Value :DELTA:\nMultivalue-Header :[First Value, Second Value, Another Value]")
         assertEquals(4, headersFromText.size())
         val headers = Headers()
@@ -95,8 +103,8 @@ class RestCodeTest {
         headersOdd.add("Additional", "Entry")
         assertNotEquals(headersOdd.toString(), headersFromText.toString())
 
-        assertEquals(Headers(), ClientRequestModel.toHeaders(""))
-        assertEquals(0, ClientRequestModel.toHeaders("").size())
+        assertEquals(Headers(), ClientRequest.toHeaders(""))
+        assertEquals(0, ClientRequest.toHeaders("").size())
     }
 
     class object {
@@ -104,7 +112,7 @@ class RestCodeTest {
 
         private val method: String = HttpMethod.POST
         private val name: String = "Test Example"
-        private val endPointUrl: String = "https://example.com:440/endpoint/"
+        private val endpointUrl: String = "https://example.com:440/endpoint/"
 
         private val bodyJson: String = "{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}"
 
@@ -113,13 +121,13 @@ class RestCodeTest {
                 "\"number\": [1], \"\": [], \"header3\": [\"value3\"]}"
         private val headers: Headers = mapper.readValue(headersJson, javaClass<Headers>())
 
-        private val restCodeUrl: String = "$endPointUrl#${RestCodeUtil.restCodeToken}{" +
+        private val restCodeUrlRaw: String = "$endpointUrl#${RestCodeUtil.restCodeToken}{" +
                 "\"headers\": ${headersJson}," +
                 "\"body\": \"${bodyJson}\"," +
                 "\"method\": \"${HttpMethod.POST}\"," +
                 "\"name\": \"$name\"" +
                 "}"
 
-        private val url: URL = URL(restCodeUrl)
+        private val restCodeUrl: URL = URL(restCodeUrlRaw)
     }
 }

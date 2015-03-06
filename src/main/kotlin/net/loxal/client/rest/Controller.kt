@@ -7,7 +7,7 @@ package net.loxal.client.rest
 import javafx.fxml.Initializable
 import java.io.File
 import javafx.collections.ObservableList
-import net.loxal.client.rest.model.ClientRequestModel
+import net.loxal.client.rest.model.ClientRequest
 import javafx.scene.control.TextArea
 import javafx.scene.control.Label
 import javafx.scene.control.Button
@@ -48,12 +48,13 @@ import javafx.scene.control.TextField
 import java.io.InvalidClassException
 import java.io.WriteAbortedException
 import net.loxal.client.rest.model.Constant
+import java.io.OptionalDataException
 
 private class Controller : Initializable {
     private var validEndpoint: Boolean = false
     private val files: ObservableList<File> = FXCollections.observableArrayList<File>()
-    private val clientRequestModels = FXCollections.observableArrayList<ClientRequestModel>()
-    private val clientRequestModelsBackup = FXCollections.observableArrayList<ClientRequestModel>()
+    private val clientRequestModels = FXCollections.observableArrayList<ClientRequest>()
+    private val clientRequestModelsBackup = FXCollections.observableArrayList<ClientRequest>()
 
     FXML
     private var find: TextField = TextField()
@@ -80,7 +81,7 @@ private class Controller : Initializable {
     FXML
     private var getMethodRadio: RadioButton = RadioButton()
     FXML
-    private var queryTable: TableView<ClientRequestModel> = TableView()
+    private var queryTable: TableView<ClientRequest> = TableView()
     FXML
     private var postMethodRadio: RadioButton = RadioButton()
     FXML
@@ -92,7 +93,7 @@ private class Controller : Initializable {
     FXML
     private var optionsMethodRadio: RadioButton = RadioButton()
     FXML
-    private var requestColumn: TableColumn<ClientRequestModel, String> = TableColumn()
+    private var requestColumn: TableColumn<ClientRequest, String> = TableColumn()
     FXML
     private var requestDeleter: Button = Button()
     FXML
@@ -104,7 +105,7 @@ private class Controller : Initializable {
     FXML
     private var requestMethod: ToggleGroup = ToggleGroup()
 
-    private var request: ClientRequestModel = ClientRequestModel.Builder("[Init Request]").build()
+    private var request: ClientRequest = ClientRequest.Builder("[Init Request]").build()
     private var startRequest: Instant = Instant.now()
 
     fun setAccelerators() {
@@ -156,7 +157,7 @@ private class Controller : Initializable {
         }
     }
 
-    private fun found(savedRequest: ClientRequestModel) =
+    private fun found(savedRequest: ClientRequest) =
             savedRequest.name.toLowerCase().contains(find.getText().toLowerCase())
 
 
@@ -196,15 +197,16 @@ private class Controller : Initializable {
         try {
             FileInputStream(fullFilePath).use { fileInputStream ->
                 ObjectInputStream(fileInputStream).use { objectInputStream ->
-                    val clientRequestModel = objectInputStream.readObject() as ClientRequestModel
-                    App.LOG.info("Load request: ${clientRequestModel.name}")
+                    val clientRequestModel = objectInputStream.readObject() as ClientRequest
+                    App.LOG.info("Load request: ${clientRequestModel.name} from $fullFilePath")
                     loadSavedRequests()
                 }
             }
         } catch (e: ClassNotFoundException) {
             App.LOG.severe(e.getMessage())
+        } catch (e: OptionalDataException) {
+            App.LOG.severe(e.getMessage())
         }
-
     }
 
     private fun prepareRequest(): Invocation.Builder {
@@ -225,10 +227,10 @@ private class Controller : Initializable {
 
         try {
             val targetUrl: URL = URL(endpointUrl.getText())
-            request = ClientRequestModel.Builder("[Current Request]")
+            request = ClientRequest.Builder("[Current Request]")
                     .method((requestMethod.getSelectedToggle() as RadioButton).getText())
                     .body(requestBody.getText())
-                    .headers(ClientRequestModel.toHeaders(requestHeaderData.getText()))
+                    .headers(ClientRequest.toHeaders(requestHeaderData.getText()))
                     .url(targetUrl)
                     .build()
             declareCurlCliCommand()
@@ -362,11 +364,11 @@ private class Controller : Initializable {
     private fun saveRequest() {
         declareEndpoint()
         val requestName = "${request.url.getHost()}${request.url.getPath()} ${request.method}"
-        val clientRequestModel = ClientRequestModel.Builder(requestName)
+        val clientRequestModel = ClientRequest.Builder(requestName)
                 .method(request.method)
                 .url(request.url)
                 .body(requestBody.getText())
-                .headers(ClientRequestModel.toHeaders(requestHeaderData.getText()))
+                .headers(ClientRequest.toHeaders(requestHeaderData.getText()))
                 .build()
 
         val fullFilePath = App.APP_HOME_DIRECTORY + "/" + UUID.randomUUID() + "-save.serialized"
@@ -377,7 +379,7 @@ private class Controller : Initializable {
                 ObjectOutputStream(fileOutputStream).use { objectOutputStream ->
                     Util.createSaveFile(fullFilePath)
                     objectOutputStream.writeObject(clientRequestModel)
-                    App.LOG.info("${App.SAVE_AS} ${clientRequestModel.name}")
+                    App.LOG.info("${App.SAVE_AS} ${clientRequestModel.name}: $fullFilePath")
 
                     loadSavedQuery(fullFilePath)
                 }
@@ -403,7 +405,7 @@ private class Controller : Initializable {
             FileInputStream(file).use { fileInputStream ->
                 ObjectInputStream(fileInputStream).use { objectInputStream ->
                     try {
-                        val clientRequestModel: ClientRequestModel = objectInputStream.readObject() as ClientRequestModel
+                        val clientRequestModel: ClientRequest = objectInputStream.readObject() as ClientRequest
                         clientRequestModels.add(clientRequestModel)
                     } catch(e: ClassCastException) {
                         App.LOG.severe("$e")
@@ -417,8 +419,8 @@ private class Controller : Initializable {
         }
 
 
-        requestColumn.setCellValueFactory(PropertyValueFactory<ClientRequestModel, String>("name"))
-        requestColumn.setCellFactory(TextFieldTableCell.forTableColumn<ClientRequestModel>())
+        requestColumn.setCellValueFactory(PropertyValueFactory<ClientRequest, String>("name"))
+        requestColumn.setCellFactory(TextFieldTableCell.forTableColumn<ClientRequest>())
 
         requestColumn.setOnEditCommit({ t ->
             t.getTableView().getItems().get(t.getTablePosition().getRow()).name = t.getNewValue();
