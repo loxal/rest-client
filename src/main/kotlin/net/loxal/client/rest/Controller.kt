@@ -369,21 +369,24 @@ private class Controller : Initializable {
         requestColumn.setCellValueFactory(PropertyValueFactory<ClientRequest, String>("name"))
         requestColumn.setCellFactory(TextFieldTableCell.forTableColumn<ClientRequest>())
 
-        requestColumn.setOnEditCommit({ t ->
-            t.getTableView().getItems().get(t.getTablePosition().getRow()).name = t.getNewValue();
+        val onEditClientRequestListener = {
+            requestColumn.setOnEditCommit({ t ->
+                t.getTableView().getItems().get(t.getTablePosition().getRow()).name = t.getNewValue();
 
-            val file = files.get(t.getTablePosition().getRow());
+                val file = files.get(t.getTablePosition().getRow());
 
-            FileOutputStream(file).use {
-                fileOutputStream ->
-                ObjectOutputStream(fileOutputStream).use {
-                    objectOutputStream ->
-                    objectOutputStream.writeObject(t.getTableView().getItems().get(t.getTablePosition().getRow()))
-                    loadSavedRequests()
-                    App.LOG.info("${App.SAVE_AS} ${t.getTableView().getItems().get(t.getTablePosition().getRow()).name}")
+                FileOutputStream(file).use {
+                    fileOutputStream ->
+                    ObjectOutputStream(fileOutputStream).use {
+                        objectOutputStream ->
+                        objectOutputStream.writeObject(t.getTableView().getItems().get(t.getTablePosition().getRow()))
+                        loadSavedRequests()
+                        App.LOG.info("${App.SAVE_AS} ${t.getTableView().getItems().get(t.getTablePosition().getRow()).name}")
+                    }
                 }
-            }
-        })
+            })
+        }
+        onEditClientRequestListener()
 
         queryTable.setItems(clientRequestModels)
     }
