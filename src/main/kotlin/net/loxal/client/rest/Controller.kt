@@ -340,7 +340,7 @@ private class Controller : Initializable {
     FXML
     private fun saveRequest() {
         declareEndpoint()
-        val requestName = "${LocalTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME)} ${request.url.getHost()}${request.url.getPath()} ${request.method}"
+        val requestName = "${LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))} ${request.url.getHost()}${request.url.getPath()} ${request.method}"
         val clientRequest = ClientRequest.Builder(requestName)
                 .method(request.method)
                 .url(request.url)

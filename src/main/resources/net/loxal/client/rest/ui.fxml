@@ -26,9 +26,7 @@
         <Button fx:id="clearButton" cancelButton="true" defaultButton="true" layoutX="820.0" layoutY="528.0" mnemonicParsing="false" onAction="#cleanupPreviousResponse" pickOnBounds="false" prefWidth="145.0" text="Clear Response" />
         <RadioButton fx:id="postMethodRadio" layoutX="148.0" layoutY="58.0" mnemonicParsing="false" styleClass="request-alt" text="POST" toggleGroup="$requestMethod" />
         <Text layoutX="485.0" layoutY="584.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Response Body" wrappingWidth="112.54776000976562" />
-        <TextArea fx:id="responseBody" editable="false" layoutX="489.0" layoutY="593.0" pickOnBounds="false"
-                  prefHeight="197.0" prefWidth="477.0" promptText="{&quot;jsonKey&quot;: &quot;jsonValue&quot;}"
-                  snapToPixel="false"/>
+        <TextArea fx:id="responseBody" editable="false" layoutX="489.0" layoutY="593.0" pickOnBounds="false" prefHeight="197.0" prefWidth="477.0" promptText="{&quot;jsonKey&quot;: &quot;jsonValue&quot;}" snapToPixel="false" />
         <Text layoutX="10.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Endpoint">
             <font>
                 <Font size="18.0" />
@@ -39,13 +37,9 @@
         <TextArea fx:id="requestHeaderData" layoutX="11.0" layoutY="102.0" prefHeight="123.0" prefWidth="467.0" promptText="Content-Type: application/json&#13;User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2)" styleClass="request" wrapText="true" />
         <Text layoutX="5.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request Headers" wrappingWidth="109.0" />
         <Text layoutX="3.0" layoutY="584.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Response Headers" />
-        <TextArea fx:id="responseHeaders" editable="false" layoutX="11.0" layoutY="593.0" prefHeight="197.0"
-                  prefWidth="467.0" promptText="Location: https://api.example.com/entity/id"/>
+        <TextArea fx:id="responseHeaders" editable="false" layoutX="11.0" layoutY="593.0" prefHeight="197.0" prefWidth="467.0" promptText="Location: https://api.example.com/entity/id" />
         <Label fx:id="notification" layoutX="89.0" layoutY="35.0" prefHeight="16.0" prefWidth="727.0" textFill="#dd6611" wrapText="true" />
-        <TextArea fx:id="requestParameterData" editable="false" layoutX="489.0" layoutY="102.0" prefHeight="123.0"
-                  prefWidth="477.0"
-                  promptText="URL parameters are read from the endpoint URL and are prefaced with the “?” character."
-                  styleClass="request"/>
+        <TextArea fx:id="requestParameterData" editable="false" layoutX="489.0" layoutY="102.0" prefHeight="123.0" prefWidth="477.0" promptText="URL parameters are read from the endpoint URL and are prefaced with the “?” character." styleClass="request" />
         <RadioButton fx:id="deleteMethodRadio" layoutX="212.0" layoutY="58.0" mnemonicParsing="false" styleClass="request-alt" text="DELETE" toggleGroup="$requestMethod" />
         <RadioButton fx:id="putMethodRadio" layoutX="290.0" layoutY="58.0" mnemonicParsing="false" styleClass="request-alt" text="PUT" toggleGroup="$requestMethod" />
         <Text layoutX="485.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="URL Parameters" />
