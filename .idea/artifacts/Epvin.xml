@@ -20,7 +20,6 @@
         <element id="library" level="project" name="Maven: com.google.code.gson:gson:2.3.1" />
         <element id="library" level="project" name="Maven: javax.annotation:javax.annotation-api:1.2" />
         <element id="library" level="project" name="Maven: javax.ws.rs:javax.ws.rs-api:2.0.1" />
-        <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.3.2" />
         <element id="library" level="project" name="Maven: org.glassfish.hk2:osgi-resource-locator:1.0.1" />
         <element id="library" level="project" name="Maven: org.javassist:javassist:3.18.1-GA" />
         <element id="library" level="project" name="Maven: org.jetbrains.kotlin:kotlin-runtime:0.10.770" />
@@ -33,6 +32,9 @@
         <element id="library" level="project" name="Maven: org.glassfish.hk2.external:aopalliance-repackaged:2.4.0-b09" />
         <element id="library" level="project" name="Maven: org.glassfish.hk2.external:javax.inject:2.4.0-b09" />
         <element id="library" level="project" name="Maven: org.glassfish.hk2:hk2-locator:2.4.0-b09" />
+        <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.5.1" />
+        <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.5.0" />
+        <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.5.1" />
       </element>
     </root>
   </artifact>
