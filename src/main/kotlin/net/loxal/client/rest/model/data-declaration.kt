@@ -103,9 +103,9 @@ data class ClientRequest(builder: ClientRequest.Builder) : Serializable {
 
     override fun toString() = // TODO uni test
             "${url}#${RestCodeUtil.restCodeToken}{" +
-                    "\"headers\": ${headers}," +
-                    "\"body\": \"${body}\"," +
-                    "\"method\": \"${method}\"," +
+                    "\"headers\": ${headers}, " +
+                    "\"body\": \"${body}\", " +
+                    "\"method\": \"${method}\", " +
                     "\"name\": \"$name\"" +
                     "}"
 

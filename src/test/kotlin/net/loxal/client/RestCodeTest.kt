@@ -75,10 +75,13 @@ class RestCodeTest {
 
     Test
     fun `ClientRequest’s toString`() {
-        val clientRequest = ClientRequest.Builder().url(URL(endpointUrl)).headers(headers).body(bodyJson).method(method).build()
-        val clientRequest1 = ClientRequest.Builder(name).url(URL(endpointUrl)).headers(headers).body(bodyJson).method(method).build()
-        //        assertEquals("""https://example.com:440/endpoint/#RESTcode:{"headers": : number: 1header3: value3header2: header1: [0, 1, false, false]header: [value, value1, 42.0, true],"body": "{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}","method": "POST","name": "Test Example"}""",
-        //                clientRequest.toString())
+        val clientRequestWithName = ClientRequest.Builder(name).url(URL(endpointUrl)).headers(headers).body(bodyJson).method(method).build()
+        assertEquals("""https://example.com:440/endpoint/#RESTcode:{"headers": : number: 1header3: value3header2: header1: [0, 1, false, false]header: [value, value1, 42.0, true], "body": "{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}", "method": "POST", "name": "Test Example"}""",
+                clientRequestWithName.toString())
+
+        val clientRequestWithDefaultName = ClientRequest.Builder().url(URL(endpointUrl)).headers(headers).body(bodyJson).method(method).build()
+        assertEquals("""https://example.com:440/endpoint/#RESTcode:{"headers": : number: 1header3: value3header2: header1: [0, 1, false, false]header: [value, value1, 42.0, true], "body": "{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}", "method": "POST", "name": "Unnamed"}""",
+                clientRequestWithDefaultName.toString())
     }
 
     Test
