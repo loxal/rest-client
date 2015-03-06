@@ -10,7 +10,7 @@ import java.net.URL
 import net.loxal.client.rest.App
 import javax.ws.rs.core.MultivaluedHashMap
 
-data class Headers() : MultivaluedHashMap<String, Any>() {
+data class Headers public() : MultivaluedHashMap<String, Any>() {
     override fun toString(): String {
         val string = StringBuilder()
         this.forEach { entry ->
@@ -22,6 +22,8 @@ data class Headers() : MultivaluedHashMap<String, Any>() {
     }
 
     class object {
+        private val serialVersionUID = 5979696252154731188
+
         fun new(name: String, value: Any): Headers {
             val h: Headers = Headers()
             h.add(name, value)
@@ -30,10 +32,12 @@ data class Headers() : MultivaluedHashMap<String, Any>() {
         }
 
         private fun prettyFormatHeaderValue(value: List<Any>) =
-                if (value.isEmpty()) ""
+                if (value.isEmpty())
+                    ""
                 else if (value.size() > 1)
                     value.toString()
-                else value.first().toString()
+                else
+                    value.first().toString()
 
         fun toString(entry: Map.Entry<String, List<Any>>) = "${entry.key}: ${prettyFormatHeaderValue(entry.value)}"
     }
@@ -87,16 +91,16 @@ data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializabl
     fun toCurlCliCommand(): String {
         val headers: StringBuilder = StringBuilder()
         this.headers.forEach { entry ->
-            headers.append("-H \"${Headers.toString(entry)}\" \\ ${Constant.lineBreak}")
+            headers.append("-H \"${Headers.toString(entry)}\" ${Constant.consoleBreak}")
         }
 
-        val curlCliCommand = "curl -X \"${method}\" \\ ${Constant.lineBreak}\"${url}\" \\ ${Constant.lineBreak}${headers}-d $'${body}'"
+        val curlCliCommand = "curl -X \"${method}\" \"${url}\" \\${Constant.lineBreak}${headers}-d $'${body}'"
 
         return curlCliCommand
     }
 
     class object {
-        private val serialVersionUID = 5979696652154735187
+        private val serialVersionUID = 5979696652154735188
         val headerKeyValueSeparator = ":"
 
         fun toHeaders(text: String): Headers {
@@ -116,4 +120,6 @@ data class ClientRequestModel(builder: ClientRequestModel.Builder) : Serializabl
 
 object Constant {
     val lineBreak = "\n"
+    val consoleBreak = "\\$lineBreak"
+
 }

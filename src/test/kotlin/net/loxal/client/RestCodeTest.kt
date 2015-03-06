@@ -50,15 +50,14 @@ class RestCodeTest {
     Test
     fun clientRequestModelToCurl() {
         val clientRequest = RestCodeUtil.mapToClientRequest(url)
-        val consoleBreak = "\\ ${Constant.lineBreak}"
-        assertEquals("curl -X \"POST\" $consoleBreak"
-                + "\"https://example.com:440/endpoint/\" $consoleBreak"
-                + "-H \": \" $consoleBreak"
-                + "-H \"number: 1\" $consoleBreak"
-                + "-H \"header3: value3\" $consoleBreak"
-                + "-H \"header2: \" $consoleBreak"
-                + "-H \"header1: [0, 1, false, false]\" $consoleBreak"
-                + "-H \"header: [value, value1, 42.0, true]\" $consoleBreak"
+        assertEquals("curl -X \"POST\" "
+                + "\"https://example.com:440/endpoint/\" ${Constant.consoleBreak}"
+                + "-H \": \" ${Constant.consoleBreak}"
+                + "-H \"number: 1\" ${Constant.consoleBreak}"
+                + "-H \"header3: value3\" ${Constant.consoleBreak}"
+                + "-H \"header2: \" ${Constant.consoleBreak}"
+                + "-H \"header1: [0, 1, false, false]\" ${Constant.consoleBreak}"
+                + "-H \"header: [value, value1, 42.0, true]\" ${Constant.consoleBreak}"
                 + "-d $'{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}'",
 
                 clientRequest.toCurlCliCommand())
