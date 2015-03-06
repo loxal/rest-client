@@ -337,7 +337,7 @@ private class Controller : Initializable {
     private fun declareRequestParameters(): String {
         val requestParameterContent: String
 
-        if ("".equals(requestParameterData.getText()) || null === requestParameterData.getText()) {
+        if (null === requestParameterData.getText() || requestParameterData.getText().isEmpty()) {
             requestParameterContent = ""
         } else {
             requestParameterContent = requestParameterData.getText()
@@ -465,7 +465,6 @@ private class Controller : Initializable {
             request = selectedRequest
 
             setMethodInUi(request.method)
-            // TODO request.headers.toString() might be not enough, a stringify method might be required
             requestHeaderData.setText(request.headers.toString())
             requestParameterData.setText(request.url.getQuery())
             requestBody.setText(request.body)
@@ -512,6 +511,7 @@ private class Controller : Initializable {
 
     private fun showStatus(response: Response) {
         val requestDuration = Instant.now().minusMillis(startRequest.toEpochMilli()).toEpochMilli()
+
         responseStatus.setText("${response.getStatusInfo().getStatusCode()} ${response.getStatusInfo().getReasonPhrase()} in $requestDuration ms")
         responseStatus.setTooltip(Tooltip(response.getStatusInfo().getFamily().name()))
     }

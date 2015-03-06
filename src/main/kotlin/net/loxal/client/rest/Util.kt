@@ -51,7 +51,6 @@ final class Util {
                 } catch (e: IOException) {
                     App.LOG.severe(e.getMessage())
                 }
-
             }
         }
 

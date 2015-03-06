@@ -10,7 +10,7 @@ import java.net.URL
 import net.loxal.client.rest.App
 import javax.ws.rs.core.MultivaluedHashMap
 
-data class Headers public() : MultivaluedHashMap<String, Any>() {
+data class Headers() : MultivaluedHashMap<String, Any>() {
     override fun toString(): String {
         val string = StringBuilder()
         this.forEach { entry ->
