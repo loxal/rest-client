@@ -14,7 +14,6 @@ import javax.ws.rs.HttpMethod
 import net.loxal.client.rest.RestCodeUtil
 import net.loxal.client.rest.model.Headers
 import kotlin.test.assertNotEquals
-import net.loxal.client.rest.model.Constant
 
 class RestCodeTest {
     /**
@@ -50,17 +49,27 @@ class RestCodeTest {
     Test
     fun clientRequestModelToCurl() {
         val clientRequest = RestCodeUtil.mapToClientRequest(url)
-        assertEquals("curl -X \"POST\" "
-                + "\"https://example.com:440/endpoint/\" ${Constant.consoleBreak}"
-                + "-H \": \" ${Constant.consoleBreak}"
-                + "-H \"number: 1\" ${Constant.consoleBreak}"
-                + "-H \"header3: value3\" ${Constant.consoleBreak}"
-                + "-H \"header2: \" ${Constant.consoleBreak}"
-                + "-H \"header1: [0, 1, false, false]\" ${Constant.consoleBreak}"
-                + "-H \"header: [value, value1, 42.0, true]\" ${Constant.consoleBreak}"
-                + "-d $'{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}'",
+
+        assertEquals("""curl -X "POST" "https://example.com:440/endpoint/" \
+-H ": " \
+-H "number: 1" \
+-H "header3: value3" \
+-H "header2: " \
+-H "header1: [0, 1, false, false]" \
+-H "header: [value, value1, 42.0, true]" \
+-d $'{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}'""",
 
                 clientRequest.toCurlCliCommand())
+    }
+
+    Test
+    fun toStringWithLineBreak() {
+        val showHeaders = "Server: RESTkit v1\n"
+        val header = Headers.new("Server", "RESTkit v1").entrySet().first()
+
+        assertEquals(showHeaders, Headers.toString(entry = header, lineBreak = true))
+        assertNotEquals(showHeaders, Headers.toString(entry = header, lineBreak = false))
+        assertNotEquals(showHeaders, Headers.toString(entry = header))
     }
 
     Test

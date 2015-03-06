@@ -39,7 +39,8 @@ data class Headers public() : MultivaluedHashMap<String, Any>() {
                 else
                     value.first().toString()
 
-        fun toString(entry: Map.Entry<String, List<Any>>) = "${entry.key}: ${prettyFormatHeaderValue(entry.value)}"
+        fun toString(entry: Map.Entry<String, List<Any>>, lineBreak: Boolean = false) =
+                "${entry.key}: ${prettyFormatHeaderValue(entry.value)}${if (lineBreak) Constant.lineBreak else ""}"
     }
 }
 

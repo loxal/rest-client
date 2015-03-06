@@ -296,7 +296,7 @@ private class Controller : Initializable {
 
     private fun showResponseHeaders(getResponse: Response) {
         getResponse.getHeaders().forEach { header ->
-            responseHeaders.appendText("${Headers.new(header.key, header.value)} ${Constant.lineBreak}")
+            responseHeaders.appendText("${Headers.toString(entry = header, lineBreak = true)}")
         }
     }
 
