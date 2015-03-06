@@ -50,7 +50,8 @@ class RestCodeTest {
     fun clientRequestModelToCurl() {
         val clientRequest = RestCodeUtil.mapToClientRequest(url)
 
-        assertEquals("""curl -X "POST" "https://example.com:440/endpoint/" \
+        assertEquals(
+                """curl -X "POST" "https://example.com:440/endpoint/" \
 -H ": " \
 -H "number: 1" \
 -H "header3: value3" \
@@ -63,7 +64,7 @@ class RestCodeTest {
     }
 
     Test
-    fun toStringWithLineBreak() {
+    fun `toString with lineBreak`() {
         val showHeaders = "Server: RESTkit v1\n"
         val header = Headers.new("Server", "RESTkit v1").entrySet().first()
 
