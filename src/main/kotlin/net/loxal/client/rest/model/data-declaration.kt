@@ -30,7 +30,7 @@ data class Headers() : MultivaluedHashMap<String, Any>() {
         }
 
         private fun prettyFormatHeaderValue(value: List<Any>) =
-                if (value.isEmpty()) value.toString()
+                if (value.isEmpty()) ""
                 else if (value.size() > 1)
                     value.toString()
                 else value.first().toString()

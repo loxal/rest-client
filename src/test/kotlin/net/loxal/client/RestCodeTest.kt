@@ -53,10 +53,10 @@ class RestCodeTest {
         val consoleBreak = "\\ ${Constant.lineBreak}"
         assertEquals("curl -X \"POST\" $consoleBreak"
                 + "\"https://example.com:440/endpoint/\" $consoleBreak"
-                + "-H \": []\" $consoleBreak" // TODO do no output [] but empty
+                + "-H \": \" $consoleBreak"
                 + "-H \"number: 1\" $consoleBreak"
                 + "-H \"header3: value3\" $consoleBreak"
-                + "-H \"header2: []\" $consoleBreak"
+                + "-H \"header2: \" $consoleBreak"
                 + "-H \"header1: [0, 1, false, false]\" $consoleBreak"
                 + "-H \"header: [value, value1, 42.0, true]\" $consoleBreak"
                 + "-d $'{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}'",
