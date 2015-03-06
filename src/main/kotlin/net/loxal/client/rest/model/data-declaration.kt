@@ -124,7 +124,7 @@ data class ClientRequest(builder: ClientRequest.Builder) : Serializable {
         return curlCliCommand
     }
 
-    override fun toString() = // TODO uni test
+    override fun toString() =
             "${url}#${RestCode.restCodeToken}{" +
                     "\"headers\": {${headers}}, " +
                     "\"body\": \"${body}\", " +
@@ -133,7 +133,7 @@ data class ClientRequest(builder: ClientRequest.Builder) : Serializable {
                     "}"
 
     class object {
-        private val serialVersionUID = 5979696652154735188
+        private val serialVersionUID = 5979496652154735188
         val headerKeyValueSeparator = ":"
 
         fun toHeaders(text: String): Headers {
