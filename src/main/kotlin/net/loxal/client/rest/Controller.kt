@@ -42,6 +42,8 @@ import javafx.event.ActionEvent
 import java.time.Instant
 import javafx.scene.control.TextField
 import net.loxal.client.rest.model.Constant
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 private class Controller : Initializable {
     private var validEndpoint: Boolean = false
@@ -338,7 +340,7 @@ private class Controller : Initializable {
     FXML
     private fun saveRequest() {
         declareEndpoint()
-        val requestName = "${request.url.getHost()}${request.url.getPath()} ${request.method}"
+        val requestName = "${LocalTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME)} ${request.url.getHost()}${request.url.getPath()} ${request.method}"
         val clientRequest = ClientRequest.Builder(requestName)
                 .method(request.method)
                 .url(request.url)

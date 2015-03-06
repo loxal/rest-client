@@ -14,7 +14,7 @@
     </parent>
 
     <artifactId>rest-client</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.3</version>
     <packaging>jar</packaging>
     <name>Epvin</name>
     <description>REST Client Tool</description>

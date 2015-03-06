@@ -1,11 +1,12 @@
 # Backlog
 
 ## RELEASE NEXT
+    request parameters are not saved
 
 ## RELEASE 0
 
 ## RELEASE 1
     Add command line capability
         to be able to do something like "cf apps", performing specific REST requests to accomplish something
-        use WGET syntax
+            use WGET syntax
 
