@@ -353,6 +353,7 @@ private class Controller : Initializable {
 
         onEditClientRequestListener()
         queryTable.setItems(clientRequests)
+        requestColumn.getTableView().getSortOrder().add(requestColumn)
     }
 
     FXML

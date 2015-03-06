@@ -32,7 +32,8 @@
                 <Font size="18.0" />
             </font>
         </Text>
-        <TextArea fx:id="requestBody" layoutX="11.0" layoutY="254.0" prefHeight="300.0" prefWidth="467.0" promptText="{&quot;jsonKey&quot;: &quot;jsonValue&quot;}" styleClass="request" wrapText="true" />
+        <TextArea fx:id="requestBody" layoutX="11.0" layoutY="254.0" prefHeight="300.0" prefWidth="467.0"
+                  promptText="{&quot;jsonKey&quot;: &quot;JSON Value&quot;}" styleClass="request" wrapText="true"/>
         <Text layoutX="5.0" layoutY="245.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request Body" />
         <TextArea fx:id="requestHeaderData" layoutX="11.0" layoutY="102.0" prefHeight="123.0" prefWidth="467.0" promptText="Content-Type: application/json&#13;User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2)" styleClass="request" wrapText="true" />
         <Text layoutX="5.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request Headers" wrappingWidth="109.0" />
@@ -46,7 +47,8 @@
         <Button fx:id="requestSaver" layoutX="974.0" layoutY="9.0" mnemonicParsing="false" onAction="#saveRequest" prefHeight="26.0" prefWidth="145.0" text="Save Request" />
         <TableView fx:id="queryTable" editable="true" layoutX="974.0" layoutY="100.0" maxWidth="398.0" onMouseReleased="#loadSavedRequest" prefHeight="690.0" prefWidth="292.0">
             <columns>
-                <TableColumn fx:id="requestColumn" maxWidth="290.0" prefWidth="292.0" text="Request" />
+                <TableColumn fx:id="requestColumn" maxWidth="290.0" prefWidth="292.0" sortType="DESCENDING"
+                             text="Request"/>
             </columns>
         </TableView>
         <Button fx:id="requestDeleter" layoutX="1121.0" layoutY="9.0" mnemonicParsing="false" onAction="#deleteRequest" prefHeight="26.0" prefWidth="145.0" text="Delete Request" />

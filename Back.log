@@ -1,11 +1,10 @@
 # Backlog
 
 ## RELEASE NEXT
-    consider save order of requests
-
-## RELEASE 0
 
 ## RELEASE 1
+
+## RELEASE 2
     Add command line capability
         to be able to do something like "cf apps", performing specific REST requests to accomplish something
             use WGET syntax
