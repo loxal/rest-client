@@ -343,7 +343,7 @@ private class Controller : Initializable {
         val appHomeDirectory = File(App.APP_HOME_DIRECTORY)
         Util.createAppHome(appHomeDirectory)
 
-        appHomeDirectory.listFiles().forEach { file ->
+        appHomeDirectory.listFiles().toLinkedList().sortDescending().forEach { file ->
             files.add(file)
             clientRequests.add(Util.loadFromFile(file))
         }
@@ -353,7 +353,6 @@ private class Controller : Initializable {
 
         onEditClientRequestListener()
         queryTable.setItems(clientRequests)
-        requestColumn.getTableView().getSortOrder().add(requestColumn)
     }
 
     FXML

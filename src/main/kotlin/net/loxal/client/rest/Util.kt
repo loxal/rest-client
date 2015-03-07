@@ -21,13 +21,13 @@ import javax.ws.rs.client.WebTarget
 import javax.ws.rs.client.Invocation
 import net.loxal.client.rest.model.ClientRequest
 import net.loxal.client.rest.model.Constant
-import java.util.UUID
 import java.io.FileOutputStream
 import java.io.ObjectOutputStream
 import java.io.FileInputStream
 import java.io.ObjectInputStream
 import java.io.InvalidClassException
 import java.io.WriteAbortedException
+import java.time.Instant
 
 final class Util {
     class object {
@@ -65,7 +65,8 @@ final class Util {
         }
 
         final fun saveToFile(clientRequest: ClientRequest): Boolean {
-            val fullFilePath = App.APP_HOME_DIRECTORY + "/" + UUID.randomUUID() + "-save.serialized"
+            //            val fullFilePath = App.APP_HOME_DIRECTORY + "/" + UUID.randomUUID() + "-save.serialized"
+            val fullFilePath = App.APP_HOME_DIRECTORY + "/" + Instant.now() + "-save.serialized"
             val appHomeDirectory = File(App.APP_HOME_DIRECTORY)
             Util.createAppHome(appHomeDirectory)
             try {
