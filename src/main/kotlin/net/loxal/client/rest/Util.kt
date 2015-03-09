@@ -65,7 +65,6 @@ final class Util {
         }
 
         final fun saveToFile(clientRequest: ClientRequest): Boolean {
-            //            val fullFilePath = App.APP_HOME_DIRECTORY + "/" + UUID.randomUUID() + "-save.serialized"
             val fullFilePath = App.APP_HOME_DIRECTORY + "/" + Instant.now() + "-save.serialized"
             val appHomeDirectory = File(App.APP_HOME_DIRECTORY)
             Util.createAppHome(appHomeDirectory)
