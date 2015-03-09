@@ -11,7 +11,10 @@
 <?import java.lang.String?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="rootPane" fx:id="rootContainer" cacheShape="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" scaleShape="false" snapToPixel="false" stylesheets="/net/loxal/client/rest/view/style.css" xmlns="http://javafx.com/javafx/8" fx:controller="net.loxal.client.rest.Controller">
     <children>
-        <TextField id="request-url-bar" fx:id="endpointUrl" cacheShape="false" centerShape="false" focusTraversable="false" layoutX="89.0" layoutY="8.0" onKeyReleased="#updateEndpoint" pickOnBounds="false" prefWidth="727.0" promptText="https://api.example.com" scaleShape="false" text="http://rest-kit-test-v1.test.cf.hybris.com/dilbert-quote/dev-excuse">
+        <TextField id="request-url-bar" fx:id="endpointUrl" cacheShape="false" centerShape="false"
+                   focusTraversable="false" layoutX="89.0" layoutY="8.0" onKeyReleased="#updateEndpoint"
+                   pickOnBounds="false" prefWidth="727.0" promptText="https://api.example.com" scaleShape="false"
+                   text="http://rest-kit-test-v1.test.cf.hybris.com/dilbert-quote/manager">
             <styleClass>
                 <String fx:value="request" />
                 <String fx:value="test" />
