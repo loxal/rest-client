@@ -427,8 +427,8 @@ private class Controller : Initializable {
 
     private fun showStatus(response: Response) {
         val requestDuration = Instant.now().minusMillis(startRequest.toEpochMilli()).toEpochMilli()
-
-        responseStatus.setText("${response.getStatusInfo().getStatusCode()} ${response.getStatusInfo().getReasonPhrase()} in $requestDuration ms")
+        val responseInfo = "Time: ${Instant.now()}\nStatus: ${response.getStatusInfo().getStatusCode()} ${response.getStatusInfo().getReasonPhrase()} in $requestDuration ms"
+        responseStatus.setText(responseInfo)
         responseStatus.setTooltip(Tooltip(response.getStatusInfo().getFamily().name()))
     }
 
