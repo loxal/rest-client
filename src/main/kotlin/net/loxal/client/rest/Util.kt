@@ -133,8 +133,10 @@ final class Util {
             return GsonBuilder().setPrettyPrinting().create().toJson(jsonElement)
         }
 
+        // TODO test this
         final fun applyHeaderInfo(headers: Headers, request: Invocation.Builder): Invocation.Builder {
-            headers.forEach { entry -> request.header(entry.key, entry.value) }
+            fun showSingleListEntry(entry: Map.Entry<String, List<Any>>): String = if (entry.value.size().equals(1)) entry.value.get(0) as String else entry.value.toString()
+            headers.forEach { entry -> request.header(entry.key, showSingleListEntry(entry)) }
 
             return request
         }
