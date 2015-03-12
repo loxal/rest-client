@@ -117,13 +117,16 @@ data class ClientRequest(builder: ClientRequest.Builder) : Serializable {
         fun build(): ClientRequest = ClientRequest(this)
     }
 
+    // TODO test if body is omitted when it’s empty
     fun toCurlCliCommand(): String {
         val headers: StringBuilder = StringBuilder()
         this.headers.forEach { entry ->
             headers.append("-H \"${Headers.toString(entry)}\" ${Constant.consoleBreak}")
         }
 
-        val curlCliCommand = "curl -X \"${method}\" \"${url}\" \\${Constant.lineBreak}${headers}-d $'${body}'"
+        val curlBody = if (body.isEmpty()) "" else "-d $'${body}'"
+
+        val curlCliCommand = "curl -X \"${method}\" \"${url}\" \\${Constant.lineBreak}${headers}${curlBody}"
 
         return curlCliCommand
     }
