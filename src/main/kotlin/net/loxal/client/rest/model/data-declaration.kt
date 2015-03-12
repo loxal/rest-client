@@ -12,7 +12,11 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import java.util.HashMap
 
 data class Headers() : HashMap<String, List<Any>>() {
-    override fun toString(): String {
+    override fun toString() = toString(", ")
+
+    fun toStringColumn() = toString("\n")
+
+    private fun toString(separator: String): String {
         val string = StringBuilder()
         var idx = 0
         this.forEach { entry ->
@@ -21,7 +25,7 @@ data class Headers() : HashMap<String, List<Any>>() {
 
             val notLastElement = size() > ++idx
             if (notLastElement) {
-                string.append(", ")
+                string.append(separator)
             }
         }
 

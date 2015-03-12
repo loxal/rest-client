@@ -381,7 +381,7 @@ private class Controller : Initializable {
             request = selectedRequest
 
             setMethodInUi(request.method)
-            requestHeaderData.setText(request.headers.toString())
+            requestHeaderData.setText(request.headers.toStringColumn())
             requestParameterData.setText(request.url.getQuery())
             requestBody.setText(request.body)
             endpointUrl.setText(request.url.toString())
