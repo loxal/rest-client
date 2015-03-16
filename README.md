@@ -1,4 +1,4 @@
-rest-client
+REST Client
 ===========
 
 RESTful Client

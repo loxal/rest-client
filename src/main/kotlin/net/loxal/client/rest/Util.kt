@@ -28,6 +28,7 @@ import java.io.ObjectInputStream
 import java.io.InvalidClassException
 import java.io.WriteAbortedException
 import java.time.Instant
+import com.google.gson.JsonNull
 
 final class Util {
     class object {
@@ -124,7 +125,11 @@ final class Util {
         final fun formatJson(json: String): String {
             val jsonElement: JsonElement
             try {
-                jsonElement = JsonParser().parse(json)
+                val parsedJsonElement: JsonElement = JsonParser().parse(json)
+                if (parsedJsonElement.equals(JsonNull.INSTANCE))
+                    return ""
+                else
+                    jsonElement = parsedJsonElement
             } catch (e: JsonSyntaxException) {
                 App.LOG.warning(e.getMessage())
                 App.LOG.warning(e.getCause().toString())
