@@ -236,16 +236,14 @@ private class Controller : Initializable {
     private fun doPostRequest() {
         val response = prepareRequest().post(Entity.json<String>(request.body))
 
+        val responsePayload = Util.formatJson(response.readEntity<String>(javaClass<String>()))
         if (response.getStatus() == Response.Status.CREATED.getStatusCode() && response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
-            responseBody.appendText(Util.formatJson(response.readEntity<String>(javaClass<String>())))
             val stringHeaders = response.getHeaders()
-
             stringHeaders.entrySet().forEach { header ->
                 responseHeaders.appendText("${header.getKey()}: ${header.getValue()}${Constant.lineBreak}")
             }
-        } else {
-            responseBody.appendText(response.getStatusInfo().getReasonPhrase())
         }
+        responseBody.appendText(responsePayload)
 
         showResponseHeaders(response)
         showStatus(response)
@@ -276,11 +274,9 @@ private class Controller : Initializable {
         try {
             val response = prepareRequest().put(Entity.json<String>(request.body))
 
-            if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
-                responseBody.appendText(Util.formatJson(response.readEntity<String>(javaClass<String>())))
-            } else {
-                responseBody.appendText(response.getStatusInfo().getReasonPhrase())
-            }
+            val responsePayload = Util.formatJson(response.readEntity<String>(javaClass<String>()))
+            responseBody.appendText(responsePayload)
+
             showResponseHeaders(response)
             showStatus(response)
         } catch (e: ProcessingException) {
@@ -322,7 +318,9 @@ private class Controller : Initializable {
     FXML
     private fun saveRequest() {
         updateEndpoint()
-        val requestName = "${LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))} ${request.url.getHost()}${request.url.getPath()} ${request.method}"
+
+        val localTimestamp = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))
+        val requestName = "$localTimestamp ${request.url.getHost()}${request.url.getPath()} ${request.method}"
         val clientRequest = ClientRequest.Builder(requestName)
                 .method(request.method)
                 .url(request.url)

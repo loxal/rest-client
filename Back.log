@@ -1,6 +1,7 @@
 # Backlog
 
 ## RELEASE NEXT
+    duplicate Saved query (just copy the request name while saving as a regular new saved request)
     consolidate HTTP methods in a combobox
 
 ## RELEASE 1

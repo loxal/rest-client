@@ -65,7 +65,9 @@ final class Util {
         }
 
         final fun saveToFile(clientRequest: ClientRequest): Boolean {
-            val fullFilePath = App.APP_HOME_DIRECTORY + "/" + Instant.now() + "-save.serialized"
+            val timestamp = Instant.now().toString()
+            val windowsCompatiblePathInfix = timestamp.replace(":", "-")
+            val fullFilePath = App.APP_HOME_DIRECTORY + "/" + windowsCompatiblePathInfix + "-save.serialized"
             val appHomeDirectory = File(App.APP_HOME_DIRECTORY)
             Util.createAppHome(appHomeDirectory)
             try {
