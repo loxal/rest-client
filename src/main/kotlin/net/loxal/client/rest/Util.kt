@@ -4,7 +4,6 @@
 
 package net.loxal.client.rest
 
-import com.google.gson.JsonElement
 import com.google.gson.JsonParser
 import com.google.gson.JsonSyntaxException
 import com.google.gson.GsonBuilder
@@ -123,19 +122,17 @@ final class Util {
         }
 
         final fun formatJson(json: String): String {
-            val jsonElement: JsonElement
             try {
-                val parsedJsonElement: JsonElement = JsonParser().parse(json)
-                if (parsedJsonElement.equals(JsonNull.INSTANCE))
+                val jsonElement = JsonParser().parse(json)
+                if (jsonElement.equals(JsonNull.INSTANCE))
                     return ""
                 else
-                    jsonElement = parsedJsonElement
+                    return GsonBuilder().setPrettyPrinting().create().toJson(jsonElement)
             } catch (e: JsonSyntaxException) {
                 App.LOG.warning(e.getMessage())
                 App.LOG.warning(e.getCause().toString())
                 return json
             }
-            return GsonBuilder().setPrettyPrinting().create().toJson(jsonElement)
         }
 
         // TODO test this
