@@ -320,7 +320,10 @@ private class Controller : Initializable {
         updateEndpoint()
 
         val localTimestamp = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))
-        val requestName = "$localTimestamp ${request.url.getHost()}${request.url.getPath()} ${request.method}"
+        val verboseRequestName = "$localTimestamp ${request.url.getHost()}${request.url.getPath()} ${request.method}"
+        val selectedRequest: ClientRequest? = queryTable.getSelectionModel().getSelectedItem()
+
+        val requestName: String = if (selectedRequest identityEquals null) verboseRequestName else "${selectedRequest!!.name} ∆"
         val clientRequest = ClientRequest.Builder(requestName)
                 .method(request.method)
                 .url(request.url)
@@ -330,7 +333,9 @@ private class Controller : Initializable {
 
         if (Util saveToFile clientRequest) loadSavedRequests()
 
-        queryTable.getSelectionModel().select(0)
+        val selectFirstSavedRequest = { queryTable.getSelectionModel().select(0) }
+        selectFirstSavedRequest()
+
         reloadRequestBackup()
     }
 
