@@ -1,11 +1,12 @@
 # Backlog
 
-## RELEASE NEXT
+## now
     consolidate HTTP methods in a combobox
+        show shortcuts for this methods inside combobox
 
-## RELEASE 1
+## later
 
-## RELEASE 2
+## dream
     Add command line capability
         to be able to do something like "cf apps", performing specific REST requests to accomplish something
             use WGET syntax

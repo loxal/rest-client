@@ -9,6 +9,10 @@
 #request-url-bar {
 }
 
+.small {
+    -fx-font-size: 9;
+}
+
 .OTHER {
     -fx-border-color: #999;
 }

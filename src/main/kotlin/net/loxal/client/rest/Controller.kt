@@ -76,7 +76,7 @@ private class Controller : Initializable {
     FXML
     private var clearButton: Button = Button()
     FXML
-    private var rootContainer: AnchorPane = AnchorPane()
+    private var rootContainer = AnchorPane()
     FXML
     private var getMethodRadio: RadioButton = RadioButton()
     FXML
@@ -101,6 +101,7 @@ private class Controller : Initializable {
     private val putMethod = Text(HttpMethod.PUT)
     private val optionsMethod = Text(HttpMethod.OPTIONS)
     private val headMethod = Text(HttpMethod.HEAD)
+    private val httpMethodsTexts = ImmutableObservableList(getMethod, postMethod, deleteMethod, putMethod, headMethod, optionsMethod)
 
     override fun initialize(url: URL?, resourceBundle: ResourceBundle?) {
         updateEndpoint()
@@ -122,14 +123,14 @@ private class Controller : Initializable {
         Util.assignShortcut(find, KeyCodeCombination(KeyCode.F, KeyCombination.SHORTCUT_DOWN), Runnable { find.requestFocus() })
 
         fun initHttpMethods() {
-            httpMethods.setItems(ImmutableObservableList(getMethod, postMethod, deleteMethod, putMethod, headMethod, optionsMethod))
+            httpMethods.setItems(httpMethodsTexts)
             httpMethods.getSelectionModel().select(0)
-            Util.assignShortcut(httpMethods, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { httpMethods.getSelectionModel().select(0) })
-            Util.assignShortcut(httpMethods, KeyCodeCombination(KeyCode.P, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { httpMethods.getSelectionModel().select(1) })
-            Util.assignShortcut(httpMethods, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { httpMethods.getSelectionModel().select(2) })
-            Util.assignShortcut(httpMethods, KeyCodeCombination(KeyCode.U, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { httpMethods.getSelectionModel().select(3) })
-            Util.assignShortcut(httpMethods, KeyCodeCombination(KeyCode.E, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { httpMethods.getSelectionModel().select(4) })
-            Util.assignShortcut(httpMethods, KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { httpMethods.getSelectionModel().select(5) })
+            Util.assignShortcutToText(rootContainer, getMethod, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { httpMethods.getSelectionModel().select(0) })
+            Util.assignShortcutToText(rootContainer, postMethod, KeyCodeCombination(KeyCode.P, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { httpMethods.getSelectionModel().select(1) })
+            Util.assignShortcutToText(rootContainer, deleteMethod, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { httpMethods.getSelectionModel().select(2) })
+            Util.assignShortcutToText(rootContainer, putMethod, KeyCodeCombination(KeyCode.U, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { httpMethods.getSelectionModel().select(3) })
+            Util.assignShortcutToText(rootContainer, headMethod, KeyCodeCombination(KeyCode.E, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { httpMethods.getSelectionModel().select(4) })
+            Util.assignShortcutToText(rootContainer, optionsMethod, KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { httpMethods.getSelectionModel().select(5) })
         }
         initHttpMethods()
 
@@ -176,6 +177,15 @@ private class Controller : Initializable {
                     loadSavedRequest()
             }
 
+
+    /**
+     * This is a workaround as proper rendering for combobox items is not working yet.
+     */
+    FXML
+    private fun refillComboboxItems() {
+        httpMethods.setItems(null)
+        httpMethods.setItems(httpMethodsTexts)
+    }
 
     FXML
     private fun doRequest() {

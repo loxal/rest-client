@@ -28,12 +28,19 @@ import java.io.InvalidClassException
 import java.io.WriteAbortedException
 import java.time.Instant
 import com.google.gson.JsonNull
+import javafx.scene.text.Text
+import javafx.scene.layout.AnchorPane
 
 final class Util {
     class object {
         final fun assignShortcut(control: Control, keyCodeCombination: KeyCodeCombination, action: Runnable) {
             control.getScene().getAccelerators().put(keyCodeCombination, action)
             control.setTooltip(Tooltip("${keyCodeCombination.getDisplayText()}"))
+        }
+
+        final fun assignShortcutToText(acceleratorContainer: AnchorPane, shortcutTarget: Text, keyCodeCombination: KeyCodeCombination, action: Runnable) {
+            acceleratorContainer.getScene().getAccelerators().put(keyCodeCombination, action)
+            shortcutTarget.setText("${shortcutTarget.getText()} ${keyCodeCombination.getDisplayText()}")
         }
 
         final fun createAppHome(appHomeDirectory: File) {
