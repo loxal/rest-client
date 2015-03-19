@@ -1,6 +1,7 @@
 # Backlog
 
 ## now
+    support different Content-Types for payload, i.e. use /oauth2
 
 ## later
 

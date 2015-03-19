@@ -4,48 +4,40 @@
 
 package net.loxal.client.rest
 
-import javafx.fxml.Initializable
-import java.io.File
-import javafx.collections.ObservableList
-import net.loxal.client.rest.model.ClientRequest
-import javafx.scene.control.TextArea
-import javafx.scene.control.Label
-import javafx.scene.control.Button
-import javafx.scene.layout.AnchorPane
-import javafx.scene.control.RadioButton
-import javafx.scene.control.TableView
-import javafx.scene.control.TableColumn
-import javafx.fxml.FXML
-import javax.ws.rs.client.Invocation
-import java.net.MalformedURLException
-import javax.ws.rs.ProcessingException
-import net.loxal.client.rest.model.Headers
-import java.net.URL
-import java.util.ResourceBundle
+import com.sun.javafx.collections.ImmutableObservableList
 import javafx.collections.FXCollections
-import javafx.scene.input.KeyCode
-import javafx.scene.input.KeyCombination
-import javafx.scene.input.KeyCodeCombination
-import javax.ws.rs.HttpMethod
-import javax.ws.rs.client.ClientBuilder
-import org.glassfish.jersey.client.ClientProperties
-import javax.ws.rs.core.MediaType
-import javax.ws.rs.client.Entity
-import javax.ws.rs.core.Response
-import java.io.ObjectOutputStream
-import java.io.FileOutputStream
+import javafx.collections.ObservableList
+import javafx.event.ActionEvent
+import javafx.fxml.FXML
+import javafx.fxml.Initializable
+import javafx.scene.control.*
 import javafx.scene.control.cell.PropertyValueFactory
 import javafx.scene.control.cell.TextFieldTableCell
-import javafx.scene.control.Tooltip
-import javafx.event.ActionEvent
-import java.time.Instant
-import javafx.scene.control.TextField
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyCodeCombination
+import javafx.scene.input.KeyCombination
+import javafx.scene.layout.AnchorPane
+import javafx.scene.text.Text
+import net.loxal.client.rest.model.ClientRequest
 import net.loxal.client.rest.model.Constant
+import net.loxal.client.rest.model.Headers
+import org.glassfish.jersey.client.ClientProperties
+import java.io.File
+import java.io.FileOutputStream
+import java.io.ObjectOutputStream
+import java.net.MalformedURLException
+import java.net.URL
+import java.time.Instant
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-import javafx.scene.control.ComboBox
-import com.sun.javafx.collections.ImmutableObservableList
-import javafx.scene.text.Text
+import java.util.ResourceBundle
+import javax.ws.rs.HttpMethod
+import javax.ws.rs.ProcessingException
+import javax.ws.rs.client.ClientBuilder
+import javax.ws.rs.client.Entity
+import javax.ws.rs.client.Invocation
+import javax.ws.rs.core.MediaType
+import javax.ws.rs.core.Response
 
 private class Controller : Initializable {
     private var validEndpoint: Boolean = false
@@ -439,7 +431,7 @@ private class Controller : Initializable {
         responseStatus.setTooltip(Tooltip(response.getStatusInfo().getFamily().name()))
     }
 
-    {
+    init {
         client.property(ClientProperties.CONNECT_TIMEOUT, 500)
         client.property(ClientProperties.READ_TIMEOUT, 4000)
     }
@@ -469,7 +461,7 @@ private class Controller : Initializable {
 
     private val updateCurlCliCommand = { curlCommand.setText(request.toCurlCliCommand()) }
 
-    private class object {
+    private companion object {
         private val client = ClientBuilder.newClient()
     }
 }

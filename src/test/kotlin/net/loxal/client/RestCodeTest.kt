@@ -4,14 +4,14 @@
 
 package net.loxal.client
 
-import org.junit.Test
-import kotlin.test.assertEquals
-import java.net.URL
 import com.fasterxml.jackson.databind.ObjectMapper
-import net.loxal.client.rest.model.RestCode
 import net.loxal.client.rest.model.ClientRequest
-import javax.ws.rs.HttpMethod
 import net.loxal.client.rest.model.Headers
+import net.loxal.client.rest.model.RestCode
+import org.junit.Test
+import java.net.URL
+import javax.ws.rs.HttpMethod
+import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
 class RestCodeTest {
@@ -109,7 +109,7 @@ class RestCodeTest {
         assertEquals(0, ClientRequest.toHeaders("").size())
     }
 
-    class object {
+    companion object {
         private val mapper: ObjectMapper = ObjectMapper()
 
         private val method: String = HttpMethod.POST

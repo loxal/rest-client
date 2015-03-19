@@ -34,7 +34,7 @@ class ControllerTest {
         }
     }
 
-    class object {
+    companion object {
         BeforeClass
         public fun initJavaFxEnvironment() {
             val thread = object : Thread("JavaFx Init Thread") {

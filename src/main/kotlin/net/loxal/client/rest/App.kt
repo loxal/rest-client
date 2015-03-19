@@ -10,11 +10,10 @@ import javafx.scene.Scene
 import javafx.scene.image.Image
 import javafx.scene.layout.AnchorPane
 import javafx.stage.Stage
-
 import java.io.IOException
-import java.util.logging.Logger
 import java.net.URL
 import java.util.Properties
+import java.util.logging.Logger
 
 class App : Application() {
 
@@ -40,11 +39,11 @@ class App : Application() {
         }
     }
 
-    {
+    init {
         properties.load(javaClass.getResourceAsStream("/app.properties"))
     }
 
-    class object {
+    companion object {
         val LOG = Logger.getGlobal()
         val SAMPLE_URL = URL("https://example.com")
         val SAVE_AS = "Save request as:"

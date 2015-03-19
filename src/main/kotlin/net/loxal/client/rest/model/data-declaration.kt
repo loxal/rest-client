@@ -4,12 +4,12 @@
 
 package net.loxal.client.rest.model
 
-import java.io.Serializable
-import javax.ws.rs.HttpMethod
-import java.net.URL
-import net.loxal.client.rest.App
 import com.fasterxml.jackson.databind.ObjectMapper
+import net.loxal.client.rest.App
+import java.io.Serializable
+import java.net.URL
 import java.util.HashMap
+import javax.ws.rs.HttpMethod
 
 data class Headers() : HashMap<String, List<Any>>() {
     override fun toString() = toString(", ")
@@ -36,7 +36,7 @@ data class Headers() : HashMap<String, List<Any>>() {
         return super.put(key, listOf(value))
     }
 
-    class object {
+    companion object {
         private val serialVersionUID = 3979696252154731188
 
         fun new(name: String, value: Any): Headers {
@@ -67,7 +67,7 @@ data class RestCode private() {
     val body: String = ""
     val name: String = Constant.unnamed
 
-    class object {
+    companion object {
         val restCodeToken = "RESTcode:"
 
         fun parseRestCode(url: URL): RestCode {
@@ -139,7 +139,7 @@ data class ClientRequest(builder: ClientRequest.Builder) : Serializable {
                     "\"name\": \"$name\"" +
                     "}"
 
-    class object {
+    companion object {
         private val serialVersionUID = 5979496652154735188
         val headerKeyValueSeparator = ":"
 

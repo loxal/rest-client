@@ -4,35 +4,28 @@
 
 package net.loxal.client.rest
 
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonNull
 import com.google.gson.JsonParser
 import com.google.gson.JsonSyntaxException
-import com.google.gson.GsonBuilder
-import net.loxal.client.rest.model.RequestParameter
-import java.util.ArrayList
-import net.loxal.client.rest.model.Headers
-import java.io.File
-import java.lang
-import java.io.IOException
 import javafx.scene.control.Control
-import javafx.scene.input.KeyCodeCombination
 import javafx.scene.control.Tooltip
-import javax.ws.rs.client.WebTarget
-import javax.ws.rs.client.Invocation
+import javafx.scene.input.KeyCodeCombination
+import javafx.scene.layout.AnchorPane
+import javafx.scene.text.Text
 import net.loxal.client.rest.model.ClientRequest
 import net.loxal.client.rest.model.Constant
-import java.io.FileOutputStream
-import java.io.ObjectOutputStream
-import java.io.FileInputStream
-import java.io.ObjectInputStream
-import java.io.InvalidClassException
-import java.io.WriteAbortedException
+import net.loxal.client.rest.model.Headers
+import net.loxal.client.rest.model.RequestParameter
+import java.io.*
+import java.lang
 import java.time.Instant
-import com.google.gson.JsonNull
-import javafx.scene.text.Text
-import javafx.scene.layout.AnchorPane
+import java.util.ArrayList
+import javax.ws.rs.client.Invocation
+import javax.ws.rs.client.WebTarget
 
 final class Util {
-    class object {
+    companion object {
         final fun assignShortcut(control: Control, keyCodeCombination: KeyCodeCombination, action: Runnable) {
             control.getScene().getAccelerators().put(keyCodeCombination, action)
             control.setTooltip(Tooltip("${keyCodeCombination.getDisplayText()}"))
