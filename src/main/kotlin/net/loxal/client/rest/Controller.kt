@@ -16,7 +16,6 @@ import javafx.scene.control.RadioButton
 import javafx.scene.control.TableView
 import javafx.scene.control.TableColumn
 import javafx.fxml.FXML
-import javafx.scene.control.ToggleGroup
 import javax.ws.rs.client.Invocation
 import java.net.MalformedURLException
 import javax.ws.rs.ProcessingException
@@ -83,16 +82,6 @@ private class Controller : Initializable {
     FXML
     private var queryTable: TableView<ClientRequest> = TableView()
     FXML
-    private var postMethodRadio: RadioButton = RadioButton()
-    FXML
-    private var deleteMethodRadio: RadioButton = RadioButton()
-    FXML
-    private var putMethodRadio: RadioButton = RadioButton()
-    FXML
-    private var headMethodRadio: RadioButton = RadioButton()
-    FXML
-    private var optionsMethodRadio: RadioButton = RadioButton()
-    FXML
     private var requestColumn: TableColumn<ClientRequest, String> = TableColumn()
     FXML
     private var requestDeleter: Button = Button()
@@ -102,8 +91,6 @@ private class Controller : Initializable {
     private var requestBody: TextArea = TextArea()
     FXML
     private var responseBody: TextArea = TextArea()
-    FXML
-    private var requestMethod: ToggleGroup = ToggleGroup()
 
     private var request: ClientRequest = ClientRequest.Builder("[Init Request]").build()
     private var startRequest: Instant = Instant.now()
@@ -124,12 +111,6 @@ private class Controller : Initializable {
         Util.assignShortcut(endpointUrl, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN), Runnable { endpointUrl.requestFocus() })
         Util.assignShortcut(clearButton, KeyCodeCombination(KeyCode.K, KeyCombination.SHORTCUT_DOWN), Runnable { clearButton.fire() })
         Util.assignShortcut(requestPerformer, KeyCodeCombination(KeyCode.ENTER, KeyCombination.SHORTCUT_DOWN), Runnable { requestPerformer.fire() })
-        //        Util.assignShortcut(getMethodRadio, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { getMethodRadio.fire() })
-        //        Util.assignShortcut(postMethodRadio, KeyCodeCombination(KeyCode.P, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { postMethodRadio.fire() })
-        //        Util.assignShortcut(deleteMethodRadio, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { deleteMethodRadio.fire() })
-        //        Util.assignShortcut(putMethodRadio, KeyCodeCombination(KeyCode.U, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { putMethodRadio.fire() })
-        //        Util.assignShortcut(headMethodRadio, KeyCodeCombination(KeyCode.E, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { headMethodRadio.fire() })
-        //        Util.assignShortcut(optionsMethodRadio, KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { optionsMethodRadio.fire() })
         Util.assignShortcut(requestHeaderData, KeyCodeCombination(KeyCode.DIGIT1, KeyCombination.SHORTCUT_DOWN), Runnable { requestHeaderData.requestFocus() })
         Util.assignShortcut(requestParameterData, KeyCodeCombination(KeyCode.DIGIT2, KeyCombination.SHORTCUT_DOWN), Runnable { requestParameterData.requestFocus() })
         Util.assignShortcut(requestBody, KeyCodeCombination(KeyCode.DIGIT3, KeyCombination.SHORTCUT_DOWN), Runnable { requestBody.requestFocus() })
@@ -408,22 +389,10 @@ private class Controller : Initializable {
         if (selectedRequest != null) {
             request = selectedRequest
 
-            setMethodInUi(request.method)
             requestHeaderData.setText(request.headers.toStringColumn())
             requestParameterData.setText(request.url.getQuery())
             requestBody.setText(request.body)
             endpointUrl.setText(request.url.toString())
-        }
-    }
-
-    private fun setMethodInUi(method: String) {
-        when (method) {
-            HttpMethod.GET -> requestMethod.selectToggle(getMethodRadio)
-            HttpMethod.POST -> requestMethod.selectToggle(postMethodRadio)
-            HttpMethod.PUT -> requestMethod.selectToggle(putMethodRadio)
-            HttpMethod.DELETE -> requestMethod.selectToggle(deleteMethodRadio)
-            HttpMethod.HEAD -> requestMethod.selectToggle(headMethodRadio)
-            HttpMethod.OPTIONS -> requestMethod.selectToggle(optionsMethodRadio)
         }
     }
 
