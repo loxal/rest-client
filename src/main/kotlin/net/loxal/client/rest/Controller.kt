@@ -44,6 +44,9 @@ import javafx.scene.control.TextField
 import net.loxal.client.rest.model.Constant
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import javafx.scene.control.ComboBox
+import com.sun.javafx.collections.ImmutableObservableList
+import javafx.scene.text.Text
 
 private class Controller : Initializable {
     private var validEndpoint: Boolean = false
@@ -51,6 +54,8 @@ private class Controller : Initializable {
     private val clientRequests = FXCollections.observableArrayList<ClientRequest>()
     private val clientRequestsBackup = FXCollections.observableArrayList<ClientRequest>()
 
+    FXML
+    private var httpMethods: ComboBox<Text> = ComboBox()
     FXML
     private var find: TextField = TextField()
     FXML
@@ -103,6 +108,13 @@ private class Controller : Initializable {
     private var request: ClientRequest = ClientRequest.Builder("[Init Request]").build()
     private var startRequest: Instant = Instant.now()
 
+    private val getMethod = Text(HttpMethod.GET)
+    private val postMethod = Text(HttpMethod.POST)
+    private val deleteMethod = Text(HttpMethod.DELETE)
+    private val putMethod = Text(HttpMethod.PUT)
+    private val optionsMethod = Text(HttpMethod.OPTIONS)
+    private val headMethod = Text(HttpMethod.HEAD)
+
     override fun initialize(url: URL?, resourceBundle: ResourceBundle?) {
         updateEndpoint()
         loadSavedRequests()
@@ -112,12 +124,12 @@ private class Controller : Initializable {
         Util.assignShortcut(endpointUrl, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN), Runnable { endpointUrl.requestFocus() })
         Util.assignShortcut(clearButton, KeyCodeCombination(KeyCode.K, KeyCombination.SHORTCUT_DOWN), Runnable { clearButton.fire() })
         Util.assignShortcut(requestPerformer, KeyCodeCombination(KeyCode.ENTER, KeyCombination.SHORTCUT_DOWN), Runnable { requestPerformer.fire() })
-        Util.assignShortcut(getMethodRadio, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { getMethodRadio.fire() })
-        Util.assignShortcut(postMethodRadio, KeyCodeCombination(KeyCode.P, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { postMethodRadio.fire() })
-        Util.assignShortcut(deleteMethodRadio, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { deleteMethodRadio.fire() })
-        Util.assignShortcut(putMethodRadio, KeyCodeCombination(KeyCode.U, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { putMethodRadio.fire() })
-        Util.assignShortcut(headMethodRadio, KeyCodeCombination(KeyCode.E, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { headMethodRadio.fire() })
-        Util.assignShortcut(optionsMethodRadio, KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { optionsMethodRadio.fire() })
+        //        Util.assignShortcut(getMethodRadio, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { getMethodRadio.fire() })
+        //        Util.assignShortcut(postMethodRadio, KeyCodeCombination(KeyCode.P, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { postMethodRadio.fire() })
+        //        Util.assignShortcut(deleteMethodRadio, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { deleteMethodRadio.fire() })
+        //        Util.assignShortcut(putMethodRadio, KeyCodeCombination(KeyCode.U, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { putMethodRadio.fire() })
+        //        Util.assignShortcut(headMethodRadio, KeyCodeCombination(KeyCode.E, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { headMethodRadio.fire() })
+        //        Util.assignShortcut(optionsMethodRadio, KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { optionsMethodRadio.fire() })
         Util.assignShortcut(requestHeaderData, KeyCodeCombination(KeyCode.DIGIT1, KeyCombination.SHORTCUT_DOWN), Runnable { requestHeaderData.requestFocus() })
         Util.assignShortcut(requestParameterData, KeyCodeCombination(KeyCode.DIGIT2, KeyCombination.SHORTCUT_DOWN), Runnable { requestParameterData.requestFocus() })
         Util.assignShortcut(requestBody, KeyCodeCombination(KeyCode.DIGIT3, KeyCombination.SHORTCUT_DOWN), Runnable { requestBody.requestFocus() })
@@ -127,6 +139,18 @@ private class Controller : Initializable {
         Util.assignShortcut(requestDeleter, KeyCodeCombination(KeyCode.BACK_SPACE, KeyCombination.SHORTCUT_DOWN), Runnable { requestDeleter.fire() })
         Util.assignShortcut(requestSaver, KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN), Runnable { requestSaver.fire() })
         Util.assignShortcut(find, KeyCodeCombination(KeyCode.F, KeyCombination.SHORTCUT_DOWN), Runnable { find.requestFocus() })
+
+        fun initHttpMethods() {
+            httpMethods.setItems(ImmutableObservableList(getMethod, postMethod, deleteMethod, putMethod, headMethod, optionsMethod))
+            httpMethods.getSelectionModel().select(0)
+            Util.assignShortcut(httpMethods, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { httpMethods.getSelectionModel().select(0) })
+            Util.assignShortcut(httpMethods, KeyCodeCombination(KeyCode.P, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { httpMethods.getSelectionModel().select(1) })
+            Util.assignShortcut(httpMethods, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { httpMethods.getSelectionModel().select(2) })
+            Util.assignShortcut(httpMethods, KeyCodeCombination(KeyCode.U, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { httpMethods.getSelectionModel().select(3) })
+            Util.assignShortcut(httpMethods, KeyCodeCombination(KeyCode.E, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { httpMethods.getSelectionModel().select(4) })
+            Util.assignShortcut(httpMethods, KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { httpMethods.getSelectionModel().select(5) })
+        }
+        initHttpMethods()
 
         setShortcutForArrowKeySelection()
 
@@ -208,8 +232,9 @@ private class Controller : Initializable {
 
         try {
             val targetUrl: URL = URL(endpointUrl.getText())
+            val selectedHttpMethod: String? = httpMethods.getSelectionModel().getSelectedItem()?.getText()
             request = ClientRequest.Builder("[Current Request]")
-                    .method((requestMethod.getSelectedToggle() as RadioButton).getText())
+                    .method(if (selectedHttpMethod === null) HttpMethod.GET else selectedHttpMethod)
                     .body(requestBody.getText())
                     .headers(ClientRequest.toHeaders(requestHeaderData.getText()))
                     .url(targetUrl)

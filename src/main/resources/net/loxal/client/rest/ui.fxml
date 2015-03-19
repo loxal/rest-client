@@ -12,9 +12,9 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="rootPane" fx:id="rootContainer" cacheShape="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" scaleShape="false" snapToPixel="false" stylesheets="/net/loxal/client/rest/view/style.css" xmlns="http://javafx.com/javafx/8" fx:controller="net.loxal.client.rest.Controller">
     <children>
         <TextField id="request-url-bar" fx:id="endpointUrl" cacheShape="false" centerShape="false"
-                   focusTraversable="false" layoutX="89.0" layoutY="8.0" onKeyReleased="#updateEndpoint"
-                   pickOnBounds="false" prefWidth="727.0" promptText="https://api.example.com" scaleShape="false"
-                   text="http://rest-kit-test-v1.test.cf.hybris.com/dilbert-quote/manager">
+                   focusTraversable="false" layoutX="207.0" layoutY="8.0" onKeyReleased="#updateEndpoint"
+                   pickOnBounds="false" prefHeight="26.0" prefWidth="609.0" promptText="https://api.example.com"
+                   scaleShape="false" text="http://rest-kit-test-v1.test.cf.hybris.com/dilbert-quote/manager">
             <styleClass>
                 <String fx:value="request" />
                 <String fx:value="test" />
@@ -68,5 +68,6 @@
         <TextField fx:id="find" layoutX="974.0" layoutY="62.0" prefHeight="26.0" prefWidth="292.0" promptText="Find" />
         <TextArea fx:id="curlCommand" editable="false" layoutX="489.0" layoutY="389.0" prefHeight="164.0" prefWidth="477.0" wrapText="true" />
         <Text layoutX="487.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="curl Command" wrappingWidth="109.0" />
+        <ComboBox fx:id="httpMethods" layoutX="89.0" layoutY="9.0" prefHeight="26.0" prefWidth="113.0"/>
     </children>
 </AnchorPane>
