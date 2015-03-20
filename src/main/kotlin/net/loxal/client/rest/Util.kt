@@ -32,6 +32,7 @@ final class Util {
         }
 
         final fun assignShortcutToText(acceleratorContainer: AnchorPane, shortcutTarget: Text, keyCodeCombination: KeyCodeCombination, action: Runnable) {
+            shortcutTarget.setAccessibleText(shortcutTarget.getText())
             acceleratorContainer.getScene().getAccelerators().put(keyCodeCombination, action)
             shortcutTarget.setText("${shortcutTarget.getText()} ${keyCodeCombination.getDisplayText()}")
         }

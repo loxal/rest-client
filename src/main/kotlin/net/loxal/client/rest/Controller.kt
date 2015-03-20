@@ -70,8 +70,6 @@ private class Controller : Initializable {
     FXML
     private var rootContainer = AnchorPane()
     FXML
-    private var getMethodRadio: RadioButton = RadioButton()
-    FXML
     private var queryTable: TableView<ClientRequest> = TableView()
     FXML
     private var requestColumn: TableColumn<ClientRequest, String> = TableColumn()
@@ -193,6 +191,7 @@ private class Controller : Initializable {
                 HttpMethod.DELETE -> doDeleteRequest()
                 HttpMethod.HEAD -> doHeadRequest()
                 HttpMethod.OPTIONS -> doOptionsRequest()
+                else -> App.LOG.severe("${request.method} is not assigned.")
             }
         }
     }
@@ -215,7 +214,7 @@ private class Controller : Initializable {
 
         try {
             val targetUrl: URL = URL(endpointUrl.getText())
-            val selectedHttpMethod: String? = httpMethods.getSelectionModel().getSelectedItem()?.getText()
+            val selectedHttpMethod: String? = httpMethods.getSelectionModel().getSelectedItem()?.getAccessibleText()
             request = ClientRequest.Builder("[Current Request]")
                     .method(if (selectedHttpMethod === null) HttpMethod.GET else selectedHttpMethod)
                     .body(requestBody.getText())
