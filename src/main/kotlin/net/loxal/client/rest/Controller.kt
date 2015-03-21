@@ -36,7 +36,7 @@ import javax.ws.rs.ProcessingException
 import javax.ws.rs.client.ClientBuilder
 import javax.ws.rs.client.Entity
 import javax.ws.rs.client.Invocation
-import javax.ws.rs.core.MediaType
+import javax.ws.rs.core.Form
 import javax.ws.rs.core.Response
 
 private class Controller : Initializable {
@@ -115,12 +115,12 @@ private class Controller : Initializable {
         fun initHttpMethods() {
             httpMethods.setItems(httpMethodsTexts)
             httpMethods.getSelectionModel().select(0)
-            Util.assignShortcutToText(rootContainer, getMethod, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { httpMethods.getSelectionModel().select(0) })
-            Util.assignShortcutToText(rootContainer, postMethod, KeyCodeCombination(KeyCode.P, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { httpMethods.getSelectionModel().select(1) })
-            Util.assignShortcutToText(rootContainer, deleteMethod, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { httpMethods.getSelectionModel().select(2) })
-            Util.assignShortcutToText(rootContainer, putMethod, KeyCodeCombination(KeyCode.U, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { httpMethods.getSelectionModel().select(3) })
-            Util.assignShortcutToText(rootContainer, headMethod, KeyCodeCombination(KeyCode.E, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { httpMethods.getSelectionModel().select(4) })
-            Util.assignShortcutToText(rootContainer, optionsMethod, KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { httpMethods.getSelectionModel().select(5) })
+            Util.assignShortcutToText(rootContainer, getMethod, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { setMethodInUi(HttpMethod.GET) })
+            Util.assignShortcutToText(rootContainer, postMethod, KeyCodeCombination(KeyCode.P, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { setMethodInUi(HttpMethod.POST) })
+            Util.assignShortcutToText(rootContainer, deleteMethod, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { setMethodInUi(HttpMethod.DELETE) })
+            Util.assignShortcutToText(rootContainer, putMethod, KeyCodeCombination(KeyCode.U, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { setMethodInUi(HttpMethod.PUT) })
+            Util.assignShortcutToText(rootContainer, headMethod, KeyCodeCombination(KeyCode.E, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { setMethodInUi(HttpMethod.HEAD) })
+            Util.assignShortcutToText(rootContainer, optionsMethod, KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { setMethodInUi(HttpMethod.OPTIONS) })
         }
         initHttpMethods()
 
@@ -199,9 +199,8 @@ private class Controller : Initializable {
     private fun prepareRequest(): Invocation.Builder {
         val target = Util.applyUrlRequestParameters(client.target(request.url.toString()),
                 Util.extractRequestParameters(declareRequestParameters()))
-        val request = target.request(MediaType.APPLICATION_JSON_TYPE)
 
-        return Util.applyHeaderInfo(Util.extractHeaderData(requestHeaderData.getText()), request)
+        return Util.applyHeaderInfo(Util.extractHeaderData(requestHeaderData.getText()), target.request())
     }
 
     FXML
@@ -241,6 +240,13 @@ private class Controller : Initializable {
     }
 
     private fun doPostRequest() {
+        // TODO remove this
+        val f = Form()
+        f.param("grant_type", "client_credentials")
+        f.param("scope", "hybris.account_manage")
+        f.param("client_id", "XGN6CGk0hZbZFAtBAgomcj1CifPgarIa")
+        f.param("client_secret", "DpPOSZGXgwG9NJiA")
+        //        val response = prepareRequest().post(Entity.form(f))
         val response = prepareRequest().post(Entity.json<String>(request.body))
 
         val responsePayload = Util.formatJson(response.readEntity<String>(javaClass<String>()))
@@ -390,10 +396,22 @@ private class Controller : Initializable {
         if (selectedRequest != null) {
             request = selectedRequest
 
+            setMethodInUi(request.method)
             requestHeaderData.setText(request.headers.toStringColumn())
             requestParameterData.setText(request.url.getQuery())
             requestBody.setText(request.body)
             endpointUrl.setText(request.url.toString())
+        }
+    }
+
+    private fun setMethodInUi(method: String) {
+        when (method) {
+            HttpMethod.GET -> httpMethods.getSelectionModel().select(0)
+            HttpMethod.POST -> httpMethods.getSelectionModel().select(1)
+            HttpMethod.DELETE -> httpMethods.getSelectionModel().select(2)
+            HttpMethod.PUT -> httpMethods.getSelectionModel().select(3)
+            HttpMethod.HEAD -> httpMethods.getSelectionModel().select(4)
+            HttpMethod.OPTIONS -> httpMethods.getSelectionModel().select(5)
         }
     }
 
