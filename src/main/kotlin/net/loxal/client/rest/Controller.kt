@@ -77,6 +77,8 @@ private class Controller : Initializable {
     FXML
     private var requestSaver: Button = Button()
     FXML
+    private var requestDuplicator: Button = Button()
+    FXML
     private var requestBody: TextArea = TextArea()
     FXML
     private var responseBody: TextArea = TextArea()
@@ -174,6 +176,12 @@ private class Controller : Initializable {
     private fun refillComboboxItems() {
         httpMethods.setItems(null)
         httpMethods.setItems(httpMethodsTexts)
+    }
+
+    // TODO implement
+    FXML
+    private fun duplicateRequest() {
+        saveRequest()
     }
 
     FXML
