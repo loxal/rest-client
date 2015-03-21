@@ -17,15 +17,22 @@ import net.loxal.client.rest.model.ClientRequest
 import net.loxal.client.rest.model.Constant
 import net.loxal.client.rest.model.Headers
 import net.loxal.client.rest.model.RequestParameter
+import org.glassfish.jersey.internal.util.collection.ImmutableMultivaluedMap
 import java.io.*
 import java.lang
 import java.time.Instant
 import java.util.ArrayList
 import javax.ws.rs.client.Invocation
 import javax.ws.rs.client.WebTarget
+import javax.ws.rs.core.HttpHeaders
+import javax.ws.rs.core.MediaType
+import javax.ws.rs.core.MultivaluedHashMap
+import javax.ws.rs.core.MultivaluedMap
 
 final class Util {
     companion object {
+        val parameterPairEntrySeparatorRegex = "="
+
         final fun assignShortcut(control: Control, keyCodeCombination: KeyCodeCombination, action: Runnable) {
             control.getScene().getAccelerators().put(keyCodeCombination, action)
             control.setTooltip(Tooltip("${keyCodeCombination.getDisplayText()}"))
@@ -112,7 +119,6 @@ final class Util {
             if (!requestParameterContent.isEmpty()) {
                 val parameterPairSeparatorRegex = "&${Constant.lineBreak}|&"
                 val parameterPairs = requestParameterContent.split(parameterPairSeparatorRegex)
-                val parameterPairEntrySeparatorRegex = "="
                 parameterPairs.forEach { parameterPair ->
                     val parameterPairEntry = parameterPair.trim().split(parameterPairEntrySeparatorRegex)
                     val parameterNameIdx = 0
@@ -122,6 +128,18 @@ final class Util {
             }
 
             return requestParameters
+        }
+
+        final fun isFormMediaType(request: ClientRequest) = request.headers.get(HttpHeaders.CONTENT_TYPE) != null && request.headers.get(HttpHeaders.CONTENT_TYPE).get(0).toString().equals(MediaType.APPLICATION_FORM_URLENCODED)
+
+        final fun toForm(payload: String): MultivaluedMap<String, String> {
+            val formData: MultivaluedMap<String, String> = MultivaluedHashMap()
+            payload.split("&").forEach { pair ->
+                val (key, value) = pair.split(parameterPairEntrySeparatorRegex)
+                formData.putSingle(key, value)
+            }
+
+            return ImmutableMultivaluedMap(formData)
         }
 
         final fun formatJson(json: String): String {

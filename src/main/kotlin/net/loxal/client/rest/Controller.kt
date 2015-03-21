@@ -36,7 +36,6 @@ import javax.ws.rs.ProcessingException
 import javax.ws.rs.client.ClientBuilder
 import javax.ws.rs.client.Entity
 import javax.ws.rs.client.Invocation
-import javax.ws.rs.core.Form
 import javax.ws.rs.core.Response
 
 private class Controller : Initializable {
@@ -240,14 +239,11 @@ private class Controller : Initializable {
     }
 
     private fun doPostRequest() {
-        // TODO remove this
-        val f = Form()
-        f.param("grant_type", "client_credentials")
-        f.param("scope", "hybris.account_manage")
-        f.param("client_id", "XGN6CGk0hZbZFAtBAgomcj1CifPgarIa")
-        f.param("client_secret", "DpPOSZGXgwG9NJiA")
-        //        val response = prepareRequest().post(Entity.form(f))
-        val response = prepareRequest().post(Entity.json<String>(request.body))
+        val response: Response
+        if (Util.isFormMediaType(request)) {
+            response = prepareRequest().post(Entity.form(Util.toForm(request.body)))
+        } else
+            response = prepareRequest().post(Entity.json<String>(request.body))
 
         val responsePayload = Util.formatJson(response.readEntity<String>(javaClass<String>()))
         if (response.getStatus() == Response.Status.CREATED.getStatusCode() && response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
