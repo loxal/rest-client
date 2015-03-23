@@ -324,8 +324,8 @@ private class Controller : Initializable {
     private fun doGetRequest(): Response {
         val response = prepareRequest().get()
 
-        val responseBodyPayload = Util.formatJson(response.readEntity(javaClass<String>()))
-        responseBody.appendText(responseBodyPayload)
+        val formattedResponse = Util.formatJson(response.readEntity(javaClass<String>()))
+        responseBody.appendText(formattedResponse)
 
         return response
     }
@@ -333,8 +333,8 @@ private class Controller : Initializable {
     private fun doPutRequest(): Response {
         val response = prepareRequest().put(Entity.json<String>(request.body))
 
-        val responsePayload = Util.formatJson(response.readEntity<String>(javaClass<String>()))
-        responseBody.appendText(responsePayload)
+        val formattedResponse = Util.formatJson(response.readEntity<String>(javaClass<String>()))
+        responseBody.appendText(formattedResponse)
 
         return response
     }
@@ -342,9 +342,8 @@ private class Controller : Initializable {
     private fun doDeleteRequest(): Response {
         val response = prepareRequest().delete()
 
-        if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
-            responseBody.appendText(response.getStatusInfo().getReasonPhrase())
-        }
+        val formattedResponse = Util.formatJson(response.readEntity(javaClass<String>()))
+        responseBody.appendText(formattedResponse)
 
         return response
     }
@@ -352,7 +351,8 @@ private class Controller : Initializable {
     private fun doHeadRequest(): Response {
         val response = prepareRequest().head()
 
-        responseBody.appendText(response.readEntity(javaClass<String>()))
+        val formattedResponse = Util.formatJson(response.readEntity(javaClass<String>()))
+        responseBody.appendText(formattedResponse)
 
         return response
     }
@@ -360,7 +360,8 @@ private class Controller : Initializable {
     private fun doOptionsRequest(): Response {
         val response = prepareRequest().options()
 
-        responseBody.appendText(response.readEntity(javaClass<String>()))
+        val formattedResponse = Util.formatJson(response.readEntity(javaClass<String>()))
+        responseBody.appendText(formattedResponse)
 
         return response
     }
