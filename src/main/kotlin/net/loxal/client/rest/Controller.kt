@@ -237,15 +237,22 @@ private class Controller : Initializable {
             cleanupPreviousResponse()
             startRequest = Instant.now()
             try {
+                val response: Response
                 when (request.method) {
-                    HttpMethod.GET -> doGetRequest()
-                    HttpMethod.POST -> doPostRequest()
-                    HttpMethod.PUT -> doPutRequest()
-                    HttpMethod.DELETE -> doDeleteRequest()
-                    HttpMethod.HEAD -> doHeadRequest()
-                    HttpMethod.OPTIONS -> doOptionsRequest()
-                    else -> showNotification(Level.SEVERE, "${request.method} is not assigned.")
+                    HttpMethod.GET -> response = doGetRequest()
+                    HttpMethod.POST -> response = doPostRequest()
+                    HttpMethod.PUT -> response = doPutRequest()
+                    HttpMethod.DELETE -> response = doDeleteRequest()
+                    HttpMethod.HEAD -> response = doHeadRequest()
+                    HttpMethod.OPTIONS -> response = doOptionsRequest()
+                    else -> {
+                        showNotification(Level.SEVERE, "${request.method} is not assigned.")
+                        response = Response.status(Response.Status.NOT_IMPLEMENTED).build()
+                    }
                 }
+
+                showResponseHeaders(response)
+                showStatus(response)
             } catch(e: ProcessingException) {
                 showNotification(Level.SEVERE, "${e.getCause()?.getMessage()}")
             }
@@ -295,7 +302,7 @@ private class Controller : Initializable {
         notification.setText(message)
     }
 
-    private fun doPostRequest() {
+    private fun doPostRequest(): Response {
         val response: Response
         if (Util.isFormMediaType(request)) {
             response = prepareRequest().post(Entity.form(Util.toForm(request.body)))
@@ -311,44 +318,57 @@ private class Controller : Initializable {
         }
         responseBody.appendText(responsePayload)
 
-        showResponseHeaders(response)
-        showStatus(response)
+        return response
     }
 
-    private fun doGetRequest() {
-        val getResponse = prepareRequest().get()
+    private fun doGetRequest(): Response {
+        val response = prepareRequest().get()
 
-        val responseBodyPayload = Util.formatJson(getResponse.readEntity(javaClass<String>()))
+        val responseBodyPayload = Util.formatJson(response.readEntity(javaClass<String>()))
         responseBody.appendText(responseBodyPayload)
 
-        showResponseHeaders(getResponse)
-        showStatus(getResponse)
+        return response
+    }
+
+    private fun doPutRequest(): Response {
+        val response = prepareRequest().put(Entity.json<String>(request.body))
+
+        val responsePayload = Util.formatJson(response.readEntity<String>(javaClass<String>()))
+        responseBody.appendText(responsePayload)
+
+        return response
+    }
+
+    private fun doDeleteRequest(): Response {
+        val response = prepareRequest().delete()
+
+        if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
+            responseBody.appendText(response.getStatusInfo().getReasonPhrase())
+        }
+
+        return response
+    }
+
+    private fun doHeadRequest(): Response {
+        val response = prepareRequest().head()
+
+        responseBody.appendText(response.readEntity(javaClass<String>()))
+
+        return response
+    }
+
+    private fun doOptionsRequest(): Response {
+        val response = prepareRequest().options()
+
+        responseBody.appendText(response.readEntity(javaClass<String>()))
+
+        return response
     }
 
     private fun showResponseHeaders(getResponse: Response) {
         getResponse.getHeaders().forEach { header ->
             responseHeaders.appendText("${Headers.toString(entry = header, lineBreak = true)}")
         }
-    }
-
-    private fun doPutRequest() {
-        val response = prepareRequest().put(Entity.json<String>(request.body))
-
-        val responsePayload = Util.formatJson(response.readEntity<String>(javaClass<String>()))
-        responseBody.appendText(responsePayload)
-
-        showResponseHeaders(response)
-        showStatus(response)
-    }
-
-    private fun doDeleteRequest() {
-        val response = prepareRequest().delete()
-
-        if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
-            responseBody.appendText(response.getStatusInfo().getReasonPhrase())
-        }
-        showResponseHeaders(response)
-        showStatus(response)
     }
 
     private fun declareRequestParameters() =
@@ -426,22 +446,6 @@ private class Controller : Initializable {
             HttpMethod.HEAD -> httpMethods.getSelectionModel().select(4)
             HttpMethod.OPTIONS -> httpMethods.getSelectionModel().select(5)
         }
-    }
-
-    private fun doHeadRequest() {
-        val response = prepareRequest().head()
-
-        responseBody.appendText(response.readEntity(javaClass<String>()))
-        showResponseHeaders(response)
-        showStatus(response)
-    }
-
-    private fun doOptionsRequest() {
-        val response = prepareRequest().options()
-
-        responseBody.appendText(response.readEntity(javaClass<String>()))
-        showResponseHeaders(response)
-        showStatus(response)
     }
 
     private fun showStatus(response: Response) {
