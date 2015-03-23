@@ -312,38 +312,15 @@ private class Controller : Initializable {
         return response
     }
 
-    private fun doGetRequest(): Response {
-        val response = prepareRequest().get()
+    private fun doGetRequest() = prepareRequest().get()
 
-        return response
-    }
+    private fun doPutRequest() = prepareRequest().put(Entity.json<String>(request.body))
 
-    private fun doPutRequest(): Response {
-        val response = prepareRequest().put(Entity.json<String>(request.body))
+    private fun doDeleteRequest() = prepareRequest().delete()
 
-        return response
-    }
+    private fun doHeadRequest() = prepareRequest().head()
 
-    private fun doDeleteRequest(): Response {
-        val response = prepareRequest().delete()
-
-        return response
-    }
-
-    private fun doHeadRequest(): Response {
-        val response = prepareRequest().head()
-
-        return response
-    }
-
-    private fun doOptionsRequest(): Response {
-        val response = prepareRequest().options()
-
-        val formattedResponse = Util.formatJson(response.readEntity(javaClass<String>()))
-        responseBody.appendText(formattedResponse)
-
-        return response
-    }
+    private fun doOptionsRequest() = prepareRequest().options()
 
     private fun showResponseHeaders(response: Response) {
         response.getHeaders().forEach { header ->
