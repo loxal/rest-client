@@ -72,18 +72,23 @@ final class Util {
             throw RuntimeException("Could not load ${clientRequest}")
         }
 
-        final fun saveToFile(clientRequest: ClientRequest): Boolean {
+        final fun saveAsNew(clientRequest: ClientRequest): Boolean {
             val timestamp = Instant.now().toString()
             val windowsCompatiblePathInfix = timestamp.replace(":", "-")
             val fullFilePath = App.APP_HOME_DIRECTORY + "/" + windowsCompatiblePathInfix + "-save.serialized"
             val appHomeDirectory = File(App.APP_HOME_DIRECTORY)
             Util.createAppHome(appHomeDirectory)
+            Util.createSaveFile(fullFilePath)
+
+            return save(storage = File(fullFilePath), request = clientRequest)
+        }
+
+        final fun save(storage: File, request: ClientRequest): Boolean {
             try {
-                FileOutputStream(fullFilePath).use { fileOutputStream ->
+                FileOutputStream(storage).use { fileOutputStream ->
                     ObjectOutputStream(fileOutputStream).use { objectOutputStream ->
-                        Util.createSaveFile(fullFilePath)
-                        objectOutputStream.writeObject(clientRequest)
-                        App.LOG.info("${App.SAVE_AS} ${clientRequest.name}: $fullFilePath")
+                        objectOutputStream.writeObject(request)
+                        App.LOG.info("${App.SAVE_AS} ${request.name}: $storage")
 
                         return true
                     }

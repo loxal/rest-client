@@ -111,6 +111,7 @@ private class Controller : Initializable {
         Util.assignShortcut(queryTable, KeyCodeCombination(KeyCode.DIGIT6, KeyCombination.SHORTCUT_DOWN), Runnable { queryTable.requestFocus() })
         Util.assignShortcut(requestDeleter, KeyCodeCombination(KeyCode.BACK_SPACE, KeyCombination.SHORTCUT_DOWN), Runnable { requestDeleter.fire() })
         Util.assignShortcut(requestSaver, KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN), Runnable { requestSaver.fire() })
+        Util.assignShortcut(requestDuplicator, KeyCodeCombination(KeyCode.D, KeyCombination.SHORTCUT_DOWN), Runnable { requestDuplicator.fire() })
         Util.assignShortcut(find, KeyCodeCombination(KeyCode.F, KeyCombination.SHORTCUT_DOWN), Runnable { find.requestFocus() })
 
         fun initHttpMethods() {
@@ -178,10 +179,53 @@ private class Controller : Initializable {
         httpMethods.setItems(httpMethodsTexts)
     }
 
-    // TODO implement
+    FXML
+    private fun saveRequest() {
+        updateEndpoint()
+
+        val selectedRequest: ClientRequest? = queryTable.getSelectionModel().getSelectedItem()
+        val selectedRequestIndex = queryTable.getSelectionModel().getSelectedIndex()
+        val fileLocation = files.get(selectedRequestIndex)
+
+        val requestName: String = selectedRequest!!.name
+        val clientRequest = ClientRequest.Builder(requestName)
+                .method(request.method)
+                .url(request.url)
+                .body(requestBody.getText())
+                .headers(ClientRequest.toHeaders(requestHeaderData.getText()))
+                .build()
+
+        if (Util.save(storage = fileLocation, request = clientRequest)) loadSavedRequests()
+
+        val selectSavedRequest = { queryTable.getSelectionModel().select(selectedRequestIndex) }
+        selectSavedRequest()
+
+        reloadRequestBackup()
+    }
+
     FXML
     private fun duplicateRequest() {
-        saveRequest()
+        updateEndpoint()
+
+        val localTimestamp = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))
+        val verboseRequestName = "$localTimestamp ${request.url.getHost()}${request.url.getPath()} ${request.method}"
+        val selectedRequest: ClientRequest? = queryTable.getSelectionModel().getSelectedItem()
+
+        val requestName: String = if (selectedRequest identityEquals null) verboseRequestName else "${selectedRequest!!.name} ∆"
+        val clientRequest = ClientRequest.Builder(requestName)
+                .method(request.method)
+                .url(request.url)
+                .body(requestBody.getText())
+                .headers(ClientRequest.toHeaders(requestHeaderData.getText()))
+                .build()
+
+        if (Util saveAsNew clientRequest) loadSavedRequests()
+
+        val selectFirstSavedRequest = { queryTable.getSelectionModel().select(0) }
+        selectFirstSavedRequest()
+
+        reloadRequestBackup()
+
     }
 
     FXML
@@ -330,30 +374,6 @@ private class Controller : Initializable {
         responseBody.clear()
         responseStatus.setText("")
         notification.setText("")
-    }
-
-    FXML
-    private fun saveRequest() {
-        updateEndpoint()
-
-        val localTimestamp = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))
-        val verboseRequestName = "$localTimestamp ${request.url.getHost()}${request.url.getPath()} ${request.method}"
-        val selectedRequest: ClientRequest? = queryTable.getSelectionModel().getSelectedItem()
-
-        val requestName: String = if (selectedRequest identityEquals null) verboseRequestName else "${selectedRequest!!.name} ∆"
-        val clientRequest = ClientRequest.Builder(requestName)
-                .method(request.method)
-                .url(request.url)
-                .body(requestBody.getText())
-                .headers(ClientRequest.toHeaders(requestHeaderData.getText()))
-                .build()
-
-        if (Util saveToFile clientRequest) loadSavedRequests()
-
-        val selectFirstSavedRequest = { queryTable.getSelectionModel().select(0) }
-        selectFirstSavedRequest()
-
-        reloadRequestBackup()
     }
 
     private fun loadSavedRequests() {

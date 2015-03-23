@@ -1,6 +1,8 @@
 # Backlog
 
 ## now
+    duplicate request
+    actual save request, saving over the EXISTING request name
     search in response body
 
 ## later
