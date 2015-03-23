@@ -31,6 +31,7 @@ import java.time.Instant
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.ResourceBundle
+import java.util.logging.Level
 import javax.ws.rs.HttpMethod
 import javax.ws.rs.ProcessingException
 import javax.ws.rs.client.ClientBuilder
@@ -235,14 +236,18 @@ private class Controller : Initializable {
         if (validEndpoint) {
             cleanupPreviousResponse()
             startRequest = Instant.now()
-            when (request.method) {
-                HttpMethod.GET -> doGetRequest()
-                HttpMethod.POST -> doPostRequest()
-                HttpMethod.PUT -> doPutRequest()
-                HttpMethod.DELETE -> doDeleteRequest()
-                HttpMethod.HEAD -> doHeadRequest()
-                HttpMethod.OPTIONS -> doOptionsRequest()
-                else -> App.LOG.severe("${request.method} is not assigned.")
+            try {
+                when (request.method) {
+                    HttpMethod.GET -> doGetRequest()
+                    HttpMethod.POST -> doPostRequest()
+                    HttpMethod.PUT -> doPutRequest()
+                    HttpMethod.DELETE -> doDeleteRequest()
+                    HttpMethod.HEAD -> doHeadRequest()
+                    HttpMethod.OPTIONS -> doOptionsRequest()
+                    else -> showNotification(Level.SEVERE, "${request.method} is not assigned.")
+                }
+            } catch(e: ProcessingException) {
+                showNotification(Level.SEVERE, "${e.getCause()?.getMessage()}")
             }
         }
     }
@@ -257,7 +262,7 @@ private class Controller : Initializable {
     FXML
     private fun updateEndpoint() {
         if (endpointUrl.getText().isEmpty()) {
-            showNotification("Endpoint URL required")
+            showNotification(Level.INFO, "Endpoint URL required")
             validEndpoint = false
             return
         }
@@ -273,7 +278,7 @@ private class Controller : Initializable {
                     .build()
             updateCurlCliCommand()
         } catch (e: MalformedURLException) {
-            showNotification("Invalid endpoint URL: ${e.getMessage()}")
+            showNotification(Level.INFO, "Invalid endpoint URL: ${e.getMessage()}")
             validEndpoint = false
             return
         }
@@ -285,8 +290,8 @@ private class Controller : Initializable {
         validEndpoint = true
     }
 
-    private fun showNotification(message: String) {
-        App.LOG.info(message)
+    private fun showNotification(level: Level, message: String) {
+        App.LOG.log(level, message)
         notification.setText(message)
     }
 
@@ -311,18 +316,13 @@ private class Controller : Initializable {
     }
 
     private fun doGetRequest() {
-        try {
-            val getResponse = prepareRequest().get()
+        val getResponse = prepareRequest().get()
 
-            val responseBodyPayload = Util.formatJson(getResponse.readEntity(javaClass<String>()))
-            responseBody.appendText(responseBodyPayload)
+        val responseBodyPayload = Util.formatJson(getResponse.readEntity(javaClass<String>()))
+        responseBody.appendText(responseBodyPayload)
 
-            showResponseHeaders(getResponse)
-            showStatus(getResponse)
-        } catch (e: ProcessingException) {
-            App.LOG.severe(e.getMessage())
-            notification.setText(e.getMessage())
-        }
+        showResponseHeaders(getResponse)
+        showStatus(getResponse)
     }
 
     private fun showResponseHeaders(getResponse: Response) {
@@ -332,34 +332,23 @@ private class Controller : Initializable {
     }
 
     private fun doPutRequest() {
-        try {
-            val response = prepareRequest().put(Entity.json<String>(request.body))
+        val response = prepareRequest().put(Entity.json<String>(request.body))
 
-            val responsePayload = Util.formatJson(response.readEntity<String>(javaClass<String>()))
-            responseBody.appendText(responsePayload)
+        val responsePayload = Util.formatJson(response.readEntity<String>(javaClass<String>()))
+        responseBody.appendText(responsePayload)
 
-            showResponseHeaders(response)
-            showStatus(response)
-        } catch (e: ProcessingException) {
-            App.LOG.severe(e.getMessage())
-            notification.setText(e.getMessage())
-        }
+        showResponseHeaders(response)
+        showStatus(response)
     }
 
     private fun doDeleteRequest() {
-        try {
-            val response = prepareRequest().delete()
+        val response = prepareRequest().delete()
 
-            if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
-                responseBody.appendText(response.getStatusInfo().getReasonPhrase())
-            }
-            showResponseHeaders(response)
-            showStatus(response)
-        } catch (e: ProcessingException) {
-            App.LOG.severe(e.getMessage())
-            notification.setText(e.getMessage())
+        if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
+            responseBody.appendText(response.getStatusInfo().getReasonPhrase())
         }
-
+        showResponseHeaders(response)
+        showStatus(response)
     }
 
     private fun declareRequestParameters() =
@@ -440,29 +429,19 @@ private class Controller : Initializable {
     }
 
     private fun doHeadRequest() {
-        try {
-            val response = prepareRequest().head()
+        val response = prepareRequest().head()
 
-            responseBody.appendText(response.readEntity(javaClass<String>()))
-            showResponseHeaders(response)
-            showStatus(response)
-        } catch (e: ProcessingException) {
-            App.LOG.severe(e.getMessage())
-            notification.setText(e.getMessage())
-        }
+        responseBody.appendText(response.readEntity(javaClass<String>()))
+        showResponseHeaders(response)
+        showStatus(response)
     }
 
     private fun doOptionsRequest() {
-        try {
-            val response = prepareRequest().options()
+        val response = prepareRequest().options()
 
-            responseBody.appendText(response.readEntity(javaClass<String>()))
-            showResponseHeaders(response)
-            showStatus(response)
-        } catch (e: ProcessingException) {
-            App.LOG.severe(e.getMessage())
-            notification.setText(e.getMessage())
-        }
+        responseBody.appendText(response.readEntity(javaClass<String>()))
+        showResponseHeaders(response)
+        showStatus(response)
     }
 
     private fun showStatus(response: Response) {
