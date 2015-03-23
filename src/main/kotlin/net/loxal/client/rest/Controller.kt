@@ -19,7 +19,6 @@ import javafx.scene.input.KeyCombination
 import javafx.scene.layout.AnchorPane
 import javafx.scene.text.Text
 import net.loxal.client.rest.model.ClientRequest
-import net.loxal.client.rest.model.Constant
 import net.loxal.client.rest.model.Headers
 import org.glassfish.jersey.client.ClientProperties
 import java.io.File
@@ -253,6 +252,7 @@ private class Controller : Initializable {
 
                 showResponseHeaders(response)
                 showStatus(response)
+                showResponseBody(response)
             } catch(e: ProcessingException) {
                 showNotification(Level.SEVERE, "${e.getCause()?.getMessage()}")
             }
@@ -309,23 +309,11 @@ private class Controller : Initializable {
         } else
             response = prepareRequest().post(Entity.json<String>(request.body))
 
-        val responsePayload = Util.formatJson(response.readEntity<String>(javaClass<String>()))
-        if (response.getStatus() == Response.Status.CREATED.getStatusCode() && response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
-            val stringHeaders = response.getHeaders()
-            stringHeaders.entrySet().forEach { header ->
-                responseHeaders.appendText("${header.getKey()}: ${header.getValue()}${Constant.lineBreak}")
-            }
-        }
-        responseBody.appendText(responsePayload)
-
         return response
     }
 
     private fun doGetRequest(): Response {
         val response = prepareRequest().get()
-
-        val formattedResponse = Util.formatJson(response.readEntity(javaClass<String>()))
-        responseBody.appendText(formattedResponse)
 
         return response
     }
@@ -333,26 +321,17 @@ private class Controller : Initializable {
     private fun doPutRequest(): Response {
         val response = prepareRequest().put(Entity.json<String>(request.body))
 
-        val formattedResponse = Util.formatJson(response.readEntity<String>(javaClass<String>()))
-        responseBody.appendText(formattedResponse)
-
         return response
     }
 
     private fun doDeleteRequest(): Response {
         val response = prepareRequest().delete()
 
-        val formattedResponse = Util.formatJson(response.readEntity(javaClass<String>()))
-        responseBody.appendText(formattedResponse)
-
         return response
     }
 
     private fun doHeadRequest(): Response {
         val response = prepareRequest().head()
-
-        val formattedResponse = Util.formatJson(response.readEntity(javaClass<String>()))
-        responseBody.appendText(formattedResponse)
 
         return response
     }
@@ -366,10 +345,15 @@ private class Controller : Initializable {
         return response
     }
 
-    private fun showResponseHeaders(getResponse: Response) {
-        getResponse.getHeaders().forEach { header ->
+    private fun showResponseHeaders(response: Response) {
+        response.getHeaders().forEach { header ->
             responseHeaders.appendText("${Headers.toString(entry = header, lineBreak = true)}")
         }
+    }
+
+    private fun showResponseBody(response: Response) {
+        val formattedResponse = Util.formatJson(response.readEntity(javaClass<String>()))
+        responseBody.appendText(formattedResponse)
     }
 
     private fun declareRequestParameters() =
