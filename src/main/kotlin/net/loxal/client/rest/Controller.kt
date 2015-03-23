@@ -407,6 +407,7 @@ private class Controller : Initializable {
             HttpMethod.PUT -> httpMethods.getSelectionModel().select(3)
             HttpMethod.HEAD -> httpMethods.getSelectionModel().select(4)
             HttpMethod.OPTIONS -> httpMethods.getSelectionModel().select(5)
+            else -> showNotification(Level.SEVERE, "HTTP method has no equivalent in UI.")
         }
     }
 
