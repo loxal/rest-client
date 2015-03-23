@@ -285,7 +285,7 @@ private class Controller : Initializable {
                     .build()
             updateCurlCliCommand()
         } catch (e: MalformedURLException) {
-            showNotification(Level.INFO, "Invalid endpoint URL: ${e.getMessage()}")
+            showNotification(Level.SEVERE, "Invalid endpoint URL: ${e.getMessage()}")
             validEndpoint = false
             return
         }
