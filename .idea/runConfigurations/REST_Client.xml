@@ -2,7 +2,7 @@
   <configuration default="false" name="REST Client" type="Application" factoryName="Application" singleton="true" show_console_on_std_out="true" show_console_on_std_err="true">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
     <option name="MAIN_CLASS_NAME" value="net.loxal.client.rest.App" />
-    <option name="VM_PARAMETERS" value="-Dhttp.server=proxy -Dhttp.port=8080" />
+    <option name="VM_PARAMETERS" value="" />
     <option name="PROGRAM_PARAMETERS" value="reset" />
     <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />

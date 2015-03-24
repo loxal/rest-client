@@ -254,7 +254,7 @@ private class Controller : Initializable {
                 showStatus(response)
                 showResponseBody(response)
             } catch(e: ProcessingException) {
-                showNotification(Level.SEVERE, "${e.getCause()?.getMessage()}")
+                showNotification(Level.SEVERE, "${e.getMessage()}")
             }
         }
     }
