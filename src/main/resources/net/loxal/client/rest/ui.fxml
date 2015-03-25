@@ -5,6 +5,7 @@
   -->
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -16,7 +17,7 @@
             fx:controller="net.loxal.client.rest.Controller">
     <children>
         <TextField id="request-url-bar" fx:id="endpointUrl" cacheShape="false" centerShape="false"
-                   focusTraversable="false" layoutX="90.0" layoutY="8.0" onKeyReleased="#updateEndpoint"
+                   focusTraversable="false" layoutX="89.0" layoutY="34.0" onKeyReleased="#updateEndpoint"
                    pickOnBounds="false" prefHeight="26.0" prefWidth="823.0" promptText="https://api.example.com"
                    scaleShape="false" text="http://rest-kit-test-v1.test.cf.hybris.com/dilbert-quote/manager">
             <styleClass>
@@ -24,7 +25,7 @@
                 <String fx:value="test"/>
             </styleClass>
         </TextField>
-        <Button fx:id="requestPerformer" cancelButton="true" defaultButton="true" layoutX="914.0" layoutY="8.0"
+        <Button fx:id="requestPerformer" cancelButton="true" defaultButton="true" layoutX="912.0" layoutY="34.0"
                 mnemonicParsing="false" onAction="#doRequest" pickOnBounds="false" prefHeight="26.0" prefWidth="51.0"
                 text="Send"/>
         <Button fx:id="clearButton" cancelButton="true" defaultButton="true" layoutX="820.0" layoutY="62.0"
@@ -46,14 +47,14 @@
         <Text layoutX="3.0" layoutY="584.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Response Headers"/>
         <TextArea fx:id="responseHeaders" editable="false" layoutX="11.0" layoutY="593.0" prefHeight="197.0"
                   prefWidth="467.0" promptText="Location: https://api.example.com/entity/id"/>
-        <Label fx:id="notification" layoutX="89.0" layoutY="35.0" prefHeight="16.0" prefWidth="727.0" textFill="#dd6611"
+        <Label fx:id="notification" layoutX="93.0" layoutY="62.0" prefHeight="16.0" prefWidth="727.0" textFill="#dd6611"
                wrapText="true"/>
         <TextArea fx:id="requestParameterData" editable="false" layoutX="489.0" layoutY="102.0" prefHeight="123.0"
                   prefWidth="477.0"
                   promptText="URL parameters are read from the endpoint URL and are prefaced with the “?” character. E.g. “?key=value&amp;anotherKey=anotherValue”"
                   styleClass="request"/>
         <Text layoutX="485.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="URL Parameters"/>
-        <Button fx:id="requestSaver" layoutX="1041.0" layoutY="8.0" mnemonicParsing="false" onAction="#saveRequest"
+        <Button fx:id="requestSaver" layoutX="1041.0" layoutY="34.0" mnemonicParsing="false" onAction="#saveRequest"
                 prefHeight="26.0" prefWidth="75.0" text="Save"/>
         <TableView fx:id="queryTable" editable="true" layoutX="974.0" layoutY="100.0" maxWidth="398.0"
                    onMouseReleased="#loadSavedRequest" prefHeight="690.0" prefWidth="292.0">
@@ -62,7 +63,7 @@
                              text="Request"/>
             </columns>
         </TableView>
-        <Button fx:id="requestDeleter" layoutX="1191.0" layoutY="8.0" mnemonicParsing="false" onAction="#deleteRequest"
+        <Button fx:id="requestDeleter" layoutX="1191.0" layoutY="34.0" mnemonicParsing="false" onAction="#deleteRequest"
                 prefHeight="26.0" prefWidth="75.0" text="Delete"/>
         <Label layoutX="485.0" layoutY="232.0" prefHeight="16.0" prefWidth="113.0" text="Response Info"
                textFill="#2525a1">
@@ -77,11 +78,27 @@
                   prefWidth="477.0" wrapText="true"/>
         <Text layoutX="487.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="curl Command"
               wrappingWidth="109.0"/>
-        <ComboBox fx:id="httpMethods" layoutX="5.0" layoutY="8.0" onShown="#refillComboboxItems" prefHeight="26.0"
+        <ComboBox fx:id="httpMethods" layoutX="5.0" layoutY="34.0" onShown="#refillComboboxItems" prefHeight="26.0"
                   prefWidth="84.0" promptText="HTTP" styleClass="small"/>
-        <Button fx:id="requestDuplicator" layoutX="1116.0" layoutY="8.0" mnemonicParsing="false"
+        <Button fx:id="requestDuplicator" layoutX="1116.0" layoutY="34.0" mnemonicParsing="false"
                 onAction="#duplicateRequest" prefHeight="26.0" prefWidth="75.0" text="Duplicate"/>
-        <Text layoutX="974.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request"
+        <Text layoutX="974.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request"
               wrappingWidth="51.0"/>
+        <MenuBar fx:id="menuBar" layoutY="-6.0" prefHeight="29.0" prefWidth="1280.0">
+            <menus>
+                <Menu mnemonicParsing="true" text="Response">
+                    <items>
+                        <MenuItem mnemonicParsing="true" onAction="#findInResponse" text="Find">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" code="F" control="UP" meta="UP" shift="UP"
+                                                    shortcut="DOWN"/>
+                            </accelerator>
+                        </MenuItem>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <TextField fx:id="findInResponse" layoutX="583.0" layoutY="566.0" prefHeight="26.0" prefWidth="383.0"
+                   visible="false"/>
     </children>
 </AnchorPane>

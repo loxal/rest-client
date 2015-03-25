@@ -82,6 +82,10 @@ private class Controller : Initializable {
     private var requestBody: TextArea = TextArea()
     FXML
     private var responseBody: TextArea = TextArea()
+    FXML
+    private var menuBar: MenuBar = MenuBar()
+    FXML
+    private var findInResponse: TextField = TextField()
 
     private var request: ClientRequest = ClientRequest.Builder("[Init Request]").build()
     private var startRequest: Instant = Instant.now()
@@ -112,7 +116,7 @@ private class Controller : Initializable {
         Util.assignShortcut(requestDeleter, KeyCodeCombination(KeyCode.BACK_SPACE, KeyCombination.SHORTCUT_DOWN), Runnable { requestDeleter.fire() })
         Util.assignShortcut(requestSaver, KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN), Runnable { requestSaver.fire() })
         Util.assignShortcut(requestDuplicator, KeyCodeCombination(KeyCode.D, KeyCombination.SHORTCUT_DOWN), Runnable { requestDuplicator.fire() })
-        Util.assignShortcut(find, KeyCodeCombination(KeyCode.F, KeyCombination.SHORTCUT_DOWN), Runnable { find.requestFocus() })
+        Util.assignShortcut(find, KeyCodeCombination(KeyCode.F, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN), Runnable { find.requestFocus() })
 
         fun initHttpMethods() {
             httpMethods.setItems(httpMethodsTexts)
@@ -131,6 +135,24 @@ private class Controller : Initializable {
         reloadRequestBackup()
 
         enableFinder()
+        menuBar.setUseSystemMenuBar(true)
+    }
+
+    FXML
+    private fun findInResponse() {
+        // TODO finish
+        findInResponse.requestFocus()
+        findInResponse.setVisible(true)
+        findInResponse.setOnKeyReleased { keyEvent ->
+            val currentSearch = findInResponse.getText()
+            val currentText = responseBody.getText()
+
+            println(currentSearch)
+            println(currentText.lastIndexOf(currentSearch))
+            //            println(currentText.end(currentSearch))
+            responseBody.selectRange(currentText.indexOf(currentSearch) + currentSearch.length(), currentText.indexOf(currentSearch))
+            //             responseBody.setText(findInResponse.getText())
+        }
     }
 
     private fun reloadRequestBackup() {
