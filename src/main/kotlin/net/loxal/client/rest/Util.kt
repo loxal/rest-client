@@ -155,7 +155,7 @@ final class Util {
                 else
                     return GsonBuilder().setPrettyPrinting().create().toJson(jsonElement)
             } catch (e: JsonSyntaxException) {
-                App.LOG.warning("${e.getCause()} - ${e.getMessage()}")
+                App.LOG.warning("${e.getCause()?.getMessage()} - ${e.getMessage()}")
                 return json
             }
         }
