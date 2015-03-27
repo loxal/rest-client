@@ -241,6 +241,7 @@ private class Controller : Initializable {
         selectSavedRequest()
 
         reloadRequestBackup()
+        showNotification(Level.INFO, "“${requestName}” saved ${Instant.now()}")
     }
 
     FXML
@@ -265,7 +266,7 @@ private class Controller : Initializable {
         selectFirstSavedRequest()
 
         reloadRequestBackup()
-
+        showNotification(Level.INFO, "“${requestName}” duplicated ${Instant.now()}")
     }
 
     FXML
