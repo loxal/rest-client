@@ -141,17 +141,35 @@ private class Controller : Initializable {
     FXML
     private fun findInResponse() {
         // TODO finish
-        findInResponse.requestFocus()
-        findInResponse.setVisible(true)
-        findInResponse.setOnKeyReleased { keyEvent ->
+        fun findSearch() {
             val currentSearch = findInResponse.getText()
             val currentText = responseBody.getText()
+            val firstOccurrence = currentText.indexOf(currentSearch)
+            val selectionLength = firstOccurrence + currentSearch.length()
 
+            println(responseBody.getText())
             println(currentSearch)
             println(currentText.lastIndexOf(currentSearch))
-            //            println(currentText.end(currentSearch))
-            responseBody.selectRange(currentText.indexOf(currentSearch) + currentSearch.length(), currentText.indexOf(currentSearch))
-            //             responseBody.setText(findInResponse.getText())
+            println(firstOccurrence)
+            println(selectionLength)
+
+            val found = firstOccurrence != -1 && firstOccurrence != 0
+            if (found) {
+                println("firstOccurrence: ${firstOccurrence}")
+                responseBody.selectRange(selectionLength, firstOccurrence)
+            }
+        }
+
+        fun focus() {
+            findInResponse.requestFocus()
+            findInResponse.setVisible(true)
+        }
+
+        focus()
+        findInResponse.setOnKeyReleased { keyEvent ->
+            println("fired START ${responseBody.getText()}")
+            findSearch()
+            println("fired END ${responseBody.getText()}")
         }
     }
 

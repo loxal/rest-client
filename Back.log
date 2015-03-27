@@ -1,6 +1,7 @@
 # Backlog
 
 ## now
+    find out why responseBody is cleared when hitting ENTER in findResponse TextField
     search in response body
         find count
 
