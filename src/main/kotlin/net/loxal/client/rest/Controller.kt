@@ -219,54 +219,60 @@ private class Controller : Initializable {
         httpMethods.setItems(httpMethodsTexts)
     }
 
+    private val viewSelection: TableView.TableViewSelectionModel<ClientRequest> = queryTable.getSelectionModel()
+
     FXML
     private fun saveRequest() {
         updateEndpoint()
 
-        val selectedRequest: ClientRequest? = queryTable.getSelectionModel().getSelectedItem()
-        val selectedRequestIndex = queryTable.getSelectionModel().getSelectedIndex()
-        val fileLocation = files.get(selectedRequestIndex)
+        val selectedRequestIndex = viewSelection.getSelectedIndex()
+        val noSelection = -1
+        if (selectedRequestIndex == noSelection) {
+            saveNewRequest(viewSelection)
+        } else {
+            val requestName: String = viewSelection.getSelectedItem()!!.name
+            val clientRequest = buildRequest(requestName)
 
-        val requestName: String = selectedRequest!!.name
-        val clientRequest = ClientRequest.Builder(requestName)
-                .method(request.method)
-                .url(request.url)
-                .body(requestBody.getText())
-                .headers(ClientRequest.toHeaders(requestHeaderData.getText()))
-                .build()
+            val fileLocation = files.get(selectedRequestIndex)
+            if (Util.save(storage = fileLocation, request = clientRequest)) loadSavedRequests()
 
-        if (Util.save(storage = fileLocation, request = clientRequest)) loadSavedRequests()
-
-        val selectSavedRequest = { queryTable.getSelectionModel().select(selectedRequestIndex) }
-        selectSavedRequest()
-
-        reloadRequestBackup()
-        showNotification(Level.INFO, "“${requestName}” saved ${Instant.now()}")
+            postSaveAction(requestName, selectedRequestIndex, viewSelection)
+        }
     }
 
     FXML
     private fun duplicateRequest() {
         updateEndpoint()
+        saveNewRequest(viewSelection)
+    }
 
+    private fun saveNewRequest(viewSelection: TableView.TableViewSelectionModel<ClientRequest>) {
         val localTimestamp = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))
         val verboseRequestName = "$localTimestamp ${request.url.getHost()}${request.url.getPath()} ${request.method}"
-        val selectedRequest: ClientRequest? = queryTable.getSelectionModel().getSelectedItem()
-
+        val selectedRequest: ClientRequest? = viewSelection.getSelectedItem()
         val requestName: String = if (selectedRequest identityEquals null) verboseRequestName else "${selectedRequest!!.name} ∆"
+        val clientRequest = buildRequest(requestName)
+
+        if (Util saveAsNew clientRequest) loadSavedRequests()
+
+        val firstItem = 0
+        postSaveAction(requestName, firstItem, viewSelection)
+    }
+
+    private fun buildRequest(requestName: String): ClientRequest {
         val clientRequest = ClientRequest.Builder(requestName)
                 .method(request.method)
                 .url(request.url)
                 .body(requestBody.getText())
                 .headers(ClientRequest.toHeaders(requestHeaderData.getText()))
                 .build()
+        return clientRequest
+    }
 
-        if (Util saveAsNew clientRequest) loadSavedRequests()
-
-        val selectFirstSavedRequest = { queryTable.getSelectionModel().select(0) }
-        selectFirstSavedRequest()
-
+    private fun postSaveAction(requestName: String, selectedRequestIndex: Int, viewSelection: TableView.TableViewSelectionModel<ClientRequest>) {
+        viewSelection.select(selectedRequestIndex)
         reloadRequestBackup()
-        showNotification(Level.INFO, "“${requestName}” duplicated ${Instant.now()}")
+        showNotification(Level.INFO, "“${requestName}” saved ${Instant.now()}")
     }
 
     FXML
