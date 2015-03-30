@@ -147,15 +147,8 @@ private class Controller : Initializable {
             val firstOccurrence = currentText.indexOf(currentSearch)
             val selectionLength = firstOccurrence + currentSearch.length()
 
-            println(responseBody.getText())
-            println(currentSearch)
-            println(currentText.lastIndexOf(currentSearch))
-            println(firstOccurrence)
-            println(selectionLength)
-
             val found = firstOccurrence != -1 && firstOccurrence != 0
             if (found) {
-                println("firstOccurrence: ${firstOccurrence}")
                 responseBody.selectRange(selectionLength, firstOccurrence)
             }
         }
@@ -167,9 +160,7 @@ private class Controller : Initializable {
 
         focus()
         findInResponse.setOnKeyReleased { keyEvent ->
-            println("fired START ${responseBody.getText()}")
             findSearch()
-            println("fired END ${responseBody.getText()}")
         }
     }
 
