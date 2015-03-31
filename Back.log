@@ -3,8 +3,11 @@
 ## now
     search in response body
         find count
+        “find next” button
 
 ## later
+    convert from curl to REST command
+    replace “java” process name (the name in the top left corner when launching the app) with the actual application name
 
 ## dream
     Add command line capability

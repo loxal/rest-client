@@ -126,7 +126,7 @@ data class ClientRequest(builder: ClientRequest.Builder) : Serializable {
 
         val curlBody = if (body.isEmpty()) "" else "-d $'${body}'"
 
-        val curlCliCommand = "curl -X \"${method}\" \"${url}\" \\${Constant.lineBreak}${headers}${curlBody}"
+        val curlCliCommand = "curl -i -X \"${method}\" \"${url}\" \\${Constant.lineBreak}${headers}${curlBody}"
 
         return curlCliCommand
     }
