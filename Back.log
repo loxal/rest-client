@@ -1,6 +1,7 @@
 # Backlog
 
 ## now
+    hide/unhide find HBox depending on Find visibility
     search in response body
         find count
         “find next” button
@@ -8,6 +9,7 @@
 ## later
     convert from curl to REST command
     replace “java” process name (the name in the top left corner when launching the app) with the actual application name
+    make “URL Paramters” editable, take care of syncing
 
 ## dream
     Add command line capability

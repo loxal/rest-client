@@ -17,6 +17,7 @@ import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
 import javafx.scene.layout.AnchorPane
+import javafx.scene.layout.HBox
 import javafx.scene.text.Text
 import net.loxal.client.rest.model.ClientRequest
 import net.loxal.client.rest.model.Headers
@@ -44,6 +45,12 @@ private class Controller : Initializable {
     private val clientRequests = FXCollections.observableArrayList<ClientRequest>()
     private val clientRequestsBackup = FXCollections.observableArrayList<ClientRequest>()
 
+    FXML
+    private var findContainer: HBox = HBox()
+    FXML
+    private var findCount: Label = Label()
+    FXML
+    private var findNext: Button = Button()
     FXML
     private var httpMethods: ComboBox<Text> = ComboBox()
     FXML
@@ -160,10 +167,10 @@ private class Controller : Initializable {
 
         fun focus() {
             findInResponse.requestFocus()
-            findInResponse.setVisible(true)
+            findContainer.setVisible(true)
         }
-
         focus()
+
         findInResponse.setOnKeyReleased { keyEvent ->
             responseBody.deselect()
             findSearch()

@@ -7,6 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import java.lang.String?>
@@ -45,7 +46,8 @@
         </Label>
         <Label fx:id="responseStatus" layoutX="489.0" layoutY="254.0" prefHeight="42.0" prefWidth="477.0" wrapText="true" />
         <TextField fx:id="find" layoutX="974.0" layoutY="62.0" prefHeight="26.0" prefWidth="292.0" promptText="Find" />
-        <TextArea fx:id="curlCommand" editable="false" layoutX="489.0" layoutY="389.0" prefHeight="164.0" prefWidth="477.0" wrapText="true" />
+        <TextArea fx:id="curlCommand" layoutX="489.0" layoutY="389.0" prefHeight="164.0" prefWidth="477.0"
+                  wrapText="true"/>
         <Text layoutX="487.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="curl Command" wrappingWidth="109.0" />
         <ComboBox fx:id="httpMethods" layoutX="5.0" layoutY="8.0" onShown="#refillComboboxItems" prefHeight="26.0" prefWidth="84.0" promptText="HTTP" styleClass="small" />
         <Button fx:id="requestDuplicator" layoutX="1116.0" layoutY="8.0" mnemonicParsing="false" onAction="#duplicateRequest" prefHeight="26.0" prefWidth="75.0" text="Duplicate" />
@@ -63,6 +65,13 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <TextField fx:id="findInResponse" layoutX="583.0" layoutY="566.0" prefHeight="26.0" prefWidth="383.0" visible="false" />
+        <HBox fx:id="findContainer" fillHeight="false" layoutX="582.0" layoutY="566.0" prefHeight="25.0"
+              prefWidth="385.0" visible="false">
+            <children>
+                <TextField fx:id="findInResponse" prefHeight="26.0" prefWidth="293.0"/>
+                <Label fx:id="findCount" alignment="CENTER_RIGHT" prefHeight="16.0" prefWidth="85.0" text="matches "/>
+                <Button fx:id="findNext" mnemonicParsing="false" prefHeight="26.0" prefWidth="65.0" text="Next"/>
+            </children>
+        </HBox>
     </children>
 </AnchorPane>

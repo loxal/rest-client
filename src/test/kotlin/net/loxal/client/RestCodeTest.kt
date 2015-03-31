@@ -50,7 +50,7 @@ class RestCodeTest {
         val clientRequest = ClientRequest.toClientRequest(restCodeUrl)
 
         assertEquals(
-                """curl -i -X "POST" "https://example.com:440/endpoint/" \
+                """curl -i -X POST "https://example.com:440/endpoint/" \
 -H ": " \
 -H "number: 1" \
 -H "header3: value3" \
