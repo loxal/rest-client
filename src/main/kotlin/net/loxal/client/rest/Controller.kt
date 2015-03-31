@@ -216,12 +216,11 @@ private class Controller : Initializable {
         httpMethods.setItems(httpMethodsTexts)
     }
 
-    private val viewSelection: TableView.TableViewSelectionModel<ClientRequest> = queryTable.getSelectionModel()
-
     FXML
     private fun saveRequest() {
         updateEndpoint()
 
+        val viewSelection: TableView.TableViewSelectionModel<ClientRequest> = queryTable.getSelectionModel()
         val selectedRequestIndex = viewSelection.getSelectedIndex()
         val noSelection = -1
         if (selectedRequestIndex == noSelection) {
@@ -240,6 +239,7 @@ private class Controller : Initializable {
     FXML
     private fun duplicateRequest() {
         updateEndpoint()
+        val viewSelection: TableView.TableViewSelectionModel<ClientRequest> = queryTable.getSelectionModel()
         saveNewRequest(viewSelection)
     }
 
