@@ -179,6 +179,16 @@ private class Controller : Initializable {
         }
     }
 
+    FXML
+    private fun findNext() {
+        println("next")
+    }
+
+    FXML
+    private fun findPrev() {
+        println("prev")
+    }
+
     private fun reloadRequestBackup() {
         clientRequestsBackup.clear()
         clientRequestsBackup.addAll(clientRequests)
@@ -186,8 +196,8 @@ private class Controller : Initializable {
 
     private fun enableFinder() {
         Util.assignShortcut(findContainer, KeyCodeCombination(KeyCode.ESCAPE), Runnable { rootContainer.requestFocus(); findContainer.setVisible(false) })
-        Util.assignShortcut(findPrev, KeyCodeCombination(KeyCode.G, KeyCombination.SHIFT_DOWN, KeyCombination.SHORTCUT_DOWN), Runnable { findPrev.requestFocus() })
-        Util.assignShortcut(findNext, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN), Runnable { findNext.requestFocus() })
+        Util.assignShortcut(findPrev, KeyCodeCombination(KeyCode.G, KeyCombination.SHIFT_DOWN, KeyCombination.SHORTCUT_DOWN), Runnable { findPrev.fire() })
+        Util.assignShortcut(findNext, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN), Runnable { findNext.fire() })
 
         find.setOnKeyReleased { keyEvent ->
             resetFind()
