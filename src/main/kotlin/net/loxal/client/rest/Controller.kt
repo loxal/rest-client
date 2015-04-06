@@ -234,7 +234,7 @@ private class Controller : Initializable {
      * This is a workaround as proper rendering for combo box items is not working yet.
      */
     FXML
-    private fun refillComboboxItems() {
+    private fun refillComboBoxItems() {
         httpMethods.setItems(null)
         httpMethods.setItems(httpMethodsTexts)
     }

@@ -5,7 +5,6 @@
 package net.loxal.client.rest
 
 import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
 import javafx.fxml.Initializable
 import javafx.scene.control.Button
 import javafx.scene.layout.HBox
@@ -24,11 +23,7 @@ private class FindContainer : Initializable, HBox() {
     }
 
     init {
-        val loader = FXMLLoader()
-        //        val rootNode = loader.load<FindContainer>(javaClass.getResourceAsStream("find-container.fxml"))
-        val controller = loader.getController<FindContainer>()
-
-        App.LOG.log(Level.INFO, "init: $controller")
+        App.LOG.log(Level.INFO, "init")
     }
 
     FXML

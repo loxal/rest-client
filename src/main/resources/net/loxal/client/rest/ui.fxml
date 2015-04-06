@@ -49,7 +49,8 @@
         <TextArea fx:id="curlCommand" layoutX="489.0" layoutY="389.0" prefHeight="164.0" prefWidth="477.0"
                   wrapText="true"/>
         <Text layoutX="487.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="curl Command" wrappingWidth="109.0" />
-        <ComboBox fx:id="httpMethods" layoutX="5.0" layoutY="8.0" onShown="#refillComboboxItems" prefHeight="26.0" prefWidth="84.0" promptText="HTTP" styleClass="small" />
+        <ComboBox fx:id="httpMethods" layoutX="5.0" layoutY="8.0" onShown="#refillComboBoxItems" prefHeight="26.0"
+                  prefWidth="84.0" promptText="HTTP" styleClass="small"/>
         <Button fx:id="requestDuplicator" layoutX="1116.0" layoutY="8.0" mnemonicParsing="false" onAction="#duplicateRequest" prefHeight="26.0" prefWidth="75.0" text="Duplicate" />
         <Text layoutX="974.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request" wrappingWidth="51.0" />
         <MenuBar fx:id="menuBar" layoutY="-29.0" prefHeight="29.0" prefWidth="1280.0">
