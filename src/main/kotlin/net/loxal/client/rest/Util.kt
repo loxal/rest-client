@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonNull
 import com.google.gson.JsonParser
 import com.google.gson.JsonSyntaxException
+import javafx.scene.Parent
 import javafx.scene.control.Control
 import javafx.scene.control.Tooltip
 import javafx.scene.input.KeyCodeCombination
@@ -34,13 +35,17 @@ final class Util {
         val parameterPairEntrySeparatorRegex = "="
 
         final fun assignShortcut(control: Control, keyCodeCombination: KeyCodeCombination, action: Runnable) {
-            control.getScene().getAccelerators().put(keyCodeCombination, action)
+            assignShortcut(control.getParent(), keyCodeCombination, action)
             control.setTooltip(Tooltip("${keyCodeCombination.getDisplayText()}"))
         }
 
+        final fun assignShortcut(control: Parent, keyCodeCombination: KeyCodeCombination, action: Runnable) {
+            control.getScene().getAccelerators().put(keyCodeCombination, action)
+        }
+
         final fun assignShortcutToText(acceleratorContainer: AnchorPane, shortcutTarget: Text, keyCodeCombination: KeyCodeCombination, action: Runnable) {
+            assignShortcut(acceleratorContainer, keyCodeCombination, action)
             shortcutTarget.setAccessibleText(shortcutTarget.getText())
-            acceleratorContainer.getScene().getAccelerators().put(keyCodeCombination, action)
             shortcutTarget.setText("${shortcutTarget.getText()} ${keyCodeCombination.getDisplayText()}")
         }
 
@@ -140,8 +145,10 @@ final class Util {
         final fun toForm(payload: String): MultivaluedMap<String, String> {
             val formData: MultivaluedMap<String, String> = MultivaluedHashMap()
             payload.split("&").forEach { pair ->
-                val (key, value) = pair.split(parameterPairEntrySeparatorRegex)
-                formData.putSingle(key, value)
+                if (!pair.isEmpty()) {
+                    val (key, value) = pair.split(parameterPairEntrySeparatorRegex)
+                    formData.putSingle(key, value)
+                }
             }
 
             return ImmutableMultivaluedMap(formData)

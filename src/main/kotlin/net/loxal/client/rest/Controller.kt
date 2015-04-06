@@ -153,9 +153,9 @@ private class Controller : Initializable {
 
             fun findNext(text: String) {
                 val nextOccurrence = text.indexOf(currentSearch)
-                if (nextOccurrence != -1) {
+                if (nextOccurrence != none) {
                     val selectionRange = nextOccurrence + currentSearch.length()
-                    val found = nextOccurrence != -1 && nextOccurrence != 0
+                    val found = nextOccurrence != none && nextOccurrence != 0
                     if (found) {
                         responseBody.selectRange(selectionRange, nextOccurrence)
                         //                        findNext(text.substring(selectionRange))
@@ -182,11 +182,14 @@ private class Controller : Initializable {
         clientRequestsBackup.addAll(clientRequests)
     }
 
-    private fun enableFinder() =
-            find.setOnKeyReleased { keyEvent ->
-                resetFind()
-                populateFindings()
-            }
+    private fun enableFinder() {
+        Util.assignShortcut(findContainer, KeyCodeCombination(KeyCode.ESCAPE), Runnable { rootContainer.requestFocus(); findContainer.setVisible(false) })
+
+        find.setOnKeyReleased { keyEvent ->
+            resetFind()
+            populateFindings()
+        }
+    }
 
     private fun populateFindings() {
         val clientRequestModelsForSearch = clientRequests.copyToArray()
@@ -229,8 +232,7 @@ private class Controller : Initializable {
 
         val viewSelection: TableView.TableViewSelectionModel<ClientRequest> = queryTable.getSelectionModel()
         val selectedRequestIndex = viewSelection.getSelectedIndex()
-        val noSelection = -1
-        if (selectedRequestIndex == noSelection) {
+        if (selectedRequestIndex == none) {
             saveNewRequest(viewSelection)
         } else {
             val requestName: String = viewSelection.getSelectedItem()!!.name
@@ -426,7 +428,7 @@ private class Controller : Initializable {
 
     private fun deleteSavedRequestFile() {
         val selectedIndex = queryTable.getSelectionModel().getSelectedIndex()
-        if (selectedIndex != -1) {
+        if (selectedIndex != none) {
             val fileToDelete: File = files.get(selectedIndex)
             if (fileToDelete.delete()) {
                 App.LOG.info("Saved request deleted: $fileToDelete")
@@ -501,5 +503,6 @@ private class Controller : Initializable {
 
     private companion object {
         private val client = ClientBuilder.newClient()
+        private val none = -1
     }
 }
