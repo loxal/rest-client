@@ -10,7 +10,6 @@ import javafx.scene.control.Button
 import javafx.scene.layout.HBox
 import java.net.URL
 import java.util.ResourceBundle
-import java.util.logging.Level
 
 private class FindContainer : Initializable, HBox() {
     FXML
@@ -19,25 +18,25 @@ private class FindContainer : Initializable, HBox() {
     private var findNext: Button = Button()
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
-        App.LOG.log(Level.INFO, "initialize: $location - $resources")
+        App.LOG.info("initialize: $location - $resources")
     }
 
     init {
-        App.LOG.log(Level.INFO, "init")
+        App.LOG.info("init")
     }
 
     FXML
     private fun findNext() {
-        App.LOG.log(Level.INFO, "findNext")
+        App.LOG.info("findNext")
     }
 
     FXML
     private fun findPrev() {
-        App.LOG.log(Level.INFO, "findPrev")
+        App.LOG.info("findPrev")
     }
 
     FXML
     private fun findInResponse() {
-        App.LOG.log(Level.INFO, "findInResponse")
+        App.LOG.info("findInResponse")
     }
 }
