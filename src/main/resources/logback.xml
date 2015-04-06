@@ -5,7 +5,7 @@
 
 <configuration>
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>epvin.log</file>
+        <file>${HOME}/.loxal/rest-client/app.log</file>
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
