@@ -54,7 +54,7 @@ final class Util {
                 if (appHomeDirectory.mkdirs()) {
                     App.LOG.info(lang.String.format("%s created", appHomeDirectory))
                 } else {
-                    App.LOG.severe(lang.String.format("%s creation failed", appHomeDirectory))
+                    App.LOG.warn(lang.String.format("%s creation failed", appHomeDirectory))
                 }
             }
         }
@@ -65,11 +65,11 @@ final class Util {
                     try {
                         return objectInputStream.readObject() as ClientRequest
                     } catch(e: ClassCastException) {
-                        App.LOG.severe("$e")
+                        App.LOG.warn("$e")
                     } catch(e: InvalidClassException) {
-                        App.LOG.severe("$e")
+                        App.LOG.warn("$e")
                     } catch(e: WriteAbortedException) {
-                        App.LOG.severe("$e")
+                        App.LOG.warn("$e")
                     }
                 }
             }
@@ -99,7 +99,7 @@ final class Util {
                     }
                 }
             } catch (e: IOException) {
-                App.LOG.severe("Could not serialize object: ${e.getMessage()}")
+                App.LOG.warn("Could not serialize object: ${e.getMessage()}")
             }
             return false
         }
@@ -111,10 +111,10 @@ final class Util {
                     if (saveFile.createNewFile()) {
                         App.LOG.info("$saveFile created")
                     } else {
-                        App.LOG.severe("$saveFile creation failed")
+                        App.LOG.warn("$saveFile creation failed")
                     }
                 } catch (e: IOException) {
-                    App.LOG.severe(e.getMessage())
+                    App.LOG.warn(e.getMessage())
                 }
             }
         }
@@ -162,7 +162,7 @@ final class Util {
                 else
                     return GsonBuilder().setPrettyPrinting().create().toJson(jsonElement)
             } catch (e: JsonSyntaxException) {
-                App.LOG.warning("${e.getCause()?.getMessage()} - ${e.getMessage()}")
+                App.LOG.warn("${e.getCause()?.getMessage()} - ${e.getMessage()}")
                 return json
             }
         }
