@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright 2015 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+  -->
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.text.Font?>
+<?import net.loxal.client.rest.FindContainer?>
+<FindContainer xmlns:fx="http://javafx.com/fxml/1" fx:id="findContainer" fillHeight="false" layoutX="582.0"
+               layoutY="566.0" prefHeight="25.0"
+               prefWidth="385.0" visible="false" scaleShape="false" snapToPixel="false"
+               stylesheets="/net/loxal/client/rest/view/style.css" xmlns="http://javafx.com/javafx/8"
+               fx:controller="net.loxal.client.rest.FindContainer">
+    <MenuBar fx:id="menuBar" layoutY="-29.0" prefHeight="29.0" prefWidth="1280.0">
+        <menus>
+            <Menu mnemonicParsing="true" text="Response">
+                <items>
+                    <MenuItem mnemonicParsing="true" onAction="#findInResponse" text="Find">
+                        <accelerator>
+                            <KeyCodeCombination alt="UP" code="F" control="UP" meta="UP" shift="UP" shortcut="DOWN"/>
+                        </accelerator>
+                    </MenuItem>
+                </items>
+            </Menu>
+        </menus>
+    </MenuBar>
+    <children>
+        <TextField fx:id="findInResponse" prefHeight="26.0" prefWidth="293.0"/>
+        <Label fx:id="findCount" alignment="CENTER_RIGHT" prefHeight="16.0" prefWidth="85.0" text="matches "/>
+        <Button fx:id="findPrev" mnemonicParsing="false" onAction="#findPrev" prefHeight="28.0" prefWidth="52.0"
+                text="⬆">
+            <font>
+                <Font name="System Bold" size="14.0"/>
+            </font>
+        </Button>
+        <Button fx:id="findNext" layoutX="358.0" layoutY="10.0" mnemonicParsing="false" onAction="#findNext"
+                prefHeight="28.0" prefWidth="52.0" text="⬇">
+            <font>
+                <Font name="System Bold" size="14.0"/>
+            </font>
+        </Button>
+    </children>
+</FindContainer>
