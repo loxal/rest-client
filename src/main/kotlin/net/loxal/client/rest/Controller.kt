@@ -180,12 +180,12 @@ private class Controller : Initializable {
 
     FXML
     private fun findNext() {
-        App.LOG.log(Level.INFO, "next")
+        App.LOG.info("next")
     }
 
     FXML
     private fun findPrev() {
-        App.LOG.log(Level.INFO, "prev")
+        App.LOG.info("prev")
     }
 
     private fun reloadRequestBackup() {
@@ -364,7 +364,11 @@ private class Controller : Initializable {
     }
 
     private fun showNotification(level: Level, message: String) {
-        App.LOG.log(level, message)
+        when (level) {
+            Level.INFO -> App.LOG.info(message)
+            Level.WARNING -> App.LOG.warn(message)
+            else -> App.LOG.error(message)
+        }
         notification.setText(message)
     }
 
@@ -446,7 +450,7 @@ private class Controller : Initializable {
             if (fileToDelete.delete()) {
                 App.LOG.info("Saved request deleted: $fileToDelete")
             } else {
-                App.LOG.severe("Saved request not deleted: $fileToDelete")
+                App.LOG.warn("Saved request not deleted: $fileToDelete")
             }
         }
     }
