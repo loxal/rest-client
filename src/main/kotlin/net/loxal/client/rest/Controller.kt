@@ -180,12 +180,12 @@ private class Controller : Initializable {
 
     FXML
     private fun findNext() {
-        App.LOG.info("next")
+        App.LOG.warn("next")
     }
 
     FXML
     private fun findPrev() {
-        App.LOG.info("prev")
+        App.LOG.debug("prev")
     }
 
     private fun reloadRequestBackup() {

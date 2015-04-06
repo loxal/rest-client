@@ -4,7 +4,7 @@
   -->
 
 <configuration>
-    <property name="PATTERN" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+    <property name="PATTERN" value="%d{HH:mm:ss.SSS} %-5level %msg%n"/>
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>${HOME}/.loxal/rest-client/app.log</file>
@@ -19,10 +19,11 @@
         </encoder>
     </appender>
 
-    <logger name="loxal" level="ALL"/>
+    <logger name="net.loxal" level="ALL">
+        <appender-ref ref="STDOUT"/>
+    </logger>
 
     <root level="ALL">
         <appender-ref ref="FILE"/>
-        <appender-ref ref="STDOUT"/>
     </root>
 </configuration>
