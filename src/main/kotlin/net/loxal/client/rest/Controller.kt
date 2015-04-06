@@ -17,7 +17,6 @@ import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
 import javafx.scene.layout.AnchorPane
-import javafx.scene.layout.HBox
 import javafx.scene.text.Text
 import net.loxal.client.rest.model.ClientRequest
 import net.loxal.client.rest.model.Headers
@@ -46,7 +45,7 @@ private class Controller : Initializable {
     private val clientRequestsBackup = FXCollections.observableArrayList<ClientRequest>()
 
     FXML
-    private var findContainer: HBox = HBox()
+    private var findContainer: FindContainer = FindContainer()
     FXML
     private var findCount: Label = Label()
     FXML
