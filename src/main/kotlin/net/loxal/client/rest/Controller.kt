@@ -50,6 +50,8 @@ private class Controller : Initializable {
     FXML
     private var findCount: Label = Label()
     FXML
+    private var findPrev: Button = Button()
+    FXML
     private var findNext: Button = Button()
     FXML
     private var httpMethods: ComboBox<Text> = ComboBox()
@@ -184,6 +186,8 @@ private class Controller : Initializable {
 
     private fun enableFinder() {
         Util.assignShortcut(findContainer, KeyCodeCombination(KeyCode.ESCAPE), Runnable { rootContainer.requestFocus(); findContainer.setVisible(false) })
+        Util.assignShortcut(findPrev, KeyCodeCombination(KeyCode.G, KeyCombination.SHIFT_DOWN, KeyCombination.SHORTCUT_DOWN), Runnable { findPrev.requestFocus() })
+        Util.assignShortcut(findNext, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN), Runnable { findNext.requestFocus() })
 
         find.setOnKeyReleased { keyEvent ->
             resetFind()

@@ -1,8 +1,6 @@
 # Backlog
 
 ## now
-    hide/unhide find HBox depending on Find visibility
-    make hide/unhide findInResponse work
     search in response body
         find count
         “find next” button
