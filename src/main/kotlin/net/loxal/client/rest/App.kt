@@ -10,10 +10,10 @@ import javafx.scene.Scene
 import javafx.scene.image.Image
 import javafx.scene.layout.AnchorPane
 import javafx.stage.Stage
+import org.slf4j.LoggerFactory
 import java.io.IOException
 import java.net.URL
 import java.util.Properties
-import java.util.logging.Logger
 
 class App : Application() {
 
@@ -35,7 +35,7 @@ class App : Application() {
             val controller = loader.getController<Controller>()
             controller.initAccelerators()
         } catch (e: IOException) {
-            LOG.severe("${e.getCause()}\n ${e.getMessage()}")
+            LOG.warn("${e.getCause()}\n ${e.getMessage()}")
         }
     }
 
@@ -44,7 +44,7 @@ class App : Application() {
     }
 
     companion object {
-        val LOG = Logger.getGlobal()
+        val LOG = LoggerFactory.getLogger(javaClass<App>())
         val SAMPLE_URL = URL("https://example.com")
         val SAVE_AS = "Save request as:"
         private val properties = Properties()
