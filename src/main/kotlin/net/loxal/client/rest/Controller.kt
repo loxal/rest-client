@@ -154,13 +154,11 @@ private class Controller : Initializable {
 
             fun findNext(text: String) {
                 val nextOccurrence = text.indexOf(currentSearch)
-                if (nextOccurrence != none) {
+                val found = nextOccurrence != none && nextOccurrence != 0
+                if (found) {
                     val selectionRange = nextOccurrence + currentSearch.length()
-                    val found = nextOccurrence != none && nextOccurrence != 0
-                    if (found) {
-                        responseBody.selectRange(selectionRange, nextOccurrence)
-                        //                        findNext(text.substring(selectionRange))
-                    }
+                    responseBody.selectRange(selectionRange, nextOccurrence)
+                    //                        findNext(text.substring(selectionRange))
                 }
             }
             findNext(currentText)
