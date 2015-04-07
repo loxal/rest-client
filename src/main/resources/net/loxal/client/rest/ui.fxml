@@ -46,11 +46,9 @@
         </Label>
         <Label fx:id="responseStatus" layoutX="489.0" layoutY="254.0" prefHeight="42.0" prefWidth="477.0" wrapText="true" />
         <TextField fx:id="find" layoutX="974.0" layoutY="62.0" prefHeight="26.0" prefWidth="292.0" promptText="Find" />
-        <TextArea fx:id="curlCommand" layoutX="489.0" layoutY="389.0" prefHeight="164.0" prefWidth="477.0"
-                  wrapText="true"/>
+        <TextArea fx:id="curlCommand" layoutX="489.0" layoutY="389.0" prefHeight="164.0" prefWidth="477.0" wrapText="true" />
         <Text layoutX="487.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="curl Command" wrappingWidth="109.0" />
-        <ComboBox fx:id="httpMethods" layoutX="5.0" layoutY="8.0" onShown="#refillComboBoxItems" prefHeight="26.0"
-                  prefWidth="84.0" promptText="HTTP" styleClass="small"/>
+        <ComboBox fx:id="httpMethods" layoutX="5.0" layoutY="8.0" onShown="#refillComboBoxItems" prefHeight="26.0" prefWidth="84.0" promptText="HTTP" styleClass="small" />
         <Button fx:id="requestDuplicator" layoutX="1116.0" layoutY="8.0" mnemonicParsing="false" onAction="#duplicateRequest" prefHeight="26.0" prefWidth="75.0" text="Duplicate" />
         <Text layoutX="974.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request" wrappingWidth="51.0" />
         <MenuBar fx:id="menuBar" layoutY="-29.0" prefHeight="29.0" prefWidth="1280.0">
@@ -66,14 +64,12 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <HBox fx:id="findContainer" fillHeight="false" layoutX="582.0" layoutY="566.0" prefHeight="25.0"
-              prefWidth="385.0" visible="false">
+        <HBox fx:id="findContainer" fillHeight="false" layoutX="582.0" layoutY="566.0" prefHeight="25.0" prefWidth="385.0" visible="false">
             <children>
-                <TextField fx:id="findInResponse" prefHeight="26.0" prefWidth="293.0"/>
-                <Button fx:id="findNext" layoutX="358.0" layoutY="10.0" mnemonicParsing="false" onAction="#findNext"
-                        prefHeight="28.0" prefWidth="52.0" text="⬇">
+                <TextField fx:id="findInResponse" prefHeight="25.0" prefWidth="367.0" />
+                <Button fx:id="findNext" layoutX="358.0" layoutY="10.0" mnemonicParsing="false" onAction="#findNext" prefHeight="25.0" prefWidth="50.0" text="⬇">
                     <font>
-                        <Font name="System Bold" size="14.0"/>
+                        <Font name="System Bold" size="14.0" />
                     </font>
                 </Button>
             </children>

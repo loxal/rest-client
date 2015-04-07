@@ -20,7 +20,7 @@ class FindContainer : Initializable, HBox() {
     }
 
     init {
-        App.LOG.info("init")
+        App.LOG.trace("init")
     }
 
     FXML

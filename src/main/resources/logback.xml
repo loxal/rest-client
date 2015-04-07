@@ -19,7 +19,7 @@
         </encoder>
     </appender>
 
-    <logger name="net.loxal" level="ALL">
+    <logger name="net.loxal" level="DEBUG">
         <appender-ref ref="STDOUT"/>
     </logger>
 
