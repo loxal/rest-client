@@ -17,6 +17,7 @@ import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
 import javafx.scene.layout.AnchorPane
+import javafx.scene.layout.HBox
 import javafx.scene.text.Text
 import net.loxal.client.rest.model.ClientRequest
 import net.loxal.client.rest.model.Headers
@@ -45,7 +46,7 @@ private class Controller : Initializable {
     private val clientRequestsBackup = FXCollections.observableArrayList<ClientRequest>()
 
     FXML
-    private var findContainer: FindContainer = FindContainer()
+    private var findContainer: HBox = FindContainer()
     FXML
     private var findNext: Button = Button()
     FXML
@@ -144,7 +145,7 @@ private class Controller : Initializable {
 
     FXML
     private fun findInResponse() {
-        findNext(responseBody.getText().toLowerCase())
+        findNextOccurrence()
 
         fun focus() {
             findInResponse.requestFocus()
@@ -154,12 +155,14 @@ private class Controller : Initializable {
 
         findInResponse.setOnKeyReleased { keyEvent ->
             responseBody.deselect()
-            findNext(responseBody.getText().toLowerCase())
+            findNextOccurrence()
         }
     }
 
-    private fun findNext(text: String) {
+    private fun findNextOccurrence() {
+        val text = responseBody.getText().toLowerCase()
         val search = findInResponse.getText().toLowerCase()
+
         val nextOccurrence = text.indexOf(search, FindContainer.findNextFrom)
         val found = nextOccurrence != none && nextOccurrence != 0
         if (found) {
@@ -175,7 +178,7 @@ private class Controller : Initializable {
     private fun findNext() {
         responseBody.deselect()
         findNext.requestFocus()
-        findNext(responseBody.getText().toLowerCase())
+        findNextOccurrence()
     }
 
     private fun reloadRequestBackup() {

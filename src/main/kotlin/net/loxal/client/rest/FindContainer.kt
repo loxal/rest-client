@@ -13,8 +13,6 @@ import java.util.ResourceBundle
 
 class FindContainer : Initializable, HBox() {
     FXML
-    private var findPrev: Button = Button()
-    FXML
     private var findNext: Button = Button()
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
@@ -31,17 +29,11 @@ class FindContainer : Initializable, HBox() {
     }
 
     FXML
-    private fun findPrev() {
-        App.LOG.info("findPrev")
-    }
-
-    FXML
     private fun findInResponse() {
         App.LOG.info("findInResponse")
     }
 
     companion object {
         var findNextFrom: Int = 0
-        var findPrevFrom: Int = 0
     }
 }
