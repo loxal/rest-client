@@ -148,21 +148,8 @@ private class Controller : Initializable {
 
     FXML
     private fun findInResponse() {
-        fun findSearch() {
-            val currentSearch = findInResponse.getText().toLowerCase()
-            val currentText = responseBody.getText().toLowerCase()
-
-            fun findNext(text: String) {
-                val nextOccurrence = text.indexOf(currentSearch)
-                val found = nextOccurrence != none && nextOccurrence != 0
-                if (found) {
-                    val selectionRange = nextOccurrence + currentSearch.length()
-                    responseBody.selectRange(selectionRange, nextOccurrence)
-                    //                        findNext(text.substring(selectionRange))
-                }
-            }
-            findNext(currentText)
-        }
+        val text = responseBody.getText().toLowerCase()
+        findNext(text)
 
         fun focus() {
             findInResponse.requestFocus()
@@ -172,13 +159,24 @@ private class Controller : Initializable {
 
         findInResponse.setOnKeyReleased { keyEvent ->
             responseBody.deselect()
-            findSearch()
+            findNext(responseBody.getText().toLowerCase())
+        }
+    }
+
+    private fun findNext(text: String) {
+        val search = findInResponse.getText().toLowerCase()
+        val nextOccurrence = text.indexOf(search)
+        val found = nextOccurrence != none && nextOccurrence != 0
+        if (found) {
+            val selectionRange = nextOccurrence + search.length()
+            responseBody.selectRange(selectionRange, nextOccurrence)
         }
     }
 
     FXML
     private fun findNext() {
         App.LOG.warn("next")
+        findNext(responseBody.getText().toLowerCase())
     }
 
     FXML

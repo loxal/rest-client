@@ -11,7 +11,7 @@ import javafx.scene.layout.HBox
 import java.net.URL
 import java.util.ResourceBundle
 
-private class FindContainer : Initializable, HBox() {
+class FindContainer : Initializable, HBox() {
     FXML
     private var findPrev: Button = Button()
     FXML
@@ -38,5 +38,9 @@ private class FindContainer : Initializable, HBox() {
     FXML
     private fun findInResponse() {
         App.LOG.info("findInResponse")
+    }
+
+    companion object {
+        final var selectionRange: Int = 0
     }
 }
