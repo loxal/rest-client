@@ -16,7 +16,7 @@ import kotlin.test.assertNotEquals
 
 class RestCodeTest {
     /**
-     * TODO This test might be superfluous as #parseRestCode is called in #toClientRequest.
+     * TODO This test might be superfluous as #parseRestCode is called in #fromRestCode.
      */
     Test
     fun mapRestCode() {
@@ -33,7 +33,7 @@ class RestCodeTest {
 
     Test
     fun fromRestCodeModelToClientRequestModel() {
-        val clientRequest: ClientRequest = ClientRequest.toClientRequest(restCodeUrl)
+        val clientRequest: ClientRequest = ClientRequest.fromRestCode(restCodeUrl)
         validateClientRequest(clientRequest)
     }
 
@@ -46,20 +46,15 @@ class RestCodeTest {
     }
 
     Test
-    fun clientRequestModelToCurl() {
-        val clientRequest = ClientRequest.toClientRequest(restCodeUrl)
+    fun `ClientRequest model to curl CLI command conversion`() {
+        val clientRequest = ClientRequest.fromRestCode(restCodeUrl)
+        assertEquals(curlCliCommand, clientRequest.toCurlCliCommand())
+    }
 
-        assertEquals(
-                """curl -i -X POST "https://example.com:440/endpoint/" \
--H ": " \
--H "number: 1" \
--H "header3: value3" \
--H "header2: " \
--H "header1: [0, 1, false, false]" \
--H "header: [value, value1, 42.0, true]" \
--d $'{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}'""",
-
-                clientRequest.toCurlCliCommand())
+    Test
+    fun `curl CLI command to ClientRequest model`() {
+        val clientRequest = ClientRequest.fromCurlCliCommand(curlCliCommand)
+        assertEquals(curlCliCommand, clientRequest)
     }
 
     Test
@@ -131,5 +126,14 @@ class RestCodeTest {
                 "}"
 
         private val restCodeUrl: URL = URL(restCodeUrlRaw)
+
+        private val curlCliCommand: String = """curl -i -X POST "https://example.com:440/endpoint/" \
+-H ": " \
+-H "number: 1" \
+-H "header3: value3" \
+-H "header2: " \
+-H "header1: [0, 1, false, false]" \
+-H "header: [value, value1, 42.0, true]" \
+-d $'{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}'"""
     }
 }

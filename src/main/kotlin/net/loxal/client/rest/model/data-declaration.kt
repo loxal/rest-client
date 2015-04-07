@@ -156,9 +156,9 @@ data class ClientRequest(builder: ClientRequest.Builder) : Serializable {
             return headers
         }
 
-        fun toClientRequest(url: URL): ClientRequest {
-            val restCode = RestCode.parseRestCode(url)
-            val clientRequest: ClientRequest = createClientRequest(url, restCode)
+        fun fromRestCode(restCodeUrl: URL): ClientRequest {
+            val restCode = RestCode.parseRestCode(restCodeUrl)
+            val clientRequest: ClientRequest = createClientRequest(restCodeUrl, restCode)
 
             return clientRequest
         }
@@ -174,6 +174,11 @@ data class ClientRequest(builder: ClientRequest.Builder) : Serializable {
                     .build()
 
             return clientRequest
+        }
+
+        fun fromCurlCliCommand(curlCliCommand: String): ClientRequest {
+            // TODO implement
+            return ClientRequest.Builder().build()
         }
     }
 }
