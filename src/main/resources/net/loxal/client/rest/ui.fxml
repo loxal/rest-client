@@ -70,13 +70,6 @@
               prefWidth="385.0" visible="false">
             <children>
                 <TextField fx:id="findInResponse" prefHeight="26.0" prefWidth="293.0"/>
-                <Label fx:id="findCount" alignment="CENTER_RIGHT" prefHeight="16.0" prefWidth="85.0" text="matches "/>
-                <Button fx:id="findPrev" mnemonicParsing="false" onAction="#findPrev" prefHeight="28.0" prefWidth="52.0"
-                        text="⬆">
-                    <font>
-                        <Font name="System Bold" size="14.0"/>
-                    </font>
-                </Button>
                 <Button fx:id="findNext" layoutX="358.0" layoutY="10.0" mnemonicParsing="false" onAction="#findNext"
                         prefHeight="28.0" prefWidth="52.0" text="⬇">
                     <font>

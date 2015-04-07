@@ -47,10 +47,6 @@ private class Controller : Initializable {
     FXML
     private var findContainer: FindContainer = FindContainer()
     FXML
-    private var findCount: Label = Label()
-    FXML
-    private var findPrev: Button = Button()
-    FXML
     private var findNext: Button = Button()
     FXML
     private var httpMethods: ComboBox<Text> = ComboBox()
@@ -148,8 +144,7 @@ private class Controller : Initializable {
 
     FXML
     private fun findInResponse() {
-        val text = responseBody.getText().toLowerCase()
-        findNext(text)
+        findNext(responseBody.getText().toLowerCase())
 
         fun focus() {
             findInResponse.requestFocus()
@@ -164,8 +159,6 @@ private class Controller : Initializable {
     }
 
     private fun findNext(text: String) {
-        App.LOG.warn("findNext")
-        FindContainer.findPrevFrom = FindContainer.findNextFrom
         val search = findInResponse.getText().toLowerCase()
         val nextOccurrence = text.indexOf(search, FindContainer.findNextFrom)
         val found = nextOccurrence != none && nextOccurrence != 0
@@ -185,14 +178,6 @@ private class Controller : Initializable {
         findNext(responseBody.getText().toLowerCase())
     }
 
-    FXML
-    private fun findPrev() {
-        FindContainer.findNextFrom = FindContainer.findPrevFrom
-        responseBody.deselect()
-        findPrev.requestFocus()
-        findNext(responseBody.getText().toLowerCase())
-    }
-
     private fun reloadRequestBackup() {
         clientRequestsBackup.clear()
         clientRequestsBackup.addAll(clientRequests)
@@ -200,7 +185,6 @@ private class Controller : Initializable {
 
     private fun enableFinder() {
         Util.assignShortcut(findContainer, KeyCodeCombination(KeyCode.ESCAPE), Runnable { rootContainer.requestFocus(); findContainer.setVisible(false) })
-        Util.assignShortcut(findPrev, KeyCodeCombination(KeyCode.G, KeyCombination.SHIFT_DOWN, KeyCombination.SHORTCUT_DOWN), Runnable { findPrev.fire() })
         Util.assignShortcut(findNext, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN), Runnable { findNext.fire() })
 
         find.setOnKeyReleased { keyEvent ->
