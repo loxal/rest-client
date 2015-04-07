@@ -41,6 +41,7 @@ class FindContainer : Initializable, HBox() {
     }
 
     companion object {
-        final var selectionRange: Int = 0
+        var findNextFrom: Int = 0
+        var findPrevFrom: Int = 0
     }
 }

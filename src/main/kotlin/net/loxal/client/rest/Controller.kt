@@ -164,24 +164,33 @@ private class Controller : Initializable {
     }
 
     private fun findNext(text: String) {
+        App.LOG.warn("findNext")
+        FindContainer.findPrevFrom = FindContainer.findNextFrom
         val search = findInResponse.getText().toLowerCase()
-        val nextOccurrence = text.indexOf(search)
+        val nextOccurrence = text.indexOf(search, FindContainer.findNextFrom)
         val found = nextOccurrence != none && nextOccurrence != 0
         if (found) {
             val selectionRange = nextOccurrence + search.length()
             responseBody.selectRange(selectionRange, nextOccurrence)
+            FindContainer.findNextFrom = selectionRange
+        } else {
+            FindContainer.findNextFrom = 0
         }
     }
 
     FXML
     private fun findNext() {
-        App.LOG.warn("next")
+        responseBody.deselect()
+        findNext.requestFocus()
         findNext(responseBody.getText().toLowerCase())
     }
 
     FXML
     private fun findPrev() {
-        App.LOG.debug("prev")
+        FindContainer.findNextFrom = FindContainer.findPrevFrom
+        responseBody.deselect()
+        findPrev.requestFocus()
+        findNext(responseBody.getText().toLowerCase())
     }
 
     private fun reloadRequestBackup() {
