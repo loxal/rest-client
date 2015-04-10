@@ -4,11 +4,14 @@
 
 ## later
     convert from curl to REST command
+        convert curl to client request model
+        sync curl to client request model in UI
+            and back: client request to Curl
     replace “java” process name (the name in the top left corner when launching the app) with the actual application name
     make “URL Paramters” editable, take care of syncing
 
 ## dream
     Add command line capability
         to be able to do something like "cf apps", performing specific REST requests to accomplish something
-            use WGET syntax
+            use curl syntax
 

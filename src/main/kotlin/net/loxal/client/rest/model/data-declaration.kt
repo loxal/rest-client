@@ -177,7 +177,17 @@ data class ClientRequest(builder: ClientRequest.Builder) : Serializable {
         }
 
         fun fromCurlCliCommand(curlCliCommand: String): ClientRequest {
+            //            val pattern :Pattern = Pattern.compile("curl.+-X\\ (?<httpMethod>GET|POST|DELETE|PUT|HEAD|OPTIONS)\\ [\"](?<url>http.+/)[\"]\\ .+(-H\\ .+)*.*")
+            //            val matcher: Matcher = pattern.matcher(curlCliCommand.replace("\n", ""))
+            //            println(curlCliCommand)
+            //            val matches = matcher.matches()
+            //            assertEquals("POST", matcher.group("httpMethod"))
+            //            assertEquals("https://example.com:440/endpoint/", matcher.group("url"))
+            //            println(matcher.group(3))
+            //            assertEquals(2, matcher.groupCount())
+
             // TODO implement
+            // TODO use a command line parser from http://stackoverflow.com/questions/367706/is-there-a-good-command-line-argument-parser-for-java
             return ClientRequest.Builder().build()
         }
     }
