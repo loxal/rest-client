@@ -4,12 +4,16 @@
 
 package net.loxal.client.rest.model
 
+import com.beust.jcommander.JCommander
 import com.fasterxml.jackson.databind.ObjectMapper
 import net.loxal.client.rest.App
+import net.loxal.client.rest.curl.CurlCommand
 import java.io.Serializable
 import java.net.URL
+import java.util.Arrays
 import java.util.HashMap
 import javax.ws.rs.HttpMethod
+import kotlin.test.assertEquals
 
 data class Headers() : HashMap<String, List<Any>>() {
     override fun toString() = toString(", ")
@@ -177,6 +181,32 @@ data class ClientRequest(builder: ClientRequest.Builder) : Serializable {
         }
 
         fun fromCurlCliCommand(curlCliCommand: String): ClientRequest {
+            val newCurl = curlCliCommand.replace("curl ", "").replace("\\\n", "")
+            println(newCurl)
+            val parsedCurl = newCurl.split("\"")
+            parsedCurl.forEach { e -> println(e) }
+
+            val jct = CurlCommand();
+
+            val j = JCommander(jct, "-log", "2", "-groups", "unit1,unit2,unit3",
+                    "-debug",
+                    //                    "-Doption=value",
+                    "a", "b", "c", "-X", "POST", "https://example.com:440/endpoint/", "-H", "\"header3: value3\"", "-H", "\"number: 1\"", "-H", "\": \"", "-H", "header1: [0, 1, false, false]",
+                    "-d", "$'{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}'"
+            );
+
+            assertEquals("POST", jct.httpMethod)
+            assertEquals("$'{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}'", jct.data)
+            assertEquals("{= , header3= value3, number= 1, header1= [0, 1, false, false]}", jct.headers.toString())
+
+
+            assertEquals(2, jct.verbose?.toInt());
+            assertEquals("unit1,unit2,unit3", jct.groups);
+            assertEquals(true, jct.debug);
+            //            assertEquals("value", jct.dynamicParams.get("option"));
+            assertEquals(Arrays.asList("a", "b", "c", "https://example.com:440/endpoint/"), jct.parameters);
+
+
             //            val pattern :Pattern = Pattern.compile("curl.+-X\\ (?<httpMethod>GET|POST|DELETE|PUT|HEAD|OPTIONS)\\ [\"](?<url>http.+/)[\"]\\ .+(-H\\ .+)*.*")
             //            val matcher: Matcher = pattern.matcher(curlCliCommand.replace("\n", ""))
             //            println(curlCliCommand)
