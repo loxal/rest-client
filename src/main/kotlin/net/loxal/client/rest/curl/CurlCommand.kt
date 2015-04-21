@@ -16,17 +16,23 @@ import java.util.HashMap
  */
 class CurlCommand {
 
+    Parameter(description = "URL")
+    public var parameters: List<String> = Lists.newArrayList<String>()
+
+    //    Parameter(description = "URL")
+    //    var url: String = "https://example.com"
+
+    Parameter(names = array("-i"), description = "Show response headers")
+    var showHeaders: Boolean = true
+
     Parameter(names = array("-X"), description = "HTTP method")
-    var httpMethod: String = "GET"
+    var httpMethod: String = ""
 
     Parameter(names = array("-d"), description = "Data")
     var data: String = ""
 
     DynamicParameter(names = array("-H"), description = "Headers", assignment = ":")
     var headers: Map<String, String> = HashMap()
-
-    Parameter
-    public var parameters: List<String> = Lists.newArrayList<String>()
 
     Parameter(names = array("-log", "-verbose"), description = "Level of verbosity")
     public var verbose: Int? = 1

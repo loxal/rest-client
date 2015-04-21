@@ -1,6 +1,8 @@
 # Backlog
 
 ## now
+    fix in “selected sublist” saving something, not this very item is saved
+    bug: when POSTing something the content type is deduced and hence not provided as an explicit Content-Type header in both curl & HTTP Headers section
 
 ## later
     convert from curl to REST command
