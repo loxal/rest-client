@@ -29,7 +29,7 @@
         <TextArea fx:id="requestBody" layoutX="11.0" layoutY="254.0" prefHeight="300.0" prefWidth="467.0" promptText="{&quot;jsonKey&quot;: &quot;JSON Value&quot;}" styleClass="request" wrapText="true" />
         <Text layoutX="5.0" layoutY="245.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request Body" />
         <TextArea fx:id="requestHeaders" layoutX="11.0" layoutY="102.0" prefHeight="123.0" prefWidth="467.0"
-                  promptText="Content-Type: application/json&#13;User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2)"
+                  promptText="Content-Type: application/json&#13;User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3)"
                   styleClass="request" wrapText="true"/>
         <Text layoutX="5.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request Headers" wrappingWidth="109.0" />
         <Text layoutX="3.0" layoutY="584.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Response Headers" />
