@@ -259,7 +259,7 @@ private class Controller : Initializable {
 
     FXML
     private fun applyCurl() {
-        if (App.properties.getProperty("feature.curlCommandImport").toBoolean()) {
+        if (App.properties.getProperty("feature.applyCurlCommand").toBoolean()) {
             val fromCurlCommand = ClientRequest.fromCurlCliCommand(curlCommand.getText())
             if (fromCurlCommand.name.contains("Valid")) {
                 applyRequest(fromCurlCommand)
