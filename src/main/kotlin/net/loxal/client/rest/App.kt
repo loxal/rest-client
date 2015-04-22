@@ -28,7 +28,7 @@ class App : Application() {
             scene = Scene(rootNode)
             stage.setScene(scene)
 
-            stage.setTitle("Epvin v${properties.getProperty("project.version")}-b${properties.getProperty("build.number")}-${properties.getProperty("scm.id")} | www.loxal.net/epvin-rest-client")
+            stage.setTitle("Epvin v${properties.getProperty("project.version")}.${properties.getProperty("build.number")}-${properties.getProperty("scm.id")} | www.loxal.net/epvin-rest-client")
             stage.getIcons().add(Image("/net/loxal/client/rest/view/tool-icon-128.png"))
             rootNode.requestFocus()
             stage.show()
