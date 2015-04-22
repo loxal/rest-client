@@ -318,12 +318,12 @@ private class Controller : Initializable {
             try {
                 val response: Response
                 when (request.method) {
-                    HttpMethod.GET -> response = doGetRequest()
-                    HttpMethod.POST -> response = doPostRequest()
-                    HttpMethod.PUT -> response = doPutRequest()
-                    HttpMethod.DELETE -> response = doDeleteRequest()
-                    HttpMethod.HEAD -> response = doHeadRequest()
-                    HttpMethod.OPTIONS -> response = doOptionsRequest()
+                    HttpMethod.GET -> response = getRequest()
+                    HttpMethod.POST -> response = postRequest()
+                    HttpMethod.PUT -> response = putRequest()
+                    HttpMethod.DELETE -> response = deleteRequest()
+                    HttpMethod.HEAD -> response = headRequest()
+                    HttpMethod.OPTIONS -> response = optionsRequest()
                     else -> {
                         showNotification(Level.SEVERE, "${request.method} is not assigned.")
                         response = Response.status(Response.Status.NOT_IMPLEMENTED).build()
@@ -386,7 +386,7 @@ private class Controller : Initializable {
         notification.setText(message)
     }
 
-    private fun doPostRequest(): Response {
+    private fun postRequest(): Response {
         val response: Response
         if (Util.isFormMediaType(request)) {
             response = prepareRequest().post(Entity.form(Util.toForm(request.body)))
@@ -396,15 +396,15 @@ private class Controller : Initializable {
         return response
     }
 
-    private fun doGetRequest() = prepareRequest().get()
+    private fun getRequest() = prepareRequest().get()
 
-    private fun doPutRequest() = prepareRequest().put(Entity.json<String>(request.body))
+    private fun putRequest() = prepareRequest().put(Entity.json<String>(request.body))
 
-    private fun doDeleteRequest() = prepareRequest().delete()
+    private fun deleteRequest() = prepareRequest().delete()
 
-    private fun doHeadRequest() = prepareRequest().head()
+    private fun headRequest() = prepareRequest().head()
 
-    private fun doOptionsRequest() = prepareRequest().options()
+    private fun optionsRequest() = prepareRequest().options()
 
     private fun showResponseHeaders(response: Response) {
         response.getHeaders().forEach { header ->
@@ -451,7 +451,7 @@ private class Controller : Initializable {
     }
 
     FXML
-    private fun deleteRequest() {
+    private fun deleteSavedRequest() {
         deleteSavedRequestFile()
         loadSavedRequests()
         queryTable.getSelectionModel().selectFirst()
