@@ -12,26 +12,7 @@
 <?import java.lang.String?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="rootPane" fx:id="rootContainer" cacheShape="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" scaleShape="false" snapToPixel="false" stylesheets="/net/loxal/client/rest/view/style.css" xmlns="http://javafx.com/javafx/8" fx:controller="net.loxal.client.rest.Controller">
     <children>
-        <TextField id="request-url-bar" fx:id="endpointUrl" cacheShape="false" centerShape="false" focusTraversable="false" layoutX="89.0" layoutY="8.0" onKeyReleased="#updateEndpoint" pickOnBounds="false" prefHeight="26.0" prefWidth="823.0" promptText="https://api.example.com" scaleShape="false" text="http://rest-kit-v1.cf1.hybris.com/dilbert-quote/manager">
-            <styleClass>
-                <String fx:value="request" />
-                <String fx:value="test" />
-            </styleClass>
-        </TextField>
-        <Button fx:id="clearButton" cancelButton="true" layoutX="821.0" layoutY="36.0" mnemonicParsing="false" onAction="#cleanupPreviousResponse" pickOnBounds="false" prefHeight="26.0" prefWidth="142.0" text="Clear Response" />
-        <Button fx:id="requestPerformer" cancelButton="true" layoutX="912.0" layoutY="8.0" mnemonicParsing="false" onAction="#doRequest" pickOnBounds="false" prefHeight="26.0" prefWidth="51.0" text="Send" />
         <Label fx:id="notification" layoutX="89.0" layoutY="41.0" prefHeight="16.0" prefWidth="727.0" textFill="#dd6611" wrapText="true" />
-        <Button fx:id="requestSaver" layoutX="1041.0" layoutY="8.0" mnemonicParsing="false" onAction="#saveRequest" prefHeight="26.0" prefWidth="75.0" text="Save" />
-        <TableView fx:id="queryTable" editable="true" layoutX="974.0" layoutY="100.0" maxWidth="398.0" onMouseReleased="#loadSavedRequest" prefHeight="690.0" prefWidth="292.0">
-            <columns>
-                <TableColumn fx:id="requestColumn" maxWidth="290.0" prefWidth="292.0" sortType="DESCENDING" text="Request" />
-            </columns>
-        </TableView>
-        <Button fx:id="requestDeleter" layoutX="1191.0" layoutY="8.0" mnemonicParsing="false" onAction="#deleteSavedRequest" prefHeight="26.0" prefWidth="75.0" text="Delete" />
-        <TextField fx:id="find" layoutX="974.0" layoutY="62.0" prefHeight="26.0" prefWidth="292.0" promptText="Find" />
-        <ComboBox fx:id="httpMethods" layoutX="5.0" layoutY="8.0" onShown="#refillComboBoxItems" prefHeight="26.0" prefWidth="84.0" promptText="HTTP" styleClass="small" />
-        <Button fx:id="requestDuplicator" layoutX="1116.0" layoutY="8.0" mnemonicParsing="false" onAction="#duplicateRequest" prefHeight="26.0" prefWidth="75.0" text="Duplicate" />
-        <Text layoutX="974.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request" wrappingWidth="51.0" />
         <MenuBar fx:id="menuBar" layoutY="-29.0" prefHeight="29.0" prefWidth="1280.0">
             <menus>
                 <Menu mnemonicParsing="true" text="Response">
@@ -39,6 +20,13 @@
                         <MenuItem mnemonicParsing="true" onAction="#findInResponse" text="Find">
                             <accelerator>
                                 <KeyCodeCombination alt="UP" code="F" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+                            </accelerator>
+                        </MenuItem>
+                        <SeparatorMenuItem mnemonicParsing="false"/>
+                        <MenuItem onAction="#clearPreviousResponse" text="Clear Response">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" code="K" control="UP" meta="UP" shift="UP"
+                                                    shortcut="DOWN"/>
                             </accelerator>
                         </MenuItem>
                     </items>
@@ -97,9 +85,9 @@
             </VBox>
          </children>
       </GridPane>
-      <VBox layoutX="9.0" layoutY="38.0" prefHeight="60.0" prefWidth="474.0">
+        <VBox layoutX="487.0" layoutY="41.0" prefHeight="60.0" prefWidth="474.0">
          <children>
-              <Label prefHeight="16.0" prefWidth="113.0" text="Response Info" textFill="#2525a1">
+             <Label prefHeight="16.0" prefWidth="93.0" text="Response Info" textFill="#2525a1">
                   <font>
                       <Font name="System Bold" size="13.0" />
                   </font>
@@ -107,5 +95,45 @@
               <Label fx:id="responseStatus" prefHeight="131.0" prefWidth="482.0" wrapText="true" />
          </children>
       </VBox>
+        <HBox layoutY="8.0" prefHeight="26.0" prefWidth="964.0">
+            <children>
+                <ComboBox fx:id="httpMethods" onShown="#refillComboBoxItems" prefHeight="26.0" prefWidth="84.0"
+                          promptText="HTTP" styleClass="small"/>
+                <TextField id="request-url-bar" fx:id="endpointUrl" cacheShape="false" centerShape="false"
+                           focusTraversable="false" onKeyReleased="#updateEndpoint" pickOnBounds="false"
+                           prefHeight="26.0" prefWidth="823.0" promptText="https://api.example.com" scaleShape="false"
+                           text="http://rest-kit-v1.cf1.hybris.com/dilbert-quote/manager">
+                    <styleClass>
+                        <String fx:value="request"/>
+                        <String fx:value="test"/>
+                    </styleClass>
+                </TextField>
+                <Button fx:id="requestPerformer" cancelButton="true" mnemonicParsing="false" onAction="#doRequest"
+                        pickOnBounds="false" prefHeight="26.0" prefWidth="50.0" text="Send"/>
+            </children>
+        </HBox>
+        <VBox layoutX="974.0" layoutY="115.0" prefHeight="677.0" prefWidth="304.0">
+            <children>
+                <TextField fx:id="find" prefHeight="26.0" prefWidth="292.0" promptText="Find"/>
+                <TableView fx:id="queryTable" editable="true" maxWidth="398.0" onMouseReleased="#loadSavedRequest"
+                           prefHeight="775.0" prefWidth="274.0">
+                    <columns>
+                        <TableColumn fx:id="requestColumn" maxWidth="290.0" prefWidth="292.0" sortType="DESCENDING"
+                                     text="Request"/>
+                    </columns>
+                </TableView>
+            </children>
+        </VBox>
+        <HBox layoutX="982.0" layoutY="8.0" prefHeight="26.0" prefWidth="289.0">
+            <children>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Request" wrappingWidth="51.0"/>
+                <Button fx:id="requestSaver" mnemonicParsing="false" onAction="#saveRequest" prefHeight="26.0"
+                        prefWidth="75.0" text="Save"/>
+                <Button fx:id="requestDuplicator" mnemonicParsing="false" onAction="#duplicateRequest" prefHeight="26.0"
+                        prefWidth="75.0" text="Duplicate"/>
+                <Button fx:id="requestDeleter" mnemonicParsing="false" onAction="#deleteSavedRequest" prefHeight="26.0"
+                        prefWidth="75.0" text="Delete"/>
+            </children>
+        </HBox>
     </children>
 </AnchorPane>

@@ -70,8 +70,6 @@ private class Controller : Initializable {
     FXML
     private var requestPerformer: Button = Button()
     FXML
-    private var clearButton: Button = Button()
-    FXML
     private var rootContainer = AnchorPane()
     FXML
     private var queryTable: TableView<ClientRequest> = TableView()
@@ -110,7 +108,6 @@ private class Controller : Initializable {
 
     fun initAccelerators() {
         Util.assignShortcut(endpointUrl, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN), Runnable { endpointUrl.requestFocus() })
-        Util.assignShortcut(clearButton, KeyCodeCombination(KeyCode.K, KeyCombination.SHORTCUT_DOWN), Runnable { clearButton.fire() })
         Util.assignShortcut(requestPerformer, KeyCodeCombination(KeyCode.ENTER, KeyCombination.SHORTCUT_DOWN), Runnable { requestPerformer.fire() })
         Util.assignShortcut(requestHeaders, KeyCodeCombination(KeyCode.DIGIT1, KeyCombination.SHORTCUT_DOWN), Runnable { requestHeaders.requestFocus() })
         Util.assignShortcut(requestParameterData, KeyCodeCombination(KeyCode.DIGIT2, KeyCombination.SHORTCUT_DOWN), Runnable { requestParameterData.requestFocus() })
@@ -303,8 +300,8 @@ private class Controller : Initializable {
     }
 
     private fun postSaveAction(requestName: String, selectedRequestIndex: Int, viewSelection: TableView.TableViewSelectionModel<ClientRequest>) {
-        viewSelection.select(selectedRequestIndex)
-        reloadRequestBackup()
+        //        viewSelection.select(selectedRequestIndex)
+        //        reloadRequestBackup()
         showNotification(Level.INFO, "“${requestName}” saved ${Instant.now()}")
     }
 
@@ -313,7 +310,7 @@ private class Controller : Initializable {
         updateEndpoint()
 
         if (validEndpoint) {
-            cleanupPreviousResponse()
+            clearPreviousResponse()
             startRequest = Instant.now()
             try {
                 val response: Response
@@ -424,7 +421,7 @@ private class Controller : Initializable {
                 requestParameterData.getText()
 
     FXML
-    private fun cleanupPreviousResponse() {
+    private fun clearPreviousResponse() {
         responseHeaders.clear()
         responseBody.clear()
         responseStatus.setText("")
