@@ -52,24 +52,6 @@ class RestCodeTest {
     }
 
     Test
-    fun `curl CLI command to ClientRequest model`() {
-        val clientRequest = ClientRequest.fromCurlCliCommand(curlCliCommand)
-        assertEquals("POST", clientRequest.method)
-        assertEquals("{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}", clientRequest.body)
-        assertEquals(URL("https://example.com:440/endpoint/"), clientRequest.url)
-        assertEquals("[From curl CLI command]", clientRequest.name)
-
-        val headers: Headers = Headers()
-        headers.put("header", listOf("value", "value1", 42.0, true))
-        headers.put("header1", listOf(0, 1, false, false))
-        headers.put("header2", "")
-        headers.put("number", 1)
-        headers.put("header3", "value3")
-        headers.put("", "")
-        assertEquals(headers.toString(), clientRequest.headers.toString())
-    }
-
-    Test
     fun `Headers’ toString with lineBreak`() {
         val showHeaders = "Server: RESTkit v1\n"
         val header = Headers.new("Server", "RESTkit v1").entrySet().first()
@@ -139,7 +121,7 @@ class RestCodeTest {
 
         private val restCodeUrl: URL = URL(restCodeUrlRaw)
 
-        private val curlCliCommand: String = """curl -i -X POST https://example.com:440/endpoint/ \
+        val curlCliCommand: String = """curl -i -X POST https://example.com:440/endpoint/ \
 -H ": " \
 -H "number: 1" \
 -H "header3: value3" \

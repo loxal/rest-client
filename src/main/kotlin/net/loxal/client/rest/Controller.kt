@@ -56,7 +56,7 @@ private class Controller : Initializable {
     FXML
     private var endpointUrl: TextField = TextField(App.SAMPLE_URL.toString())
     FXML
-    private var requestHeaderData: TextArea = TextArea()
+    private var requestHeaders: TextArea = TextArea()
     FXML
     private var responseHeaders: TextArea = TextArea()
     FXML
@@ -112,7 +112,7 @@ private class Controller : Initializable {
         Util.assignShortcut(endpointUrl, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN), Runnable { endpointUrl.requestFocus() })
         Util.assignShortcut(clearButton, KeyCodeCombination(KeyCode.K, KeyCombination.SHORTCUT_DOWN), Runnable { clearButton.fire() })
         Util.assignShortcut(requestPerformer, KeyCodeCombination(KeyCode.ENTER, KeyCombination.SHORTCUT_DOWN), Runnable { requestPerformer.fire() })
-        Util.assignShortcut(requestHeaderData, KeyCodeCombination(KeyCode.DIGIT1, KeyCombination.SHORTCUT_DOWN), Runnable { requestHeaderData.requestFocus() })
+        Util.assignShortcut(requestHeaders, KeyCodeCombination(KeyCode.DIGIT1, KeyCombination.SHORTCUT_DOWN), Runnable { requestHeaders.requestFocus() })
         Util.assignShortcut(requestParameterData, KeyCodeCombination(KeyCode.DIGIT2, KeyCombination.SHORTCUT_DOWN), Runnable { requestParameterData.requestFocus() })
         Util.assignShortcut(requestBody, KeyCodeCombination(KeyCode.DIGIT3, KeyCombination.SHORTCUT_DOWN), Runnable { requestBody.requestFocus() })
         Util.assignShortcut(responseHeaders, KeyCodeCombination(KeyCode.DIGIT4, KeyCombination.SHORTCUT_DOWN), Runnable { responseHeaders.requestFocus() })
@@ -257,6 +257,28 @@ private class Controller : Initializable {
         saveNewRequest(viewSelection)
     }
 
+    FXML
+    private fun adoptCurl() {
+        if (App.properties.getProperty("feature.curlCommandImport").toBoolean()) {
+            val fromCurlCommand = ClientRequest.fromCurlCliCommand(curlCommand.getText())
+            if (fromCurlCommand.name.contains("Valid")) {
+                applyRequest(fromCurlCommand)
+                showNotification(Level.INFO, "curl command applied ${Instant.now()}")
+            } else {
+                showNotification(Level.WARNING, "Malformed curl command could not be applied ${Instant.now()}")
+            }
+        }
+    }
+
+    private fun applyRequest(request: ClientRequest) {
+        this.request = request
+
+        endpointUrl.setText(request.url.toString())
+        requestBody.setText(request.body)
+        requestHeaders.setText(request.headers.toString())
+        setMethodInUi(request.method)
+    }
+
     private fun saveNewRequest(viewSelection: TableView.TableViewSelectionModel<ClientRequest>) {
         val localTimestamp = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))
         val verboseRequestName = "$localTimestamp ${request.url.getHost()}${request.url.getPath()} ${request.method}"
@@ -275,7 +297,7 @@ private class Controller : Initializable {
                 .method(request.method)
                 .url(request.url)
                 .body(requestBody.getText())
-                .headers(ClientRequest.toHeaders(requestHeaderData.getText()))
+                .headers(ClientRequest.toHeaders(requestHeaders.getText()))
                 .build()
         return clientRequest
     }
@@ -321,7 +343,7 @@ private class Controller : Initializable {
         val target = Util.applyUrlRequestParameters(client.target(request.url.toString()),
                 Util.extractRequestParameters(declareRequestParameters()))
 
-        return Util.applyHeaderInfo(Util.extractHeaderData(requestHeaderData.getText()), target.request())
+        return Util.applyHeaderInfo(Util.extractHeaderData(requestHeaders.getText()), target.request())
     }
 
     FXML
@@ -338,7 +360,7 @@ private class Controller : Initializable {
             request = ClientRequest.Builder("[Current Request]")
                     .method(if (selectedHttpMethod === null) HttpMethod.GET else selectedHttpMethod)
                     .body(requestBody.getText())
-                    .headers(ClientRequest.toHeaders(requestHeaderData.getText()))
+                    .headers(ClientRequest.toHeaders(requestHeaders.getText()))
                     .url(targetUrl)
                     .build()
             updateCurlCliCommand()
@@ -454,7 +476,7 @@ private class Controller : Initializable {
             request = selectedRequest
 
             setMethodInUi(request.method)
-            requestHeaderData.setText(request.headers.toStringColumn())
+            requestHeaders.setText(request.headers.toStringColumn())
             requestParameterData.setText(request.url.getQuery())
             requestBody.setText(request.body)
             endpointUrl.setText(request.url.toString())

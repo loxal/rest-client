@@ -28,7 +28,9 @@
         <TextArea fx:id="responseBody" editable="false" layoutX="489.0" layoutY="593.0" pickOnBounds="false" prefHeight="197.0" prefWidth="477.0" promptText="{&quot;jsonKey&quot;: &quot;JSON Value&quot;}" snapToPixel="false" />
         <TextArea fx:id="requestBody" layoutX="11.0" layoutY="254.0" prefHeight="300.0" prefWidth="467.0" promptText="{&quot;jsonKey&quot;: &quot;JSON Value&quot;}" styleClass="request" wrapText="true" />
         <Text layoutX="5.0" layoutY="245.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request Body" />
-        <TextArea fx:id="requestHeaderData" layoutX="11.0" layoutY="102.0" prefHeight="123.0" prefWidth="467.0" promptText="Content-Type: application/json&#13;User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2)" styleClass="request" wrapText="true" />
+        <TextArea fx:id="requestHeaders" layoutX="11.0" layoutY="102.0" prefHeight="123.0" prefWidth="467.0"
+                  promptText="Content-Type: application/json&#13;User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2)"
+                  styleClass="request" wrapText="true"/>
         <Text layoutX="5.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request Headers" wrappingWidth="109.0" />
         <Text layoutX="3.0" layoutY="584.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Response Headers" />
         <TextArea fx:id="responseHeaders" editable="false" layoutX="11.0" layoutY="593.0" prefHeight="197.0" prefWidth="467.0" promptText="Location: https://api.example.com/entity/id" />
@@ -49,8 +51,8 @@
         </Label>
         <Label fx:id="responseStatus" layoutX="489.0" layoutY="254.0" prefHeight="42.0" prefWidth="477.0" wrapText="true" />
         <TextField fx:id="find" layoutX="974.0" layoutY="62.0" prefHeight="26.0" prefWidth="292.0" promptText="Find" />
-        <TextArea fx:id="curlCommand" layoutX="489.0" layoutY="389.0" onKeyReleased="#adoptCurl" prefHeight="164.0"
-                  prefWidth="477.0" wrapText="true"/>
+        <TextArea fx:id="curlCommand" editable="false" layoutX="489.0" layoutY="389.0" onKeyReleased="#adoptCurl"
+                  prefHeight="164.0" prefWidth="477.0" wrapText="true"/>
         <Text layoutX="487.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="curl Command" wrappingWidth="109.0" />
         <ComboBox fx:id="httpMethods" layoutX="5.0" layoutY="8.0" onShown="#refillComboBoxItems" prefHeight="26.0" prefWidth="84.0" promptText="HTTP" styleClass="small" />
         <Button fx:id="requestDuplicator" layoutX="1116.0" layoutY="8.0" mnemonicParsing="false" onAction="#duplicateRequest" prefHeight="26.0" prefWidth="75.0" text="Duplicate" />

@@ -48,7 +48,7 @@ class App : Application() {
         val LOG: Logger = LoggerFactory.getLogger(javaClass<App>())
         val SAMPLE_URL = URL("https://example.com")
         val SAVE_AS = "Save request as:"
-        private val properties = Properties()
+        val properties = Properties()
 
         val APP_HOME_DIRECTORY = if (System.getenv("HOME").identityEquals(null)) {
             System.getenv("USERPROFILE")

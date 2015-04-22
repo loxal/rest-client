@@ -90,7 +90,7 @@ data class ClientRequest(builder: ClientRequest.Builder) : Serializable {
     val body: String = builder.body
     val name: String = builder.name
 
-    class Builder(val name: String = Constant.unnamed) {
+    class Builder(var name: String = Constant.unnamed) {
         var method: String = HttpMethod.GET
         var url: URL = App.SAMPLE_URL
         var headers: Headers = Headers()
@@ -179,26 +179,33 @@ data class ClientRequest(builder: ClientRequest.Builder) : Serializable {
         }
 
         fun fromCurlCliCommand(curlCliCommand: String): ClientRequest {
-            val pattern: Pattern = Pattern.compile("curl.+-X\\ (?<httpMethod>GET|POST|DELETE|PUT|HEAD|OPTIONS)\\ [\"]?(?<url>http.+/)[\"]?\\ .*-H\\ (?<headers>\".*:.*\".*)*.*-d\\ \\$'(?<data>.*)'")
+            val method: Pattern = Pattern.compile("curl.+-X\\ (?<httpMethod>GET|POST|DELETE|PUT|HEAD|OPTIONS)\\ .*")
+            val url: Pattern = Pattern.compile("curl.+[\"]?(?<url>http.+/)[\"]?\\ ")
+            val body: Pattern = Pattern.compile("curl.+-d\\ \\$'(?<data>.*)'.*")
             val header: Pattern = Pattern.compile("-H\\ \"(?<header>.*\\:.*)\"")
 
             val cleanCurlCommand = curlCliCommand.replace("\n", "").replace("\\", "")
-            val matcher: Matcher = pattern.matcher(cleanCurlCommand)
+            val methodMatcher: Matcher = method.matcher(cleanCurlCommand)
+            val urlMatcher: Matcher = url.matcher(cleanCurlCommand)
+            val bodyMatcher: Matcher = body.matcher(cleanCurlCommand)
             val headerMatcher: Matcher = header.matcher(cleanCurlCommand)
-            val request: ClientRequest.Builder = ClientRequest.Builder("[From curl CLI command]")
+            val request: ClientRequest.Builder = ClientRequest.Builder("[Malformed curl CLI command]")
 
-            if (matcher.matches()) {
-                request.method(matcher.group("httpMethod"))
-                request.body(matcher.group("data"))
-                request.url(URL(matcher.group("url")))
+            if (methodMatcher.matches())
+                request.method(methodMatcher.group("httpMethod"))
+            if (bodyMatcher.find())
+                request.body(bodyMatcher.group("data"))
+            if (urlMatcher.find()) {
+                request.url(URL(urlMatcher.group("url")))
+                request.name = "[Valid curl CLI command]"
+            }
 
-                if (headerMatcher.find()) {
-                    val headersText = StringBuilder()
-                    headerMatcher.group().split("-H ").forEach { header ->
-                        headersText.append("${header.replace("\"", "")}${Constant.lineBreak}")
-                    }
-                    request.headers(ClientRequest.toHeaders(headersText.toString()))
+            if (headerMatcher.find()) {
+                val headersText = StringBuilder()
+                headerMatcher.group().split("-H ").forEach { header ->
+                    headersText.append("${header.replace("\"", "")}${Constant.lineBreak}")
                 }
+                request.headers(ClientRequest.toHeaders(headersText.toString()))
             }
             return request.build()
         }
