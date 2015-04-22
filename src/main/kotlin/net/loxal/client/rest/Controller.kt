@@ -452,9 +452,12 @@ private class Controller : Initializable {
 
     FXML
     private fun deleteSavedRequest() {
+        val selectedRequest = queryTable.getSelectionModel().getSelectedIndex()
+
         deleteSavedRequestFile()
         loadSavedRequests()
-        queryTable.getSelectionModel().selectFirst()
+
+        queryTable.getSelectionModel().select(selectedRequest)
     }
 
     private fun deleteSavedRequestFile() {
