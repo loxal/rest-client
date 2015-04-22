@@ -24,7 +24,7 @@ class App : Application() {
         val scene: Scene
 
         try {
-            rootNode = loader.load<AnchorPane>(javaClass.getResourceAsStream("ui.fxml"))
+            rootNode = loader.load<AnchorPane>(javaClass.getResourceAsStream("main.fxml"))
             scene = Scene(rootNode)
             stage.setScene(scene)
 
