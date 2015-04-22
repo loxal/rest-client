@@ -6,17 +6,13 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.input.KeyCodeCombination?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import java.lang.String?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="rootPane" fx:id="rootContainer" cacheShape="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" scaleShape="false" snapToPixel="false" stylesheets="/net/loxal/client/rest/view/style.css" xmlns="http://javafx.com/javafx/8" fx:controller="net.loxal.client.rest.Controller">
     <children>
-        <TextField id="request-url-bar" fx:id="endpointUrl" cacheShape="false" centerShape="false"
-                   focusTraversable="false" layoutX="89.0" layoutY="8.0" onKeyReleased="#updateEndpoint"
-                   pickOnBounds="false" prefHeight="26.0" prefWidth="823.0" promptText="https://api.example.com"
-                   scaleShape="false" text="http://rest-kit-v1.cf1.hybris.com/dilbert-quote/manager">
+        <TextField id="request-url-bar" fx:id="endpointUrl" cacheShape="false" centerShape="false" focusTraversable="false" layoutX="89.0" layoutY="8.0" onKeyReleased="#updateEndpoint" pickOnBounds="false" prefHeight="26.0" prefWidth="823.0" promptText="https://api.example.com" scaleShape="false" text="http://rest-kit-v1.cf1.hybris.com/dilbert-quote/manager">
             <styleClass>
                 <String fx:value="request" />
                 <String fx:value="test" />
@@ -24,19 +20,7 @@
         </TextField>
         <Button fx:id="clearButton" cancelButton="true" layoutX="821.0" layoutY="36.0" mnemonicParsing="false" onAction="#cleanupPreviousResponse" pickOnBounds="false" prefHeight="26.0" prefWidth="142.0" text="Clear Response" />
         <Button fx:id="requestPerformer" cancelButton="true" layoutX="912.0" layoutY="8.0" mnemonicParsing="false" onAction="#doRequest" pickOnBounds="false" prefHeight="26.0" prefWidth="51.0" text="Send" />
-        <Text layoutX="485.0" layoutY="584.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Response Body" wrappingWidth="112.54776000976562" />
-        <TextArea fx:id="responseBody" editable="false" layoutX="489.0" layoutY="593.0" pickOnBounds="false" prefHeight="197.0" prefWidth="477.0" promptText="{&quot;jsonKey&quot;: &quot;JSON Value&quot;}" snapToPixel="false" />
-        <TextArea fx:id="requestBody" layoutX="11.0" layoutY="254.0" prefHeight="300.0" prefWidth="467.0" promptText="{&quot;jsonKey&quot;: &quot;JSON Value&quot;}" styleClass="request" wrapText="true" />
-        <Text layoutX="5.0" layoutY="245.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request Body" />
-        <TextArea fx:id="requestHeaders" layoutX="11.0" layoutY="102.0" prefHeight="123.0" prefWidth="467.0"
-                  promptText="Content-Type: application/json&#13;User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3)"
-                  styleClass="request" wrapText="true"/>
-        <Text layoutX="5.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request Headers" wrappingWidth="109.0" />
-        <Text layoutX="3.0" layoutY="584.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Response Headers" />
-        <TextArea fx:id="responseHeaders" editable="false" layoutX="11.0" layoutY="593.0" prefHeight="197.0" prefWidth="467.0" promptText="Location: https://api.example.com/entity/id" />
         <Label fx:id="notification" layoutX="89.0" layoutY="41.0" prefHeight="16.0" prefWidth="727.0" textFill="#dd6611" wrapText="true" />
-        <TextArea fx:id="requestParameterData" editable="false" layoutX="489.0" layoutY="102.0" prefHeight="123.0" prefWidth="477.0" promptText="URL parameters are read from the endpoint URL and are prefaced with the “?” character. E.g. “?key=value&amp;anotherKey=anotherValue”" styleClass="request" />
-        <Text layoutX="485.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="URL Parameters" />
         <Button fx:id="requestSaver" layoutX="1041.0" layoutY="8.0" mnemonicParsing="false" onAction="#saveRequest" prefHeight="26.0" prefWidth="75.0" text="Save" />
         <TableView fx:id="queryTable" editable="true" layoutX="974.0" layoutY="100.0" maxWidth="398.0" onMouseReleased="#loadSavedRequest" prefHeight="690.0" prefWidth="292.0">
             <columns>
@@ -44,16 +28,7 @@
             </columns>
         </TableView>
         <Button fx:id="requestDeleter" layoutX="1191.0" layoutY="8.0" mnemonicParsing="false" onAction="#deleteSavedRequest" prefHeight="26.0" prefWidth="75.0" text="Delete" />
-        <Label layoutX="485.0" layoutY="232.0" prefHeight="16.0" prefWidth="113.0" text="Response Info" textFill="#2525a1">
-            <font>
-                <Font name="System Bold" size="13.0" />
-            </font>
-        </Label>
-        <Label fx:id="responseStatus" layoutX="489.0" layoutY="254.0" prefHeight="42.0" prefWidth="477.0" wrapText="true" />
         <TextField fx:id="find" layoutX="974.0" layoutY="62.0" prefHeight="26.0" prefWidth="292.0" promptText="Find" />
-        <TextArea fx:id="curlCommand" editable="false" layoutX="489.0" layoutY="389.0" onKeyReleased="#applyCurl"
-                  prefHeight="164.0" prefWidth="477.0" wrapText="true"/>
-        <Text layoutX="487.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="curl Command" wrappingWidth="109.0" />
         <ComboBox fx:id="httpMethods" layoutX="5.0" layoutY="8.0" onShown="#refillComboBoxItems" prefHeight="26.0" prefWidth="84.0" promptText="HTTP" styleClass="small" />
         <Button fx:id="requestDuplicator" layoutX="1116.0" layoutY="8.0" mnemonicParsing="false" onAction="#duplicateRequest" prefHeight="26.0" prefWidth="75.0" text="Duplicate" />
         <Text layoutX="974.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request" wrappingWidth="51.0" />
@@ -80,5 +55,57 @@
                 </Button>
             </children>
         </HBox>
+      <GridPane layoutX="9.0" layoutY="102.0" prefHeight="690.0" prefWidth="956.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="475.0" minWidth="10.0" prefWidth="474.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="485.0" minWidth="10.0" prefWidth="482.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="183.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="212.0" minHeight="10.0" prefHeight="212.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="249.0" minHeight="10.0" prefHeight="193.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="298.0" minHeight="0.0" prefHeight="235.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+              <TextArea fx:id="requestHeaders" prefHeight="123.0" prefWidth="467.0" promptText="Content-Type: application/json&#13;User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3)" styleClass="request" wrapText="true" GridPane.rowIndex="1" />
+              <TextArea fx:id="requestParameterData" editable="false" prefHeight="123.0" prefWidth="477.0" promptText="URL parameters are read from the endpoint URL and are prefaced with the “?” character. E.g. “?key=value&amp;anotherKey=anotherValue”" styleClass="request" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Request Headers" wrappingWidth="109.0" />
+              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="URL Parameters" GridPane.columnIndex="1" />
+            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="curl Command" wrappingWidth="109.0" />
+                    <TextArea fx:id="curlCommand" editable="false" onKeyReleased="#applyCurl" prefHeight="252.0" prefWidth="482.0" wrapText="true" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="3">
+               <children>
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Response Headers" />
+                    <TextArea fx:id="responseHeaders" editable="false" prefHeight="325.0" prefWidth="474.0" promptText="Location: https://api.example.com/entity/id" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <children>
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Response Body" wrappingWidth="112.54776000976562" />
+                    <TextArea fx:id="responseBody" editable="false" pickOnBounds="false" prefHeight="265.0" prefWidth="482.0" promptText="{&quot;jsonKey&quot;: &quot;JSON Value&quot;}" snapToPixel="false" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
+               <children>
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Request Body" />
+                    <TextArea fx:id="requestBody" prefHeight="249.0" prefWidth="474.0" promptText="{&quot;jsonKey&quot;: &quot;JSON Value&quot;}" styleClass="request" wrapText="true" />
+               </children>
+            </VBox>
+         </children>
+      </GridPane>
+      <VBox layoutX="9.0" layoutY="38.0" prefHeight="60.0" prefWidth="474.0">
+         <children>
+              <Label prefHeight="16.0" prefWidth="113.0" text="Response Info" textFill="#2525a1">
+                  <font>
+                      <Font name="System Bold" size="13.0" />
+                  </font>
+              </Label>
+              <Label fx:id="responseStatus" prefHeight="131.0" prefWidth="482.0" wrapText="true" />
+         </children>
+      </VBox>
     </children>
 </AnchorPane>
