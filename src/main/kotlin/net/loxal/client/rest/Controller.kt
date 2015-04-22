@@ -280,13 +280,13 @@ private class Controller : Initializable {
         val localTimestamp = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))
         val verboseRequestName = "$localTimestamp ${request.url.getHost()}${request.url.getPath()} ${request.method}"
         val selectedRequest: ClientRequest? = viewSelection.getSelectedItem()
+        val selectedIndex = viewSelection.getSelectedIndex()
         val requestName: String = if (selectedRequest identityEquals null) verboseRequestName else "${selectedRequest!!.name} ∆"
         val clientRequest = buildRequest(requestName)
 
         if (Util saveAsNew clientRequest) loadSavedRequests()
 
-        val firstItem = 0
-        postSaveAction(requestName, firstItem, viewSelection)
+        postSaveAction(requestName, selectedIndex + 1, viewSelection)
     }
 
     private fun buildRequest(requestName: String): ClientRequest {
@@ -300,8 +300,7 @@ private class Controller : Initializable {
     }
 
     private fun postSaveAction(requestName: String, selectedRequestIndex: Int, viewSelection: TableView.TableViewSelectionModel<ClientRequest>) {
-        //        viewSelection.select(selectedRequestIndex)
-        //        reloadRequestBackup()
+        viewSelection.select(selectedRequestIndex)
         showNotification(Level.INFO, "“${requestName}” saved ${Instant.now()}")
     }
 
