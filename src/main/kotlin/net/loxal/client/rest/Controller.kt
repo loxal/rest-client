@@ -42,7 +42,8 @@ import javax.ws.rs.core.Response
 private class Controller : Initializable {
     private var validEndpoint: Boolean = false
     private val files: ObservableList<File> = FXCollections.observableArrayList<File>()
-    private val clientRequests = FXCollections.observableArrayList<ClientRequest>()
+    private val requests = FXCollections.observableArrayList<ClientRequest>()
+    private val requestsBackup = FXCollections.observableArrayList<ClientRequest>()
 
     FXML
     private var findContainer: HBox = FindContainer()
@@ -133,6 +134,7 @@ private class Controller : Initializable {
 
         setShortcutForArrowKeySelection()
 
+        reloadRequestBackup()
         enableFinder()
         menuBar.setUseSystemMenuBar(true)
     }
@@ -180,16 +182,27 @@ private class Controller : Initializable {
         Util.assignShortcut(findNext, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN), Runnable { findNext.fire() })
 
         findRequest.setOnKeyReleased { keyEvent ->
+            resetFind()
             populateFindings()
         }
     }
 
+    private fun reloadRequestBackup() {
+        requestsBackup.clear()
+        requestsBackup.addAll(requests)
+    }
+
+    private fun resetFind() {
+        requests.clear()
+        requests.addAll(requestsBackup)
+    }
+
     private fun populateFindings() {
-        val clientRequestModelsForSearch = clientRequests.copyToArray()
-        clientRequests.clear()
+        val clientRequestModelsForSearch = requests.copyToArray()
+        requests.clear()
         clientRequestModelsForSearch.forEach { savedRequest ->
             if (found(savedRequest)) {
-                clientRequests.add(savedRequest)
+                requests.add(savedRequest)
             }
         }
     }
@@ -286,8 +299,9 @@ private class Controller : Initializable {
     }
 
     private fun postSaveAction(requestName: String, selectedRequestIndex: Int, viewSelection: TableView.TableViewSelectionModel<ClientRequest>) {
+        populateFindings()
+        reloadRequestBackup()
         viewSelection.select(selectedRequestIndex)
-        findRequest.clear()
         showNotification(Level.INFO, "“${requestName}” saved ${Instant.now()}")
     }
 
@@ -416,21 +430,21 @@ private class Controller : Initializable {
 
     private fun loadSavedRequests() {
         files.clear()
-        clientRequests.clear()
+        requests.clear()
 
         val appHomeDirectory = File(App.APP_HOME_DIRECTORY)
         Util.createAppHome(appHomeDirectory)
 
         appHomeDirectory.listFiles().toLinkedList().sortDescending().forEach { file ->
             files.add(file)
-            clientRequests.add(Util.loadFromFile(file))
+            requests.add(Util.loadFromFile(file))
         }
 
         requestColumn.setCellValueFactory(PropertyValueFactory<ClientRequest, String>("name"))
         requestColumn.setCellFactory(TextFieldTableCell.forTableColumn<ClientRequest>())
 
         onEditClientRequestListener()
-        queryTable.setItems(clientRequests)
+        queryTable.setItems(requests)
     }
 
     FXML
