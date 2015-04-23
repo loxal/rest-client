@@ -305,8 +305,6 @@ private class Controller : Initializable {
     }
 
     private fun postSaveAction(requestName: String, selectedRequestIndex: Int, viewSelection: TableView.TableViewSelectionModel<ClientRequest>) {
-        populateFindings()
-        reloadRequestBackup()
         viewSelection.select(selectedRequestIndex)
         showNotification(Level.INFO, "“${requestName}” saved ${Instant.now()}")
     }
