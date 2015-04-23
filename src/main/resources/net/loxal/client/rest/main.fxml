@@ -128,7 +128,7 @@
                                 prefHeight="26.0" prefWidth="75.0" text="Delete"/>
                     </children>
                 </HBox>
-                <TextField fx:id="find" prefHeight="0.0" prefWidth="304.0" promptText="Find"/>
+                <TextField fx:id="findRequest" prefHeight="0.0" prefWidth="304.0" promptText="Find"/>
                 <TableView fx:id="queryTable" editable="true" maxWidth="398.0" onMouseReleased="#loadSavedRequest"
                            prefHeight="775.0" prefWidth="274.0">
                     <columns>

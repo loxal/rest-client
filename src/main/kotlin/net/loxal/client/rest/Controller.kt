@@ -43,7 +43,6 @@ private class Controller : Initializable {
     private var validEndpoint: Boolean = false
     private val files: ObservableList<File> = FXCollections.observableArrayList<File>()
     private val clientRequests = FXCollections.observableArrayList<ClientRequest>()
-    private val clientRequestsBackup = FXCollections.observableArrayList<ClientRequest>()
 
     FXML
     private var findContainer: HBox = FindContainer()
@@ -52,7 +51,7 @@ private class Controller : Initializable {
     FXML
     private var httpMethods: ComboBox<Text> = ComboBox()
     FXML
-    private var find: TextField = TextField()
+    private var findRequest: TextField = TextField()
     FXML
     private var endpointUrl: TextField = TextField(App.SAMPLE_URL.toString())
     FXML
@@ -118,7 +117,7 @@ private class Controller : Initializable {
         Util.assignShortcut(requestDeleter, KeyCodeCombination(KeyCode.BACK_SPACE, KeyCombination.SHORTCUT_DOWN), Runnable { requestDeleter.fire() })
         Util.assignShortcut(requestSaver, KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN), Runnable { requestSaver.fire() })
         Util.assignShortcut(requestDuplicator, KeyCodeCombination(KeyCode.D, KeyCombination.SHORTCUT_DOWN), Runnable { requestDuplicator.fire() })
-        Util.assignShortcut(find, KeyCodeCombination(KeyCode.F, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN), Runnable { find.requestFocus() })
+        Util.assignShortcut(findRequest, KeyCodeCombination(KeyCode.F, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN), Runnable { findRequest.requestFocus() })
 
         fun initHttpMethods() {
             httpMethods.setItems(httpMethodsTexts)
@@ -133,8 +132,6 @@ private class Controller : Initializable {
         initHttpMethods()
 
         setShortcutForArrowKeySelection()
-
-        reloadRequestBackup()
 
         enableFinder()
         menuBar.setUseSystemMenuBar(true)
@@ -178,17 +175,11 @@ private class Controller : Initializable {
         findNextOccurrence()
     }
 
-    private fun reloadRequestBackup() {
-        clientRequestsBackup.clear()
-        clientRequestsBackup.addAll(clientRequests)
-    }
-
     private fun enableFinder() {
         Util.assignShortcut(findContainer, KeyCodeCombination(KeyCode.ESCAPE), Runnable { rootContainer.requestFocus(); findContainer.setVisible(false) })
         Util.assignShortcut(findNext, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN), Runnable { findNext.fire() })
 
-        find.setOnKeyReleased { keyEvent ->
-            resetFind()
+        findRequest.setOnKeyReleased { keyEvent ->
             populateFindings()
         }
     }
@@ -204,13 +195,8 @@ private class Controller : Initializable {
     }
 
     private fun found(savedRequest: ClientRequest) =
-            savedRequest.name.toLowerCase().contains(find.getText().toLowerCase())
+            savedRequest.name.toLowerCase().contains(findRequest.getText().toLowerCase())
 
-
-    private fun resetFind() {
-        clientRequests.clear()
-        clientRequests.addAll(clientRequestsBackup)
-    }
 
     private fun setShortcutForArrowKeySelection() =
             queryTable.setOnKeyReleased { keyEvent ->
@@ -301,6 +287,7 @@ private class Controller : Initializable {
 
     private fun postSaveAction(requestName: String, selectedRequestIndex: Int, viewSelection: TableView.TableViewSelectionModel<ClientRequest>) {
         viewSelection.select(selectedRequestIndex)
+        findRequest.clear()
         showNotification(Level.INFO, "“${requestName}” saved ${Instant.now()}")
     }
 
