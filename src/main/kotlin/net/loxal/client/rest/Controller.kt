@@ -197,7 +197,7 @@ private class Controller : Initializable {
     }
 
     private fun populateFindings() {
-        val requestModelsForSearch = FXCollections.observableHashMap<ClientRequest, File>()
+        val requestModelsForSearch = FXCollections.observableMap<ClientRequest, File>(LinkedHashMap<ClientRequest, File>())
         requestModelsForSearch.putAll(requestFiles)
         requestFiles.clear()
         requestModelsForSearch.forEach { savedRequest ->
@@ -239,7 +239,7 @@ private class Controller : Initializable {
             val requestName: String = viewSelection.getSelectedItem()!!.name
             val clientRequest = buildRequest(requestName)
 
-            val fileLocation = requestFiles.values().toArrayList().get(selectedRequestIndex)
+            val fileLocation = requestFiles.values().toLinkedList().get(selectedRequestIndex)
             if (Util.save(storage = fileLocation, request = clientRequest)) loadSavedRequests()
 
             postSaveAction(requestName, selectedRequestIndex, viewSelection)
@@ -460,7 +460,7 @@ private class Controller : Initializable {
     private fun deleteSavedRequestFile() {
         val selectedIndex = queryTable.getSelectionModel().getSelectedIndex()
         if (selectedIndex != none) {
-            val fileToDelete: File = requestFiles.values().toArrayList().get(selectedIndex)
+            val fileToDelete: File = requestFiles.values().toLinkedList().get(selectedIndex)
             if (fileToDelete.delete()) {
                 App.LOG.info("Saved request deleted: $fileToDelete")
             } else {
@@ -519,7 +519,7 @@ private class Controller : Initializable {
                     .build()
             clientRequest.getTableView().getItems().set(clientRequest.getTablePosition().getRow(), clientRequestRenamed)
 
-            val file = requestFiles.values().toArrayList().get(clientRequest.getTablePosition().getRow());
+            val file = requestFiles.values().toLinkedList().get(clientRequest.getTablePosition().getRow());
             FileOutputStream(file).use { fileOutputStream ->
                 ObjectOutputStream(fileOutputStream).use { objectOutputStream ->
                     objectOutputStream.writeObject(clientRequest.getTableView().getItems().get(clientRequest.getTablePosition().getRow()))
