@@ -6,7 +6,6 @@ package net.loxal.client.rest
 
 import com.sun.javafx.collections.ImmutableObservableList
 import javafx.collections.FXCollections
-import javafx.collections.ObservableList
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
@@ -41,9 +40,8 @@ import javax.ws.rs.core.Response
 
 private class Controller : Initializable {
     private var validEndpoint: Boolean = false
-    private val files: ObservableList<File> = FXCollections.observableArrayList<File>()
-    private val requests = FXCollections.observableArrayList<ClientRequest>()
-    private val requestsBackup = FXCollections.observableArrayList<ClientRequest>()
+    private val requestFiles = FXCollections.observableHashMap<ClientRequest, File>()
+    private val requestFilesBackup = FXCollections.observableHashMap<ClientRequest, File>()
 
     FXML
     private var findContainer: HBox = FindContainer()
@@ -188,21 +186,22 @@ private class Controller : Initializable {
     }
 
     private fun reloadRequestBackup() {
-        requestsBackup.clear()
-        requestsBackup.addAll(requests)
+        requestFilesBackup.clear()
+        requestFilesBackup.putAll(requestFiles)
     }
 
     private fun resetFind() {
-        requests.clear()
-        requests.addAll(requestsBackup)
+        requestFiles.clear()
+        requestFiles.putAll(requestFilesBackup)
     }
 
     private fun populateFindings() {
-        val clientRequestModelsForSearch = requests.copyToArray()
-        requests.clear()
-        clientRequestModelsForSearch.forEach { savedRequest ->
-            if (found(savedRequest)) {
-                requests.add(savedRequest)
+        val requestModelsForSearch = FXCollections.observableHashMap<ClientRequest, File>()
+        requestModelsForSearch.putAll(requestFiles)
+        requestFiles.clear()
+        requestModelsForSearch.forEach { savedRequest ->
+            if (found(savedRequest.key)) {
+                requestFiles.put(savedRequest.key, savedRequest.value)
             }
         }
     }
@@ -239,7 +238,7 @@ private class Controller : Initializable {
             val requestName: String = viewSelection.getSelectedItem()!!.name
             val clientRequest = buildRequest(requestName)
 
-            val fileLocation = files.get(selectedRequestIndex)
+            val fileLocation = requestFiles.values().toArrayList().get(selectedRequestIndex)
             if (Util.save(storage = fileLocation, request = clientRequest)) loadSavedRequests()
 
             postSaveAction(requestName, selectedRequestIndex, viewSelection)
@@ -429,38 +428,38 @@ private class Controller : Initializable {
     }
 
     private fun loadSavedRequests() {
-        files.clear()
-        requests.clear()
+        requestFiles.clear()
 
         val appHomeDirectory = File(App.APP_HOME_DIRECTORY)
         Util.createAppHome(appHomeDirectory)
 
         appHomeDirectory.listFiles().toLinkedList().sortDescending().forEach { file ->
-            files.add(file)
-            requests.add(Util.loadFromFile(file))
+            requestFiles.put(Util.loadFromFile(file), file)
         }
 
         requestColumn.setCellValueFactory(PropertyValueFactory<ClientRequest, String>("name"))
         requestColumn.setCellFactory(TextFieldTableCell.forTableColumn<ClientRequest>())
 
         onEditClientRequestListener()
-        queryTable.setItems(requests)
+        queryTable.setItems(FXCollections.observableArrayList<ClientRequest>(requestFiles.keySet()))
     }
 
     FXML
     private fun deleteSavedRequest() {
         val selectedRequest = queryTable.getSelectionModel().getSelectedIndex()
+        val selectedRequestItem = queryTable.getSelectionModel().getSelectedItem()
 
         deleteSavedRequestFile()
         loadSavedRequests()
 
         queryTable.getSelectionModel().select(selectedRequest)
+        showNotification(Level.INFO, "“${selectedRequestItem.name}” deleted ${Instant.now()}")
     }
 
     private fun deleteSavedRequestFile() {
         val selectedIndex = queryTable.getSelectionModel().getSelectedIndex()
         if (selectedIndex != none) {
-            val fileToDelete: File = files.get(selectedIndex)
+            val fileToDelete: File = requestFiles.values().toArrayList().get(selectedIndex)
             if (fileToDelete.delete()) {
                 App.LOG.info("Saved request deleted: $fileToDelete")
             } else {
@@ -519,7 +518,7 @@ private class Controller : Initializable {
                     .build()
             clientRequest.getTableView().getItems().set(clientRequest.getTablePosition().getRow(), clientRequestRenamed)
 
-            val file = files.get(clientRequest.getTablePosition().getRow());
+            val file = requestFiles.values().toArrayList().get(clientRequest.getTablePosition().getRow());
             FileOutputStream(file).use { fileOutputStream ->
                 ObjectOutputStream(fileOutputStream).use { objectOutputStream ->
                     objectOutputStream.writeObject(clientRequest.getTableView().getItems().get(clientRequest.getTablePosition().getRow()))
