@@ -29,6 +29,7 @@ import java.net.URL
 import java.time.Instant
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import java.util.LinkedHashMap
 import java.util.ResourceBundle
 import java.util.logging.Level
 import javax.ws.rs.HttpMethod
@@ -40,8 +41,8 @@ import javax.ws.rs.core.Response
 
 private class Controller : Initializable {
     private var validEndpoint: Boolean = false
-    private val requestFiles = FXCollections.observableHashMap<ClientRequest, File>()
-    private val requestFilesBackup = FXCollections.observableHashMap<ClientRequest, File>()
+    private val requestFiles = FXCollections.observableMap<ClientRequest, File>(LinkedHashMap<ClientRequest, File>())
+    private val requestFilesBackup = FXCollections.observableMap<ClientRequest, File>(LinkedHashMap<ClientRequest, File>())
 
     FXML
     private var findContainer: HBox = FindContainer()
@@ -284,7 +285,7 @@ private class Controller : Initializable {
 
         if (Util saveAsNew clientRequest) loadSavedRequests()
 
-        postSaveAction(requestName, selectedIndex + 1, viewSelection)
+        postSaveAction(requestName, selectedIndex, viewSelection)
     }
 
     private fun buildRequest(requestName: String): ClientRequest {
@@ -441,7 +442,7 @@ private class Controller : Initializable {
         requestColumn.setCellFactory(TextFieldTableCell.forTableColumn<ClientRequest>())
 
         onEditClientRequestListener()
-        queryTable.setItems(FXCollections.observableArrayList<ClientRequest>(requestFiles.keySet()))
+        queryTable.setItems(FXCollections.observableList<ClientRequest>(requestFiles.keySet().toLinkedList()))
     }
 
     FXML
