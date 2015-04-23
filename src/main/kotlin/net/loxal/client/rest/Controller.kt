@@ -30,6 +30,7 @@ import java.time.Instant
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.LinkedHashMap
+import java.util.LinkedList
 import java.util.ResourceBundle
 import java.util.logging.Level
 import javax.ws.rs.HttpMethod
@@ -42,6 +43,7 @@ import javax.ws.rs.core.Response
 private class Controller : Initializable {
     private var validEndpoint: Boolean = false
     private val requestFiles = FXCollections.observableMap<ClientRequest, File>(LinkedHashMap<ClientRequest, File>())
+    private val requests = FXCollections.observableList<ClientRequest>(LinkedList<ClientRequest>())
     private val requestFilesBackup = FXCollections.observableMap<ClientRequest, File>(LinkedHashMap<ClientRequest, File>())
 
     FXML
@@ -199,10 +201,14 @@ private class Controller : Initializable {
     private fun populateFindings() {
         val requestModelsForSearch = FXCollections.observableMap<ClientRequest, File>(LinkedHashMap<ClientRequest, File>())
         requestModelsForSearch.putAll(requestFiles)
+
         requestFiles.clear()
+        requests.clear()
+
         requestModelsForSearch.forEach { savedRequest ->
             if (found(savedRequest.key)) {
                 requestFiles.put(savedRequest.key, savedRequest.value)
+                requests.add(savedRequest.key)
             }
         }
     }
@@ -430,19 +436,26 @@ private class Controller : Initializable {
 
     private fun loadSavedRequests() {
         requestFiles.clear()
+        requests.clear()
 
         val appHomeDirectory = File(App.APP_HOME_DIRECTORY)
         Util.createAppHome(appHomeDirectory)
 
         appHomeDirectory.listFiles().toLinkedList().sortDescending().forEach { file ->
             requestFiles.put(Util.loadFromFile(file), file)
+            requests.add(Util.loadFromFile(file))
         }
+
+        reloadRequestBackup()
 
         requestColumn.setCellValueFactory(PropertyValueFactory<ClientRequest, String>("name"))
         requestColumn.setCellFactory(TextFieldTableCell.forTableColumn<ClientRequest>())
 
         onEditClientRequestListener()
-        queryTable.setItems(FXCollections.observableList<ClientRequest>(requestFiles.keySet().toLinkedList()))
+
+        queryTable.setItems(requests)
+
+        if (!findRequest.getText().isEmpty()) populateFindings()
     }
 
     FXML
@@ -460,7 +473,7 @@ private class Controller : Initializable {
     private fun deleteSavedRequestFile() {
         val selectedIndex = queryTable.getSelectionModel().getSelectedIndex()
         if (selectedIndex != none) {
-            val fileToDelete: File = requestFiles.values().toLinkedList().get(selectedIndex)
+            val fileToDelete = requestFiles.values().toLinkedList().get(selectedIndex)
             if (fileToDelete.delete()) {
                 App.LOG.info("Saved request deleted: $fileToDelete")
             } else {
