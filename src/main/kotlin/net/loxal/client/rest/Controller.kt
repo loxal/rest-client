@@ -449,7 +449,7 @@ private class Controller : Initializable {
         requestColumn.setCellValueFactory(PropertyValueFactory<ClientRequest, String>("name"))
         requestColumn.setCellFactory(TextFieldTableCell.forTableColumn<ClientRequest>())
 
-        onEditClientRequestListener()
+        onEditRequestListener()
 
         queryTable.setItems(requests)
 
@@ -518,26 +518,29 @@ private class Controller : Initializable {
         client.property(ClientProperties.READ_TIMEOUT, 4000)
     }
 
-    private val onEditClientRequestListener = {
-        requestColumn.setOnEditCommit({ clientRequest ->
-            val newClientRequestName = clientRequest.getNewValue()
-            val clientRequestCopy = clientRequest.getTableView().getItems().get(clientRequest.getTablePosition().getRow())
-            val clientRequestRenamed = ClientRequest.Builder(newClientRequestName)
+    private val onEditRequestListener = {
+        requestColumn.setOnEditCommit({ request ->
+            val newRequestName = request.getNewValue()
+            val clientRequestCopy = request.getTableView().getItems().get(request.getTablePosition().getRow())
+            val selectedRequest = request.getTableView().getSelectionModel().getSelectedIndex()
+            val clientRequestRenamed = ClientRequest.Builder(newRequestName)
                     .url(clientRequestCopy.url)
                     .headers(clientRequestCopy.headers)
                     .body(clientRequestCopy.body)
                     .method(clientRequestCopy.method)
                     .build()
-            clientRequest.getTableView().getItems().set(clientRequest.getTablePosition().getRow(), clientRequestRenamed)
+            request.getTableView().getItems().set(request.getTablePosition().getRow(), clientRequestRenamed)
 
-            val file = requestFiles.values().toLinkedList().get(clientRequest.getTablePosition().getRow());
+            val file = requestFiles.values().toLinkedList().get(request.getTablePosition().getRow());
             FileOutputStream(file).use { fileOutputStream ->
                 ObjectOutputStream(fileOutputStream).use { objectOutputStream ->
-                    objectOutputStream.writeObject(clientRequest.getTableView().getItems().get(clientRequest.getTablePosition().getRow()))
+                    objectOutputStream.writeObject(request.getTableView().getItems().get(request.getTablePosition().getRow()))
                     loadSavedRequests()
-                    App.LOG.info("${App.SAVE_AS} ${clientRequest.getTableView().getItems().get(clientRequest.getTablePosition().getRow()).name}")
+                    App.LOG.info("${App.SAVE_AS} ${request.getTableView().getItems().get(request.getTablePosition().getRow()).name}")
                 }
             }
+
+            request.getTableView().getSelectionModel().select(selectedRequest)
         })
     }
 
