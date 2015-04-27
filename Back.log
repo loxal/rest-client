@@ -1,15 +1,15 @@
 # Backlog
 
 ## now
-    bug: when POSTing something the content type is deduced and hence not provided as an explicit Content-Type header in both curl & HTTP Headers section
+
 
 ## later
+    replace “java” process name (the name in the top left corner when launching the app) with the actual application name
+    make “URL Paramters” editable, take care of syncing
     convert from curl to REST command
         convert curl to client request model
         sync curl to client request model in UI
             and back: client request to Curl
-    replace “java” process name (the name in the top left corner when launching the app) with the actual application name
-    make “URL Paramters” editable, take care of syncing
 
 ## dream
     Add command line capability
