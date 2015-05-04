@@ -19,7 +19,7 @@
         </encoder>
     </appender>
 
-    <logger name="net.loxal" level="DEBUG">
+    <logger name="${project.groupId}" level="DEBUG">
         <appender-ref ref="STDOUT"/>
     </logger>
 
