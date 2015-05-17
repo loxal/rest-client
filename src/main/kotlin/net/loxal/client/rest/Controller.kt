@@ -514,8 +514,10 @@ private class Controller : Initializable {
     }
 
     init {
-        client.property(ClientProperties.CONNECT_TIMEOUT, 500)
-        client.property(ClientProperties.READ_TIMEOUT, 5000)
+        val connectTimeout = App.properties.get("connect.timeout") ?: 500
+        client.property(ClientProperties.CONNECT_TIMEOUT, connectTimeout)
+        val readTimeout = App.properties.get("read.timeout") ?: 5000
+        client.property(ClientProperties.READ_TIMEOUT, readTimeout)
     }
 
     private val onEditRequestListener = {
