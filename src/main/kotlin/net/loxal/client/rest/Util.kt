@@ -128,9 +128,9 @@ final class Util {
 
             if (!requestParameterContent.isEmpty()) {
                 val parameterPairSeparatorRegex = "&${Constant.lineBreak}|&"
-                val parameterPairs = requestParameterContent.split(parameterPairSeparatorRegex)
+                val parameterPairs = requestParameterContent.split(parameterPairSeparatorRegex.toRegex()).toTypedArray()
                 parameterPairs.forEach { parameterPair ->
-                    val parameterPairEntry = parameterPair.trim().split(parameterPairEntrySeparatorRegex)
+                    val parameterPairEntry = parameterPair.trim().split(parameterPairEntrySeparatorRegex.toRegex()).toTypedArray()
                     val parameterNameIdx = 0
                     val parameterValueIdx = 1
                     requestParameters.add(RequestParameter(parameterPairEntry[parameterNameIdx], parameterPairEntry[parameterValueIdx]))
@@ -144,9 +144,9 @@ final class Util {
 
         final fun toForm(payload: String): MultivaluedMap<String, String> {
             val formData: MultivaluedMap<String, String> = MultivaluedHashMap()
-            payload.split("&").forEach { pair ->
+            payload.split("&".toRegex()).toTypedArray().forEach { pair ->
                 if (!pair.isEmpty()) {
-                    val (key, value) = pair.split(parameterPairEntrySeparatorRegex)
+                    val (key, value) = pair.split(parameterPairEntrySeparatorRegex.toRegex()).toTypedArray()
                     formData.putSingle(key, value)
                 }
             }

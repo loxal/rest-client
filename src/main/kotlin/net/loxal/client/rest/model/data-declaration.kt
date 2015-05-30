@@ -63,7 +63,7 @@ data class Headers() : HashMap<String, List<Any>>() {
 
 data class RequestParameter(val paramName: String, val paramValue: Any)
 
-data class RestCode private() {
+data class RestCode private constructor() {
     val method: String = HttpMethod.GET
     val headers: Headers = Headers()
     val body: String = ""
@@ -147,7 +147,7 @@ data class ClientRequest(builder: ClientRequest.Builder) : Serializable {
 
         fun toHeaders(text: String): Headers {
             val headers: Headers = Headers()
-            text.split(Constant.lineBreak).forEach { header ->
+            text.split(Constant.lineBreak.toRegex()).toTypedArray().forEach { header ->
                 if (header.contains(headerKeyValueSeparator)) {
                     val headerName = header.substringBefore(headerKeyValueSeparator)
                     val headerValue = header.substringAfter(headerKeyValueSeparator)
@@ -202,7 +202,7 @@ data class ClientRequest(builder: ClientRequest.Builder) : Serializable {
 
             if (headerMatcher.find()) {
                 val headersText = StringBuilder()
-                headerMatcher.group().split("-H ").forEach { header ->
+                headerMatcher.group().split("-H ".toRegex()).toTypedArray().forEach { header ->
                     headersText.append("${header.replace("\"", "")}${Constant.lineBreak}")
                 }
                 request.headers(ClientRequest.toHeaders(headersText.toString()))
