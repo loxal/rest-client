@@ -18,7 +18,7 @@ class RestCodeTest {
     /**
      * TODO This test might be superfluous as #parseRestCode is called in #fromRestCode.
      */
-    Test
+    @Test
     fun mapRestCode() {
         val restCode: RestCode = RestCode.parseRestCode(restCodeUrl)
         validateRestCode(restCode)
@@ -31,7 +31,7 @@ class RestCodeTest {
         assertEquals(bodyJson, restCode.body)
     }
 
-    Test
+    @Test
     fun fromRestCodeModelToClientRequestModel() {
         val clientRequest: ClientRequest = ClientRequest.fromRestCode(restCodeUrl)
         validateClientRequest(clientRequest)
@@ -45,13 +45,13 @@ class RestCodeTest {
         assertEquals(endpointUrl, clientRequest.url.toString())
     }
 
-    Test
+    @Test
     fun `ClientRequest model to curl CLI command conversion`() {
         val clientRequest = ClientRequest.fromRestCode(restCodeUrl)
         assertEquals(curlCliCommand, clientRequest.toCurlCliCommand())
     }
 
-    Test
+    @Test
     fun `Headers’ toString with lineBreak`() {
         val showHeaders = "Server: RESTkit v1\n"
         val header = Headers.new("Server", "RESTkit v1").entrySet().first()
@@ -61,7 +61,7 @@ class RestCodeTest {
         assertNotEquals(showHeaders, Headers.toString(entry = header))
     }
 
-    Test
+    @Test
     fun `ClientRequest’s toString`() {
         val clientRequestWithName = ClientRequest.Builder(name).url(URL(endpointUrl)).headers(headers).body(bodyJson).method(method).build()
         assertEquals("""https://example.com:440/endpoint/#RESTcode:{"headers": {: , number: 1, header3: value3, header2: , header1: [0, 1, false, false], header: [value, value1, 42.0, true]}, "body": "{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}", "method": "POST", "name": "Test Example"}""",
@@ -72,7 +72,7 @@ class RestCodeTest {
                 clientRequestWithDefaultName.toString())
     }
 
-    Test
+    @Test
     fun toHeaders() {
         val headerValueReference = "Header Name: Value"
         val headerFromText = ClientRequest.toHeaders(headerValueReference)
@@ -110,11 +110,11 @@ class RestCodeTest {
         private val headersJson: String = "{\"header\": [\"value\", \"value1\", 42.0, true], " +
                 "\"header1\": [\"0\", 1, false, \"false\"], \"header2\": [], " +
                 "\"number\": [1], \"\": [], \"header3\": [\"value3\"]}"
-        private val headers: Headers = mapper.readValue(headersJson, javaClass<Headers>())
+        private val headers: Headers = mapper.readValue(headersJson, Headers::class.java)
 
         private val restCodeUrlRaw: String = "$endpointUrl#${RestCode.restCodeToken}{" +
-                "\"headers\": ${headersJson}," +
-                "\"body\": \"${bodyJson}\"," +
+                "\"headers\": $headersJson," +
+                "\"body\": \"$bodyJson\"," +
                 "\"method\": \"${HttpMethod.POST}\"," +
                 "\"name\": \"$name\"" +
                 "}"

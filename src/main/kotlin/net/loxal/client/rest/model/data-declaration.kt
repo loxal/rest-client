@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import net.loxal.client.rest.App
 import java.io.Serializable
 import java.net.URL
-import java.util.HashMap
+import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import javax.ws.rs.HttpMethod
@@ -23,7 +23,7 @@ data class Headers() : HashMap<String, List<Any>>() {
         var idx = 0
         this.forEach { entry ->
             val prettyFormatHeaderValue = prettyFormatHeaderValue(entry.value)
-            string.append("${entry.key}: ${prettyFormatHeaderValue}")
+            string.append("${entry.key}: $prettyFormatHeaderValue")
 
             val notLastElement = size() > ++idx
             if (notLastElement) {
@@ -73,10 +73,10 @@ data class RestCode private constructor() {
         val restCodeToken = "RESTcode:"
 
         fun parseRestCode(url: URL): RestCode {
-            val restCodeRaw = url.getRef()
+            val restCodeRaw = url.ref
             val restCodeData = restCodeRaw.substring(restCodeToken.length())
             val mapper = ObjectMapper()
-            val restCode = mapper.readValue(restCodeData, javaClass<RestCode>())
+            val restCode = mapper.readValue(restCodeData, RestCode::class.java)
 
             return restCode
         }
@@ -126,18 +126,18 @@ data class ClientRequest(builder: ClientRequest.Builder) : Serializable {
             headers.append("-H \"${Headers.toString(entry)}\" ${Constant.consoleBreak}")
         }
 
-        val curlBody = if (body.isEmpty()) "" else "-d $'${body}'"
+        val curlBody = if (body.isEmpty()) "" else "-d $'$body'"
 
-        val curlCliCommand = "curl -i -X ${method} ${url} \\${Constant.lineBreak}${headers}${curlBody}"
+        val curlCliCommand = "curl -i -X $method $url \\${Constant.lineBreak}$headers$curlBody"
 
         return curlCliCommand
     }
 
     override fun toString() =
-            "${url}#${RestCode.restCodeToken}{" +
-                    "\"headers\": {${headers}}, " +
-                    "\"body\": \"${body}\", " +
-                    "\"method\": \"${method}\", " +
+            "$url#${RestCode.restCodeToken}{" +
+                    "\"headers\": {$headers}, " +
+                    "\"body\": \"$body\", " +
+                    "\"method\": \"$method\", " +
                     "\"name\": \"$name\"" +
                     "}"
 
@@ -166,7 +166,7 @@ data class ClientRequest(builder: ClientRequest.Builder) : Serializable {
         }
 
         private fun createClientRequest(url: URL, restCode: RestCode): ClientRequest {
-            val urlRoot = "${url.getProtocol()}://${url.getHost()}${if (url.getPort() == -1) "" else ":" + url.getPort()}${url.getPath()}"
+            val urlRoot = "${url.protocol}://${url.host}${if (url.port == -1) "" else ":" + url.port}${url.path}"
 
             val clientRequest = ClientRequest.Builder(restCode.name)
                     .method(restCode.method)

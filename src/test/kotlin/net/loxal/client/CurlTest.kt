@@ -11,7 +11,7 @@ import java.net.URL
 import kotlin.test.assertEquals
 
 class CurlTest {
-    Test
+    @Test
     fun `curl CLI command to ClientRequest model`() {
         val clientRequest = ClientRequest.fromCurlCliCommand(RestCodeTest.curlCliCommand)
         assertEquals("POST", clientRequest.method)
@@ -29,7 +29,7 @@ class CurlTest {
         assertEquals(headers.toString(), clientRequest.headers.toString())
     }
 
-    Test
+    @Test
     fun `from simple Curl`() {
         val clientRequest = ClientRequest.fromCurlCliCommand("curl -i -X PUT https://example.com/endpoint/ \\")
         assertEquals("PUT", clientRequest.method)

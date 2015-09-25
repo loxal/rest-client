@@ -14,20 +14,19 @@ import org.junit.Test
 import kotlin.test.assertEquals
 
 class ControllerTest {
-    Before
+    @Before
     public fun setUp() {
     }
 
-    After
+    @After
     public fun tearDown() {
     }
 
-    Test
+    @Test
     public fun dummyTest() {
         assertEquals(true, true)
     }
 
-    Test
     public class AsNonApp : Application() {
         override fun start(primaryStage: Stage) {
             throw AssertionError("NOP")
@@ -35,14 +34,14 @@ class ControllerTest {
     }
 
     companion object {
-        BeforeClass
+        @BeforeClass
         public fun initJavaFxEnvironment() {
             val thread = object : Thread("JavaFx Init Thread") {
                 override fun run() {
-                    Application.launch(javaClass<App>())
+                    Application.launch(App::class.java)
                 }
             }
-            thread.setDaemon(true)
+            thread.isDaemon = true
             thread.start()
         }
     }

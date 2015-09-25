@@ -29,9 +29,7 @@ import java.net.URL
 import java.time.Instant
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-import java.util.LinkedHashMap
-import java.util.LinkedList
-import java.util.ResourceBundle
+import java.util.*
 import java.util.logging.Level
 import javax.ws.rs.HttpMethod
 import javax.ws.rs.ProcessingException
@@ -40,55 +38,55 @@ import javax.ws.rs.client.Entity
 import javax.ws.rs.client.Invocation
 import javax.ws.rs.core.Response
 
-private class Controller : Initializable {
+internal class Controller : Initializable {
     private var validEndpoint: Boolean = false
     private val requestFiles = FXCollections.observableMap<ClientRequest, File>(LinkedHashMap<ClientRequest, File>())
     private val requests = FXCollections.observableList<ClientRequest>(LinkedList<ClientRequest>())
     private val requestFilesBackup = FXCollections.observableMap<ClientRequest, File>(LinkedHashMap<ClientRequest, File>())
 
-    FXML
+    @FXML
     private var findContainer: HBox = FindContainer()
-    FXML
+    @FXML
     private var findNext: Button = Button()
-    FXML
+    @FXML
     private var httpMethods: ComboBox<Text> = ComboBox()
-    FXML
+    @FXML
     private var findRequest: TextField = TextField()
-    FXML
+    @FXML
     private var endpointUrl: TextField = TextField(App.SAMPLE_URL.toString())
-    FXML
+    @FXML
     private var requestHeaders: TextArea = TextArea()
-    FXML
+    @FXML
     private var responseHeaders: TextArea = TextArea()
-    FXML
+    @FXML
     private var curlCommand: TextArea = TextArea()
-    FXML
+    @FXML
     private var notification: Label = Label()
-    FXML
+    @FXML
     private var responseStatus: Label = Label()
-    FXML
+    @FXML
     private var requestParameterData: TextArea = TextArea()
-    FXML
+    @FXML
     private var requestPerformer: Button = Button()
-    FXML
+    @FXML
     private var rootContainer = AnchorPane()
-    FXML
+    @FXML
     private var queryTable: TableView<ClientRequest> = TableView()
-    FXML
+    @FXML
     private var requestColumn: TableColumn<ClientRequest, String> = TableColumn()
-    FXML
+    @FXML
     private var requestDeleter: Button = Button()
-    FXML
+    @FXML
     private var requestSaver: Button = Button()
-    FXML
+    @FXML
     private var requestDuplicator: Button = Button()
-    FXML
+    @FXML
     private var requestBody: TextArea = TextArea()
-    FXML
+    @FXML
     private var responseBody: TextArea = TextArea()
-    FXML
+    @FXML
     private var menuBar: MenuBar = MenuBar()
-    FXML
+    @FXML
     private var findInResponse: TextField = TextField()
 
     private var request: ClientRequest = ClientRequest.Builder("[Init Request]").build()
@@ -122,8 +120,8 @@ private class Controller : Initializable {
         Util.assignShortcut(findRequest, KeyCodeCombination(KeyCode.F, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN), Runnable { findRequest.requestFocus() })
 
         fun initHttpMethods() {
-            httpMethods.setItems(httpMethodsTexts)
-            httpMethods.getSelectionModel().select(0)
+            httpMethods.items = httpMethodsTexts
+            httpMethods.selectionModel.select(0)
             Util.assignShortcutToText(rootContainer, getMethod, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { setMethodInUi(HttpMethod.GET) })
             Util.assignShortcutToText(rootContainer, postMethod, KeyCodeCombination(KeyCode.P, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { setMethodInUi(HttpMethod.POST) })
             Util.assignShortcutToText(rootContainer, deleteMethod, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { setMethodInUi(HttpMethod.DELETE) })
@@ -137,16 +135,16 @@ private class Controller : Initializable {
 
         reloadRequestBackup()
         enableFinder()
-        menuBar.setUseSystemMenuBar(true)
+        menuBar.isUseSystemMenuBar = true
     }
 
-    FXML
+    @FXML
     private fun findInResponse() {
         findNextOccurrence()
 
         fun focus() {
             findInResponse.requestFocus()
-            findContainer.setVisible(true)
+            findContainer.isVisible = true
         }
         focus()
 
@@ -157,8 +155,8 @@ private class Controller : Initializable {
     }
 
     private fun findNextOccurrence() {
-        val text = responseBody.getText().toLowerCase()
-        val search = findInResponse.getText().toLowerCase()
+        val text = responseBody.text.toLowerCase()
+        val search = findInResponse.text.toLowerCase()
 
         val nextOccurrence = text.indexOf(search, FindContainer.findNextFrom)
         val found = nextOccurrence != none && nextOccurrence != 0
@@ -171,7 +169,7 @@ private class Controller : Initializable {
         }
     }
 
-    FXML
+    @FXML
     private fun findNext() {
         responseBody.deselect()
         findNext.requestFocus()
@@ -179,7 +177,7 @@ private class Controller : Initializable {
     }
 
     private fun enableFinder() {
-        Util.assignShortcut(findContainer, KeyCodeCombination(KeyCode.ESCAPE), Runnable { rootContainer.requestFocus(); findContainer.setVisible(false) })
+        Util.assignShortcut(findContainer, KeyCodeCombination(KeyCode.ESCAPE), Runnable { rootContainer.requestFocus(); findContainer.isVisible = false })
         Util.assignShortcut(findNext, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN), Runnable { findNext.fire() })
 
         findRequest.setOnKeyReleased { keyEvent ->
@@ -214,12 +212,12 @@ private class Controller : Initializable {
     }
 
     private fun found(savedRequest: ClientRequest) =
-            savedRequest.name.toLowerCase().contains(findRequest.getText().toLowerCase())
+            savedRequest.name.toLowerCase().contains(findRequest.text.toLowerCase())
 
 
     private fun setShortcutForArrowKeySelection() =
             queryTable.setOnKeyReleased { keyEvent ->
-                if (keyEvent.getCode().equals(KeyCode.UP).or(keyEvent.getCode().equals(KeyCode.DOWN)))
+                if (keyEvent.code.equals(KeyCode.UP).or(keyEvent.code.equals(KeyCode.DOWN)))
                     loadSavedRequest()
             }
 
@@ -227,22 +225,22 @@ private class Controller : Initializable {
     /**
      * This is a workaround as proper rendering for combo box items is not working yet.
      */
-    FXML
+    @FXML
     private fun refillComboBoxItems() {
-        httpMethods.setItems(null)
-        httpMethods.setItems(httpMethodsTexts)
+        httpMethods.items = null
+        httpMethods.items = httpMethodsTexts
     }
 
-    FXML
+    @FXML
     private fun saveRequest() {
         updateEndpoint()
 
-        val viewSelection: TableView.TableViewSelectionModel<ClientRequest> = queryTable.getSelectionModel()
-        val selectedRequestIndex = viewSelection.getSelectedIndex()
+        val viewSelection: TableView.TableViewSelectionModel<ClientRequest> = queryTable.selectionModel
+        val selectedRequestIndex = viewSelection.selectedIndex
         if (selectedRequestIndex == none) {
             saveNewRequest(viewSelection)
         } else {
-            val requestName: String = viewSelection.getSelectedItem()!!.name
+            val requestName: String = viewSelection.selectedItem!!.name
             val clientRequest = buildRequest(requestName)
 
             val fileLocation = requestFiles.values().toLinkedList().get(selectedRequestIndex)
@@ -252,17 +250,17 @@ private class Controller : Initializable {
         }
     }
 
-    FXML
+    @FXML
     private fun duplicateRequest() {
         updateEndpoint()
-        val viewSelection: TableView.TableViewSelectionModel<ClientRequest> = queryTable.getSelectionModel()
+        val viewSelection: TableView.TableViewSelectionModel<ClientRequest> = queryTable.selectionModel
         saveNewRequest(viewSelection)
     }
 
-    FXML
+    @FXML
     private fun applyCurl() {
         if (App.properties.getProperty("feature.applyCurlCommand").toBoolean()) {
-            val fromCurlCommand = ClientRequest.fromCurlCliCommand(curlCommand.getText())
+            val fromCurlCommand = ClientRequest.fromCurlCliCommand(curlCommand.text)
             if (fromCurlCommand.name.contains("Valid")) {
                 applyRequest(fromCurlCommand)
                 showNotification(Level.INFO, "curl command applied ${Instant.now()}")
@@ -275,17 +273,17 @@ private class Controller : Initializable {
     private fun applyRequest(request: ClientRequest) {
         this.request = request
 
-        endpointUrl.setText(request.url.toString())
-        requestBody.setText(request.body)
-        requestHeaders.setText(request.headers.toString())
+        endpointUrl.text = request.url.toString()
+        requestBody.text = request.body
+        requestHeaders.text = request.headers.toString()
         setMethodInUi(request.method)
     }
 
     private fun saveNewRequest(viewSelection: TableView.TableViewSelectionModel<ClientRequest>) {
         val localTimestamp = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))
-        val verboseRequestName = "$localTimestamp ${request.url.getHost()}${request.url.getPath()} ${request.method}"
-        val selectedRequest: ClientRequest? = viewSelection.getSelectedItem()
-        val selectedIndex = viewSelection.getSelectedIndex()
+        val verboseRequestName = "$localTimestamp ${request.url.host}${request.url.path} ${request.method}"
+        val selectedRequest: ClientRequest? = viewSelection.selectedItem
+        val selectedIndex = viewSelection.selectedIndex
         val requestName: String = if (selectedRequest identityEquals null) verboseRequestName else "${selectedRequest!!.name} ∆"
         val clientRequest = buildRequest(requestName)
 
@@ -298,18 +296,18 @@ private class Controller : Initializable {
         val clientRequest = ClientRequest.Builder(requestName)
                 .method(request.method)
                 .url(request.url)
-                .body(requestBody.getText())
-                .headers(ClientRequest.toHeaders(requestHeaders.getText()))
+                .body(requestBody.text)
+                .headers(ClientRequest.toHeaders(requestHeaders.text))
                 .build()
         return clientRequest
     }
 
     private fun postSaveAction(requestName: String, selectedRequestIndex: Int, viewSelection: TableView.TableViewSelectionModel<ClientRequest>) {
         viewSelection.select(selectedRequestIndex)
-        showNotification(Level.INFO, "“${requestName}” saved ${Instant.now()}")
+        showNotification(Level.INFO, "“$requestName” saved ${Instant.now()}")
     }
 
-    FXML
+    @FXML
     private fun doRequest() {
         updateEndpoint()
 
@@ -344,24 +342,24 @@ private class Controller : Initializable {
         val target = Util.applyUrlRequestParameters(client.target(request.url.toString()),
                 Util.extractRequestParameters(declareRequestParameters()))
 
-        return Util.applyHeaderInfo(Util.extractHeaderData(requestHeaders.getText()), target.request())
+        return Util.applyHeaderInfo(Util.extractHeaderData(requestHeaders.text), target.request())
     }
 
-    FXML
+    @FXML
     private fun updateEndpoint() {
-        if (endpointUrl.getText().isEmpty()) {
+        if (endpointUrl.text.isEmpty()) {
             showNotification(Level.INFO, "Endpoint URL required")
             validEndpoint = false
             return
         }
 
         try {
-            val targetUrl: URL = URL(endpointUrl.getText())
-            val selectedHttpMethod: String? = httpMethods.getSelectionModel().getSelectedItem()?.getAccessibleText()
+            val targetUrl: URL = URL(endpointUrl.text)
+            val selectedHttpMethod: String? = httpMethods.selectionModel.selectedItem?.accessibleText
             request = ClientRequest.Builder("[Current Request]")
                     .method(if (selectedHttpMethod === null) HttpMethod.GET else selectedHttpMethod)
-                    .body(requestBody.getText())
-                    .headers(ClientRequest.toHeaders(requestHeaders.getText()))
+                    .body(requestBody.text)
+                    .headers(ClientRequest.toHeaders(requestHeaders.text))
                     .url(targetUrl)
                     .build()
             updateCurlCliCommand()
@@ -371,7 +369,7 @@ private class Controller : Initializable {
             return
         }
 
-        requestParameterData.setText(request.url.getQuery())
+        requestParameterData.text = request.url.query
 
         requestParameterData.fireEvent(ActionEvent())
         endpointUrl.fireEvent(ActionEvent())
@@ -384,7 +382,7 @@ private class Controller : Initializable {
             Level.WARNING -> App.LOG.warn(message)
             else -> App.LOG.error(message)
         }
-        notification.setText(message)
+        notification.text = message
     }
 
     private fun postRequest(): Response {
@@ -408,28 +406,28 @@ private class Controller : Initializable {
     private fun optionsRequest() = prepareRequest().options()
 
     private fun showResponseHeaders(response: Response) {
-        response.getHeaders().forEach { header ->
+        response.headers.forEach { header ->
             responseHeaders.appendText("${Headers.toString(entry = header, lineBreak = true)}")
         }
     }
 
     private fun showResponseBody(response: Response) {
-        val formattedResponse = Util.formatJson(response.readEntity(javaClass<String>()))
+        val formattedResponse = Util.formatJson(response.readEntity(String::class.java))
         responseBody.appendText(formattedResponse)
     }
 
     private fun declareRequestParameters() =
-            if (null identityEquals requestParameterData.getText())
+            if (null identityEquals requestParameterData.text)
                 ""
             else
-                requestParameterData.getText()
+                requestParameterData.text
 
-    FXML
+    @FXML
     private fun clearPreviousResponse() {
         responseHeaders.clear()
         responseBody.clear()
-        responseStatus.setText("")
-        notification.setText("")
+        responseStatus.text = ""
+        notification.text = ""
     }
 
     private fun loadSavedRequests() {
@@ -439,37 +437,37 @@ private class Controller : Initializable {
         val appHomeDirectory = File(App.APP_HOME_DIRECTORY)
         Util.createAppHome(appHomeDirectory)
 
-        appHomeDirectory.listFiles().toLinkedList().sortDescending().forEach { file ->
+        appHomeDirectory.listFiles().toLinkedList().sortedDescending().forEach { file ->
             requestFiles.put(Util.loadFromFile(file), file)
             requests.add(Util.loadFromFile(file))
         }
 
         reloadRequestBackup()
 
-        requestColumn.setCellValueFactory(PropertyValueFactory<ClientRequest, String>("name"))
-        requestColumn.setCellFactory(TextFieldTableCell.forTableColumn<ClientRequest>())
+        requestColumn.cellValueFactory = PropertyValueFactory<ClientRequest, String>("name")
+        requestColumn.cellFactory = TextFieldTableCell.forTableColumn<ClientRequest>()
 
         onEditRequestListener()
 
-        queryTable.setItems(requests)
+        queryTable.items = requests
 
-        if (!findRequest.getText().isEmpty()) populateFindings()
+        if (!findRequest.text.isEmpty()) populateFindings()
     }
 
-    FXML
+    @FXML
     private fun deleteSavedRequest() {
-        val selectedRequest = queryTable.getSelectionModel().getSelectedIndex()
-        val selectedRequestItem = queryTable.getSelectionModel().getSelectedItem()
+        val selectedRequest = queryTable.selectionModel.selectedIndex
+        val selectedRequestItem = queryTable.selectionModel.selectedItem
 
         deleteSavedRequestFile()
         loadSavedRequests()
 
-        queryTable.getSelectionModel().select(selectedRequest)
+        queryTable.selectionModel.select(selectedRequest)
         showNotification(Level.INFO, "“${selectedRequestItem.name}” deleted ${Instant.now()}")
     }
 
     private fun deleteSavedRequestFile() {
-        val selectedIndex = queryTable.getSelectionModel().getSelectedIndex()
+        val selectedIndex = queryTable.selectionModel.selectedIndex
         if (selectedIndex != none) {
             val fileToDelete = requestFiles.values().toLinkedList().get(selectedIndex)
             if (fileToDelete.delete()) {
@@ -480,37 +478,37 @@ private class Controller : Initializable {
         }
     }
 
-    FXML
+    @FXML
     private fun loadSavedRequest() {
-        val selectedRequest = queryTable.getSelectionModel().getSelectedItem()
+        val selectedRequest = queryTable.selectionModel.selectedItem
         if (selectedRequest != null) {
             request = selectedRequest
 
             setMethodInUi(request.method)
-            requestHeaders.setText(request.headers.toStringColumn())
-            requestParameterData.setText(request.url.getQuery())
-            requestBody.setText(request.body)
-            endpointUrl.setText(request.url.toString())
+            requestHeaders.text = request.headers.toStringColumn()
+            requestParameterData.text = request.url.query
+            requestBody.text = request.body
+            endpointUrl.text = request.url.toString()
         }
     }
 
     private fun setMethodInUi(method: String) {
         when (method) {
-            HttpMethod.GET -> httpMethods.getSelectionModel().select(0)
-            HttpMethod.POST -> httpMethods.getSelectionModel().select(1)
-            HttpMethod.DELETE -> httpMethods.getSelectionModel().select(2)
-            HttpMethod.PUT -> httpMethods.getSelectionModel().select(3)
-            HttpMethod.HEAD -> httpMethods.getSelectionModel().select(4)
-            HttpMethod.OPTIONS -> httpMethods.getSelectionModel().select(5)
+            HttpMethod.GET -> httpMethods.selectionModel.select(0)
+            HttpMethod.POST -> httpMethods.selectionModel.select(1)
+            HttpMethod.DELETE -> httpMethods.selectionModel.select(2)
+            HttpMethod.PUT -> httpMethods.selectionModel.select(3)
+            HttpMethod.HEAD -> httpMethods.selectionModel.select(4)
+            HttpMethod.OPTIONS -> httpMethods.selectionModel.select(5)
             else -> showNotification(Level.SEVERE, "HTTP method has no equivalent in UI.")
         }
     }
 
     private fun showStatus(response: Response) {
         val requestDuration = Instant.now().minusMillis(startRequest.toEpochMilli()).toEpochMilli()
-        val responseInfo = "Time: ${Instant.now()}\nStatus: ${response.getStatusInfo().getStatusCode()} ${response.getStatusInfo().getReasonPhrase()} in $requestDuration ms"
-        responseStatus.setText(responseInfo)
-        responseStatus.setTooltip(Tooltip(response.getStatusInfo().getFamily().name()))
+        val responseInfo = "Time: ${Instant.now()}\nStatus: ${response.statusInfo.statusCode} ${response.statusInfo.reasonPhrase} in $requestDuration ms"
+        responseStatus.text = responseInfo
+        responseStatus.tooltip = Tooltip(response.statusInfo.family.name())
     }
 
     init {
@@ -522,31 +520,31 @@ private class Controller : Initializable {
 
     private val onEditRequestListener = {
         requestColumn.setOnEditCommit({ request ->
-            val newRequestName = request.getNewValue()
-            val clientRequestCopy = request.getTableView().getItems().get(request.getTablePosition().getRow())
-            val selectedRequest = request.getTableView().getSelectionModel().getSelectedIndex()
+            val newRequestName = request.newValue
+            val clientRequestCopy = request.tableView.items.get(request.tablePosition.row)
+            val selectedRequest = request.tableView.selectionModel.selectedIndex
             val clientRequestRenamed = ClientRequest.Builder(newRequestName)
                     .url(clientRequestCopy.url)
                     .headers(clientRequestCopy.headers)
                     .body(clientRequestCopy.body)
                     .method(clientRequestCopy.method)
                     .build()
-            request.getTableView().getItems().set(request.getTablePosition().getRow(), clientRequestRenamed)
+            request.tableView.items.set(request.tablePosition.row, clientRequestRenamed)
 
-            val file = requestFiles.values().toLinkedList().get(request.getTablePosition().getRow());
+            val file = requestFiles.values().toLinkedList().get(request.tablePosition.row);
             FileOutputStream(file).use { fileOutputStream ->
                 ObjectOutputStream(fileOutputStream).use { objectOutputStream ->
-                    objectOutputStream.writeObject(request.getTableView().getItems().get(request.getTablePosition().getRow()))
+                    objectOutputStream.writeObject(request.tableView.items.get(request.tablePosition.row))
                     loadSavedRequests()
-                    App.LOG.info("${App.SAVE_AS} ${request.getTableView().getItems().get(request.getTablePosition().getRow()).name}")
+                    App.LOG.info("${App.SAVE_AS} ${request.tableView.items.get(request.tablePosition.row).name}")
                 }
             }
 
-            request.getTableView().getSelectionModel().select(selectedRequest)
+            request.tableView.selectionModel.select(selectedRequest)
         })
     }
 
-    private val updateCurlCliCommand = { curlCommand.setText(request.toCurlCliCommand()) }
+    private val updateCurlCliCommand = { curlCommand.text = request.toCurlCliCommand() }
 
     private companion object {
         private val client = ClientBuilder.newClient()

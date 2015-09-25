@@ -14,7 +14,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.IOException
 import java.net.URL
-import java.util.Properties
+import java.util.*
 
 class App : Application() {
 
@@ -26,10 +26,10 @@ class App : Application() {
         try {
             rootNode = loader.load<AnchorPane>(javaClass.getResourceAsStream("main.fxml"))
             scene = Scene(rootNode)
-            stage.setScene(scene)
+            stage.scene = scene
 
-            stage.setTitle("Epvin v${properties.getProperty("project.version")}.${properties.getProperty("build.number")}-${properties.getProperty("scm.id")} | www.loxal.net/epvin-rest-client")
-            stage.getIcons().add(Image("/net/loxal/client/rest/view/tool-icon-128.png"))
+            stage.title = "Epvin v${properties.getProperty("project.version")}.${properties.getProperty("build.number")}-${properties.getProperty("scm.id")} | www.loxal.net/epvin-rest-client"
+            stage.icons.add(Image("/net/loxal/client/rest/view/tool-icon-128.png"))
             rootNode.requestFocus()
             stage.show()
 
@@ -45,7 +45,7 @@ class App : Application() {
     }
 
     companion object {
-        val LOG: Logger = LoggerFactory.getLogger(javaClass<App>())
+        val LOG: Logger = LoggerFactory.getLogger(App::class.java)
         val SAMPLE_URL = URL("https://example.com")
         val SAVE_AS = "Save request as:"
         val properties = Properties()

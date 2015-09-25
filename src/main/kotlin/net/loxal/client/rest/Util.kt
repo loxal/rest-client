@@ -22,7 +22,7 @@ import org.glassfish.jersey.internal.util.collection.ImmutableMultivaluedMap
 import java.io.*
 import java.lang
 import java.time.Instant
-import java.util.ArrayList
+import java.util.*
 import javax.ws.rs.client.Invocation
 import javax.ws.rs.client.WebTarget
 import javax.ws.rs.core.HttpHeaders
@@ -35,18 +35,18 @@ final class Util {
         val parameterPairEntrySeparatorRegex = "="
 
         final fun assignShortcut(control: Control, keyCodeCombination: KeyCodeCombination, action: Runnable) {
-            assignShortcut(control.getParent(), keyCodeCombination, action)
-            control.setTooltip(Tooltip("${keyCodeCombination.getDisplayText()}"))
+            assignShortcut(control.parent, keyCodeCombination, action)
+            control.tooltip = Tooltip("${keyCodeCombination.displayText}")
         }
 
         final fun assignShortcut(control: Parent, keyCodeCombination: KeyCodeCombination, action: Runnable) {
-            control.getScene().getAccelerators().put(keyCodeCombination, action)
+            control.scene.accelerators.put(keyCodeCombination, action)
         }
 
         final fun assignShortcutToText(acceleratorContainer: AnchorPane, shortcutTarget: Text, keyCodeCombination: KeyCodeCombination, action: Runnable) {
             assignShortcut(acceleratorContainer, keyCodeCombination, action)
-            shortcutTarget.setAccessibleText(shortcutTarget.getText())
-            shortcutTarget.setText("${shortcutTarget.getText()} ${keyCodeCombination.getDisplayText()}")
+            shortcutTarget.accessibleText = shortcutTarget.text
+            shortcutTarget.text = "${shortcutTarget.text} ${keyCodeCombination.displayText}"
         }
 
         final fun createAppHome(appHomeDirectory: File) {
@@ -74,7 +74,7 @@ final class Util {
                 }
             }
 
-            throw RuntimeException("Could not load ${clientRequest}")
+            throw RuntimeException("Could not load $clientRequest")
         }
 
         final fun saveAsNew(clientRequest: ClientRequest): Boolean {
@@ -140,7 +140,7 @@ final class Util {
             return requestParameters
         }
 
-        final fun isFormMediaType(request: ClientRequest) = request.headers.get(HttpHeaders.CONTENT_TYPE) != null && request.headers.get(HttpHeaders.CONTENT_TYPE).get(0).toString().equals(MediaType.APPLICATION_FORM_URLENCODED)
+        final fun isFormMediaType(request: ClientRequest) = request.headers.get(HttpHeaders.CONTENT_TYPE) != null && request.headers.get(HttpHeaders.CONTENT_TYPE)?.get(0).toString().equals(MediaType.APPLICATION_FORM_URLENCODED)
 
         final fun toForm(payload: String): MultivaluedMap<String, String> {
             val formData: MultivaluedMap<String, String> = MultivaluedHashMap()

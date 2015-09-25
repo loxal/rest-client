@@ -9,10 +9,10 @@ import javafx.fxml.Initializable
 import javafx.scene.control.Button
 import javafx.scene.layout.HBox
 import java.net.URL
-import java.util.ResourceBundle
+import java.util.*
 
 class FindContainer : Initializable, HBox() {
-    FXML
+    @FXML
     private var findNext: Button = Button()
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
@@ -23,12 +23,12 @@ class FindContainer : Initializable, HBox() {
         App.LOG.trace("init")
     }
 
-    FXML
+    @FXML
     private fun findNext() {
         App.LOG.info("findNext")
     }
 
-    FXML
+    @FXML
     private fun findInResponse() {
         App.LOG.info("findInResponse")
     }
