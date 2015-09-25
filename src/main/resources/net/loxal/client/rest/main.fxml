@@ -106,7 +106,7 @@
                 <TextField id="request-url-bar" fx:id="endpointUrl" cacheShape="false" centerShape="false"
                            focusTraversable="false" onKeyReleased="#updateEndpoint" pickOnBounds="false"
                            prefHeight="26.0" prefWidth="823.0" promptText="https://api.example.com" scaleShape="false"
-                           text="http://rest-kit-v1.cf1.hybris.com/dilbert-quote/manager">
+                           text="https://rest-kit-v1.us-east.stage.internal.yaas.io/dilbert-quote/manager">
                     <styleClass>
                         <String fx:value="request"/>
                         <String fx:value="test"/>
