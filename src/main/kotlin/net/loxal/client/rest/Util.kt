@@ -20,7 +20,6 @@ import net.loxal.client.rest.model.Headers
 import net.loxal.client.rest.model.RequestParameter
 import org.glassfish.jersey.internal.util.collection.ImmutableMultivaluedMap
 import java.io.*
-import java.lang
 import java.time.Instant
 import java.util.*
 import javax.ws.rs.client.Invocation
@@ -52,9 +51,9 @@ final class Util {
         final fun createAppHome(appHomeDirectory: File) {
             if (!appHomeDirectory.exists()) {
                 if (appHomeDirectory.mkdirs()) {
-                    App.LOG.info(lang.String.format("%s created", appHomeDirectory))
+                    App.LOG.info("$appHomeDirectory created")
                 } else {
-                    App.LOG.warn(lang.String.format("%s creation failed", appHomeDirectory))
+                    App.LOG.warn("$appHomeDirectory creation failed")
                 }
             }
         }

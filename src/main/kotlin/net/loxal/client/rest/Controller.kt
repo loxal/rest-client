@@ -284,7 +284,7 @@ internal class Controller : Initializable {
         val verboseRequestName = "$localTimestamp ${request.url.host}${request.url.path} ${request.method}"
         val selectedRequest: ClientRequest? = viewSelection.selectedItem
         val selectedIndex = viewSelection.selectedIndex
-        val requestName: String = if (selectedRequest identityEquals null) verboseRequestName else "${selectedRequest!!.name} ∆"
+        val requestName: String = if (selectedRequest === null) verboseRequestName else "${selectedRequest.name} ∆"
         val clientRequest = buildRequest(requestName)
 
         if (Util saveAsNew clientRequest) loadSavedRequests()
@@ -417,7 +417,7 @@ internal class Controller : Initializable {
     }
 
     private fun declareRequestParameters() =
-            if (null identityEquals requestParameterData.text)
+            if (null === requestParameterData.text)
                 ""
             else
                 requestParameterData.text

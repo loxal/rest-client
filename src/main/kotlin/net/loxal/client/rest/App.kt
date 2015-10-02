@@ -50,7 +50,7 @@ class App : Application() {
         val SAVE_AS = "Save request as:"
         val properties = Properties()
 
-        val APP_HOME_DIRECTORY = if (System.getenv("HOME").identityEquals(null)) {
+        val APP_HOME_DIRECTORY = if (System.getenv("HOME") === null) {
             System.getenv("USERPROFILE")
         } else {
             System.getenv("HOME")
