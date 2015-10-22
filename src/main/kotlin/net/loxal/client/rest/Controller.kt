@@ -161,7 +161,7 @@ internal class Controller : Initializable {
         val nextOccurrence = text.indexOf(search, FindContainer.findNextFrom)
         val found = nextOccurrence != none && nextOccurrence != 0
         if (found) {
-            val selectionRange = nextOccurrence + search.length()
+            val selectionRange = nextOccurrence + search.length
             responseBody.selectRange(selectionRange, nextOccurrence)
             FindContainer.findNextFrom = selectionRange
         } else {
@@ -243,7 +243,7 @@ internal class Controller : Initializable {
             val requestName: String = viewSelection.selectedItem!!.name
             val clientRequest = buildRequest(requestName)
 
-            val fileLocation = requestFiles.values().toLinkedList().get(selectedRequestIndex)
+            val fileLocation = requestFiles.values.toLinkedList()[selectedRequestIndex]
             if (Util.save(storage = fileLocation, request = clientRequest)) loadSavedRequests()
 
             postSaveAction(requestName, selectedRequestIndex, viewSelection)
@@ -333,7 +333,7 @@ internal class Controller : Initializable {
                 showStatus(response)
                 showResponseBody(response)
             } catch(e: ProcessingException) {
-                showNotification(Level.SEVERE, "${e.getMessage()}")
+                showNotification(Level.SEVERE, "${e.message}")
             }
         }
     }
@@ -364,7 +364,7 @@ internal class Controller : Initializable {
                     .build()
             updateCurlCliCommand()
         } catch (e: MalformedURLException) {
-            showNotification(Level.SEVERE, "Invalid endpoint URL: ${e.getMessage()}")
+            showNotification(Level.SEVERE, "Invalid endpoint URL: ${e.message}")
             validEndpoint = false
             return
         }
@@ -469,7 +469,7 @@ internal class Controller : Initializable {
     private fun deleteSavedRequestFile() {
         val selectedIndex = queryTable.selectionModel.selectedIndex
         if (selectedIndex != none) {
-            val fileToDelete = requestFiles.values().toLinkedList().get(selectedIndex)
+            val fileToDelete = requestFiles.values.toLinkedList()[selectedIndex]
             if (fileToDelete.delete()) {
                 App.LOG.info("Saved request deleted: $fileToDelete")
             } else {
@@ -508,20 +508,20 @@ internal class Controller : Initializable {
         val requestDuration = Instant.now().minusMillis(startRequest.toEpochMilli()).toEpochMilli()
         val responseInfo = "Time: ${Instant.now()}\nStatus: ${response.statusInfo.statusCode} ${response.statusInfo.reasonPhrase} in $requestDuration ms"
         responseStatus.text = responseInfo
-        responseStatus.tooltip = Tooltip(response.statusInfo.family.name())
+        responseStatus.tooltip = Tooltip(response.statusInfo.family.name)
     }
 
     init {
-        val connectTimeout = App.properties.get("connect.timeout") ?: 500
+        val connectTimeout = App.properties["connect.timeout"] ?: 500
         client.property(ClientProperties.CONNECT_TIMEOUT, connectTimeout)
-        val readTimeout = App.properties.get("read.timeout") ?: 5000
+        val readTimeout = App.properties["read.timeout"] ?: 5000
         client.property(ClientProperties.READ_TIMEOUT, readTimeout)
     }
 
     private val onEditRequestListener = {
         requestColumn.setOnEditCommit({ request ->
             val newRequestName = request.newValue
-            val clientRequestCopy = request.tableView.items.get(request.tablePosition.row)
+            val clientRequestCopy = request.tableView.items[request.tablePosition.row]
             val selectedRequest = request.tableView.selectionModel.selectedIndex
             val clientRequestRenamed = ClientRequest.Builder(newRequestName)
                     .url(clientRequestCopy.url)
@@ -531,12 +531,12 @@ internal class Controller : Initializable {
                     .build()
             request.tableView.items.set(request.tablePosition.row, clientRequestRenamed)
 
-            val file = requestFiles.values().toLinkedList().get(request.tablePosition.row);
+            val file = requestFiles.values.toLinkedList()[request.tablePosition.row];
             FileOutputStream(file).use { fileOutputStream ->
                 ObjectOutputStream(fileOutputStream).use { objectOutputStream ->
-                    objectOutputStream.writeObject(request.tableView.items.get(request.tablePosition.row))
+                    objectOutputStream.writeObject(request.tableView.items[request.tablePosition.row])
                     loadSavedRequests()
-                    App.LOG.info("${App.SAVE_AS} ${request.tableView.items.get(request.tablePosition.row).name}")
+                    App.LOG.info("${App.SAVE_AS} ${request.tableView.items[request.tablePosition.row].name}")
                 }
             }
 

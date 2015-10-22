@@ -36,7 +36,7 @@ class App : Application() {
             val controller = loader.getController<Controller>()
             controller.initAccelerators()
         } catch (e: IOException) {
-            LOG.error("${e.getCause()}\n ${e.getMessage()}")
+            LOG.error("${e.cause}\n ${e.message}")
         }
     }
 

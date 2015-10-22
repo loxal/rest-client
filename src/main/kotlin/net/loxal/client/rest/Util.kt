@@ -76,7 +76,7 @@ final class Util {
             throw RuntimeException("Could not load $clientRequest")
         }
 
-        final fun saveAsNew(clientRequest: ClientRequest): Boolean {
+        infix final fun saveAsNew(clientRequest: ClientRequest): Boolean {
             val timestamp = Instant.now().toString()
             val windowsCompatiblePathInfix = timestamp.replace(":", "-")
             val fullFilePath = App.APP_HOME_DIRECTORY + "/" + windowsCompatiblePathInfix + "-save.serialized"
@@ -98,7 +98,7 @@ final class Util {
                     }
                 }
             } catch (e: IOException) {
-                App.LOG.warn("Could not serialize object: ${e.getMessage()}")
+                App.LOG.warn("Could not serialize object: ${e.message}")
             }
             return false
         }
@@ -113,7 +113,7 @@ final class Util {
                         App.LOG.warn("$saveFile creation failed")
                     }
                 } catch (e: IOException) {
-                    App.LOG.warn(e.getMessage())
+                    App.LOG.warn(e.message)
                 }
             }
         }
@@ -161,14 +161,14 @@ final class Util {
                 else
                     return GsonBuilder().setPrettyPrinting().create().toJson(jsonElement)
             } catch (e: JsonSyntaxException) {
-                App.LOG.warn("${e.getCause()?.getMessage()} - ${e.getMessage()}")
+                App.LOG.warn("${e.cause?.message} - ${e.message}")
                 return json
             }
         }
 
         // TODO test this
         final fun applyHeaderInfo(headers: Headers, request: Invocation.Builder): Invocation.Builder {
-            fun showSingleListEntry(entry: Map.Entry<String, List<Any>>): String = if (entry.value.size().equals(1)) entry.value.get(0) as String else entry.value.toString()
+            fun showSingleListEntry(entry: Map.Entry<String, List<Any>>): String = if (entry.value.size.equals(1)) entry.value.get(0) as String else entry.value.toString()
             headers.forEach { entry -> request.header(entry.key, showSingleListEntry(entry)) }
 
             return request

@@ -54,7 +54,7 @@ class RestCodeTest {
     @Test
     fun `Headers’ toString with lineBreak`() {
         val showHeaders = "Server: RESTkit v1\n"
-        val header = Headers.new("Server", "RESTkit v1").entrySet().first()
+        val header = Headers.new("Server", "RESTkit v1").entries.first()
 
         assertEquals(showHeaders, Headers.toString(entry = header, lineBreak = true))
         assertNotEquals(showHeaders, Headers.toString(entry = header, lineBreak = false))
@@ -76,13 +76,13 @@ class RestCodeTest {
     fun toHeaders() {
         val headerValueReference = "Header Name: Value"
         val headerFromText = ClientRequest.toHeaders(headerValueReference)
-        assertEquals(1, headerFromText.size())
+        assertEquals(1, headerFromText.size)
         assertEquals(headerValueReference, headerFromText.toString())
         assertEquals(headerValueReference, ClientRequest.toHeaders("  Header Name   :  Value ").toString())
 
         val headersFromText = ClientRequest.toHeaders("  Header Name   :  Value  \nHeader1:Value "
                 + " \n  Header2  :Value :DELTA:\nMultivalue-Header :[First Value, Second Value, Another Value]")
-        assertEquals(4, headersFromText.size())
+        assertEquals(4, headersFromText.size)
         val headers = Headers()
         headers.put("Header Name", "Value")
         headers.put("Header1", "Value")
@@ -95,7 +95,7 @@ class RestCodeTest {
         assertNotEquals(headersOdd.toString(), headersFromText.toString())
 
         assertEquals(Headers(), ClientRequest.toHeaders(""))
-        assertEquals(0, ClientRequest.toHeaders("").size())
+        assertEquals(0, ClientRequest.toHeaders("").size)
     }
 
     companion object {

@@ -13,7 +13,7 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 import javax.ws.rs.HttpMethod
 
-data class Headers() : HashMap<String, List<Any>>() {
+class Headers() : HashMap<String, List<Any>>() {
     override fun toString() = toString(", ")
 
     fun toStringColumn() = toString("\n")
@@ -25,7 +25,7 @@ data class Headers() : HashMap<String, List<Any>>() {
             val prettyFormatHeaderValue = prettyFormatHeaderValue(entry.value)
             string.append("${entry.key}: $prettyFormatHeaderValue")
 
-            val notLastElement = size() > ++idx
+            val notLastElement = size > ++idx
             if (notLastElement) {
                 string.append(separator)
             }
@@ -51,7 +51,7 @@ data class Headers() : HashMap<String, List<Any>>() {
         private fun prettyFormatHeaderValue(value: List<Any>) =
                 if (value.isEmpty())
                     ""
-                else if (value.size() > 1)
+                else if (value.size > 1)
                     value.toString()
                 else
                     value.first().toString()
@@ -63,8 +63,7 @@ data class Headers() : HashMap<String, List<Any>>() {
 
 data class RequestParameter(val paramName: String, val paramValue: Any)
 
-data class RestCode private constructor() {
-    val method: String = HttpMethod.GET
+data class RestCode(val method: String = HttpMethod.GET) {
     val headers: Headers = Headers()
     val body: String = ""
     val name: String = Constant.unnamed
@@ -74,7 +73,7 @@ data class RestCode private constructor() {
 
         fun parseRestCode(url: URL): RestCode {
             val restCodeRaw = url.ref
-            val restCodeData = restCodeRaw.substring(restCodeToken.length())
+            val restCodeData = restCodeRaw.substring(restCodeToken.length)
             val mapper = ObjectMapper()
             val restCode = mapper.readValue(restCodeData, RestCode::class.java)
 
@@ -83,7 +82,7 @@ data class RestCode private constructor() {
     }
 }
 
-data class ClientRequest(builder: ClientRequest.Builder) : Serializable {
+data class ClientRequest(val builder: ClientRequest.Builder) : Serializable {
     val url: URL = builder.url
     val method: String = builder.method
     val headers: Headers = builder.headers
