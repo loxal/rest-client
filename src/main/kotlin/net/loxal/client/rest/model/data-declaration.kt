@@ -39,7 +39,7 @@ class Headers() : HashMap<String, List<Any>>() {
     }
 
     companion object {
-        private val serialVersionUID = 3979696252154731188
+        private const val serialVersionUID = 3979696252154731188
 
         fun new(name: String, value: Any): Headers {
             val h: Headers = Headers()
