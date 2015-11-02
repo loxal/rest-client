@@ -69,7 +69,7 @@ data class RestCode(val method: String = HttpMethod.GET) {
     val name: String = Constant.unnamed
 
     companion object {
-        val restCodeToken = "RESTcode:"
+        val restCodeToken = "${App.REST_CODE_NAME}:"
 
         fun parseRestCode(url: URL): RestCode {
             val restCodeRaw = url.ref
