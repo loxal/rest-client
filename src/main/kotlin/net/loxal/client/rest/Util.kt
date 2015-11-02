@@ -71,7 +71,7 @@ final class Util {
         final infix fun saveAsNew(clientRequest: ClientRequest): Boolean {
             val timestamp = Instant.now().toString()
             val windowsCompatiblePathInfix = timestamp.replace(":", "-")
-            val fullFilePath = App.APP_HOME_DIRECTORY + "/" + windowsCompatiblePathInfix + "-save.serialized"
+            val fullFilePath = App.APP_HOME_DIRECTORY + "/" + windowsCompatiblePathInfix + "-save.${App.REST_CODE_NAME}"
             val appHomeDirectory = File(App.APP_HOME_DIRECTORY)
             Util.createAppHome(appHomeDirectory)
             Util.createSaveFile(fullFilePath)

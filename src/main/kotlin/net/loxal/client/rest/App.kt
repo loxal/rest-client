@@ -45,6 +45,7 @@ class App : Application() {
     }
 
     companion object {
+        val REST_CODE_NAME = "RESTcode"
         val LOG: Logger = LoggerFactory.getLogger(App::class.java)
         val SAMPLE_URL = URL("https://example.com")
         val SAVE_AS = "Save request as:"
@@ -54,7 +55,7 @@ class App : Application() {
             System.getenv("USERPROFILE")
         } else {
             System.getenv("HOME")
-        } + "/.loxal/rest-client/restCode"
+        } + "/.loxal/rest-client/$REST_CODE_NAME"
 
         fun main(vararg args: String) = Application.launch(*args)
     }
