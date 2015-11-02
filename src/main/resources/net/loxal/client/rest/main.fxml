@@ -7,8 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.*?>
 <?import java.lang.String?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="rootPane" fx:id="rootContainer" cacheShape="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" scaleShape="false" snapToPixel="false" stylesheets="/net/loxal/client/rest/view/style.css" xmlns="http://javafx.com/javafx/8" fx:controller="net.loxal.client.rest.Controller">
     <children>
@@ -91,7 +90,7 @@
       </GridPane>
         <VBox layoutX="965.0" layoutY="22.0" prefHeight="60.0" prefWidth="308.0">
          <children>
-             <Label prefHeight="16.0" prefWidth="93.0" text="Response Info" textFill="#2525a1">
+             <Label prefHeight="17.0" prefWidth="97.0" text="Response Info" textFill="#2525a1">
                   <font>
                       <Font name="System Bold" size="13.0" />
                   </font>
