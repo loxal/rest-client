@@ -243,7 +243,7 @@ internal class Controller : Initializable {
             val requestName: String = viewSelection.selectedItem!!.name
             val clientRequest = buildRequest(requestName)
 
-            val fileLocation = requestFiles.values.toLinkedList()[selectedRequestIndex]
+            val fileLocation = requestFiles.values.toLinkedList().get(selectedRequestIndex)
             if (Util.save(storage = fileLocation, request = clientRequest)) loadSavedRequests()
 
             postSaveAction(requestName, selectedRequestIndex, viewSelection)
@@ -469,7 +469,7 @@ internal class Controller : Initializable {
     private fun deleteSavedRequestFile() {
         val selectedIndex = queryTable.selectionModel.selectedIndex
         if (selectedIndex != none) {
-            val fileToDelete = requestFiles.values.toLinkedList()[selectedIndex]
+            val fileToDelete = requestFiles.values.toLinkedList().get(selectedIndex)
             if (fileToDelete.delete()) {
                 App.LOG.info("Saved request deleted: $fileToDelete")
             } else {
@@ -512,16 +512,16 @@ internal class Controller : Initializable {
     }
 
     init {
-        val connectTimeout = App.properties["connect.timeout"] ?: 500
+        val connectTimeout = App.properties.get("connect.timeout") ?: 500
         client.property(ClientProperties.CONNECT_TIMEOUT, connectTimeout)
-        val readTimeout = App.properties["read.timeout"] ?: 5000
+        val readTimeout = App.properties.get("read.timeout") ?: 5000
         client.property(ClientProperties.READ_TIMEOUT, readTimeout)
     }
 
     private val onEditRequestListener = {
         requestColumn.setOnEditCommit({ request ->
             val newRequestName = request.newValue
-            val clientRequestCopy = request.tableView.items[request.tablePosition.row]
+            val clientRequestCopy = request.tableView.items.get(request.tablePosition.row)
             val selectedRequest = request.tableView.selectionModel.selectedIndex
             val clientRequestRenamed = ClientRequest.Builder(newRequestName)
                     .url(clientRequestCopy.url)
@@ -531,12 +531,12 @@ internal class Controller : Initializable {
                     .build()
             request.tableView.items.set(request.tablePosition.row, clientRequestRenamed)
 
-            val file = requestFiles.values.toLinkedList()[request.tablePosition.row];
+            val file = requestFiles.values.toLinkedList().get(request.tablePosition.row);
             FileOutputStream(file).use { fileOutputStream ->
                 ObjectOutputStream(fileOutputStream).use { objectOutputStream ->
-                    objectOutputStream.writeObject(request.tableView.items[request.tablePosition.row])
+                    objectOutputStream.writeObject(request.tableView.items.get(request.tablePosition.row))
                     loadSavedRequests()
-                    App.LOG.info("${App.SAVE_AS} ${request.tableView.items[request.tablePosition.row].name}")
+                    App.LOG.info("${App.SAVE_AS} ${request.tableView.items.get(request.tablePosition.row).name}")
                 }
             }
 

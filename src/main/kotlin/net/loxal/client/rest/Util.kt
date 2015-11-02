@@ -76,7 +76,7 @@ final class Util {
             throw RuntimeException("Could not load $clientRequest")
         }
 
-        infix final fun saveAsNew(clientRequest: ClientRequest): Boolean {
+        final infix fun saveAsNew(clientRequest: ClientRequest): Boolean {
             val timestamp = Instant.now().toString()
             val windowsCompatiblePathInfix = timestamp.replace(":", "-")
             val fullFilePath = App.APP_HOME_DIRECTORY + "/" + windowsCompatiblePathInfix + "-save.serialized"
