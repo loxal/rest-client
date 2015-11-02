@@ -39,7 +39,7 @@ class Headers() : HashMap<String, List<Any>>() {
     }
 
     companion object {
-        private val serialVersionUID = 3979696252154731188
+        private const val serialVersionUID = 3979696252154731188
 
         fun new(name: String, value: Any): Headers {
             val h: Headers = Headers()
@@ -141,7 +141,7 @@ data class ClientRequest(var builder: ClientRequest.Builder) : Serializable {
                     "}"
 
     companion object {
-        private val serialVersionUID = 5979496652154735188
+        private const val serialVersionUID = 5979496652154735188
         val headerKeyValueSeparator = ":"
 
         fun toHeaders(text: String): Headers {

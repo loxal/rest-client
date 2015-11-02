@@ -19,7 +19,11 @@ import net.loxal.client.rest.model.Constant
 import net.loxal.client.rest.model.Headers
 import net.loxal.client.rest.model.RequestParameter
 import org.glassfish.jersey.internal.util.collection.ImmutableMultivaluedMap
-import java.io.*
+import java.io.File
+import java.io.FileReader
+import java.io.FileWriter
+import java.io.IOException
+import java.net.URL
 import java.time.Instant
 import java.util.*
 import javax.ws.rs.client.Invocation
@@ -59,21 +63,9 @@ final class Util {
         }
 
         final fun loadFromFile(clientRequest: File): ClientRequest {
-            FileInputStream(clientRequest).use { fileInputStream ->
-                ObjectInputStream(fileInputStream).use { objectInputStream ->
-                    try {
-                        return objectInputStream.readObject() as ClientRequest
-                    } catch(e: ClassCastException) {
-                        App.LOG.warn("$e")
-                    } catch(e: InvalidClassException) {
-                        App.LOG.warn("$e")
-                    } catch(e: WriteAbortedException) {
-                        App.LOG.warn("$e")
-                    }
-                }
-            }
+            val fileReader = FileReader(clientRequest)
 
-            throw RuntimeException("Could not load $clientRequest")
+            return ClientRequest.fromRestCode(URL(fileReader.readText()))
         }
 
         final infix fun saveAsNew(clientRequest: ClientRequest): Boolean {
@@ -89,14 +81,13 @@ final class Util {
 
         final fun save(storage: File, request: ClientRequest): Boolean {
             try {
-                FileOutputStream(storage).use { fileOutputStream ->
-                    ObjectOutputStream(fileOutputStream).use { objectOutputStream ->
-                        objectOutputStream.writeObject(request)
-                        App.LOG.info("${App.SAVE_AS} ${request.name}: $storage")
+                val fileWriter = FileWriter(storage)
+                fileWriter.write(request.toString())
+                fileWriter.close()
 
-                        return true
-                    }
-                }
+                App.LOG.info("${App.SAVE_AS} ${request.name}: $storage")
+
+                return true
             } catch (e: IOException) {
                 App.LOG.warn("Could not serialize object: ${e.message}")
             }

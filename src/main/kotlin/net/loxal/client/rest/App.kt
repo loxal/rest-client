@@ -54,7 +54,7 @@ class App : Application() {
             System.getenv("USERPROFILE")
         } else {
             System.getenv("HOME")
-        } + "/.loxal/rest-client/request"
+        } + "/.loxal/rest-client/restCode"
 
         fun main(vararg args: String) = Application.launch(*args)
     }

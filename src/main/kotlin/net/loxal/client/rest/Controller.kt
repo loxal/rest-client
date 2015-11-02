@@ -22,8 +22,7 @@ import net.loxal.client.rest.model.ClientRequest
 import net.loxal.client.rest.model.Headers
 import org.glassfish.jersey.client.ClientProperties
 import java.io.File
-import java.io.FileOutputStream
-import java.io.ObjectOutputStream
+import java.io.FileWriter
 import java.net.MalformedURLException
 import java.net.URL
 import java.time.Instant
@@ -532,13 +531,13 @@ internal class Controller : Initializable {
             request.tableView.items.set(request.tablePosition.row, clientRequestRenamed)
 
             val file = requestFiles.values.toLinkedList()[request.tablePosition.row];
-            FileOutputStream(file).use { fileOutputStream ->
-                ObjectOutputStream(fileOutputStream).use { objectOutputStream ->
-                    objectOutputStream.writeObject(request.tableView.items[request.tablePosition.row])
-                    loadSavedRequests()
-                    App.LOG.info("${App.SAVE_AS} ${request.tableView.items[request.tablePosition.row].name}")
-                }
-            }
+
+            val fileWriter = FileWriter(file)
+            fileWriter.write(request.tableView.items[request.tablePosition.row].toString())
+            fileWriter.close()
+
+            loadSavedRequests()
+            App.LOG.info("${App.SAVE_AS} ${request.tableView.items[request.tablePosition.row].name}")
 
             request.tableView.selectionModel.select(selectedRequest)
         })
