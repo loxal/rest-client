@@ -142,7 +142,7 @@ data class ClientRequest(var builder: ClientRequest.Builder) : Serializable {
 
     companion object {
         private const val serialVersionUID = 5979496652154735188
-        val headerKeyValueSeparator = ":"
+        const val headerKeyValueSeparator = ":"
 
         fun toHeaders(text: String): Headers {
             val headers: Headers = Headers()

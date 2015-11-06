@@ -33,7 +33,7 @@ import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.MultivaluedHashMap
 import javax.ws.rs.core.MultivaluedMap
 
-val parameterPairEntrySeparatorRegex = "="
+const val parameterPairEntrySeparatorRegex = "="
 
 fun assignShortcut(control: Control, keyCodeCombination: KeyCodeCombination, action: Runnable) {
     assignShortcut(control.parent, keyCodeCombination, action)
