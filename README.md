@@ -1,7 +1,9 @@
 REST Client
 ===========
 
-RESTful Client
+# This is How You Run it
+
+`./run.sh`
 
 # This is How it Looks Like
 
