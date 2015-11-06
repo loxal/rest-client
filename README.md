@@ -1,7 +1,7 @@
 REST Client
 ===========
 
-# This is How You Run it
+# Run It
 
 `./run.sh`
 

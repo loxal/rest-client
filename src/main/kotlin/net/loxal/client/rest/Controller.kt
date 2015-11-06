@@ -105,28 +105,28 @@ internal class Controller : Initializable {
     }
 
     fun initAccelerators() {
-        Util.assignShortcut(endpointUrl, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN), Runnable { endpointUrl.requestFocus() })
-        Util.assignShortcut(requestPerformer, KeyCodeCombination(KeyCode.ENTER, KeyCombination.SHORTCUT_DOWN), Runnable { requestPerformer.fire() })
-        Util.assignShortcut(requestHeaders, KeyCodeCombination(KeyCode.DIGIT1, KeyCombination.SHORTCUT_DOWN), Runnable { requestHeaders.requestFocus() })
-        Util.assignShortcut(requestParameterData, KeyCodeCombination(KeyCode.DIGIT2, KeyCombination.SHORTCUT_DOWN), Runnable { requestParameterData.requestFocus() })
-        Util.assignShortcut(requestBody, KeyCodeCombination(KeyCode.DIGIT3, KeyCombination.SHORTCUT_DOWN), Runnable { requestBody.requestFocus() })
-        Util.assignShortcut(responseHeaders, KeyCodeCombination(KeyCode.DIGIT4, KeyCombination.SHORTCUT_DOWN), Runnable { responseHeaders.requestFocus() })
-        Util.assignShortcut(responseBody, KeyCodeCombination(KeyCode.DIGIT5, KeyCombination.SHORTCUT_DOWN), Runnable { responseBody.requestFocus() })
-        Util.assignShortcut(queryTable, KeyCodeCombination(KeyCode.DIGIT6, KeyCombination.SHORTCUT_DOWN), Runnable { queryTable.requestFocus() })
-        Util.assignShortcut(requestDeleter, KeyCodeCombination(KeyCode.BACK_SPACE, KeyCombination.SHORTCUT_DOWN), Runnable { requestDeleter.fire() })
-        Util.assignShortcut(requestSaver, KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN), Runnable { requestSaver.fire() })
-        Util.assignShortcut(requestDuplicator, KeyCodeCombination(KeyCode.D, KeyCombination.SHORTCUT_DOWN), Runnable { requestDuplicator.fire() })
-        Util.assignShortcut(findRequest, KeyCodeCombination(KeyCode.F, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN), Runnable { findRequest.requestFocus() })
+        assignShortcut(endpointUrl, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN), Runnable { endpointUrl.requestFocus() })
+        assignShortcut(requestPerformer, KeyCodeCombination(KeyCode.ENTER, KeyCombination.SHORTCUT_DOWN), Runnable { requestPerformer.fire() })
+        assignShortcut(requestHeaders, KeyCodeCombination(KeyCode.DIGIT1, KeyCombination.SHORTCUT_DOWN), Runnable { requestHeaders.requestFocus() })
+        assignShortcut(requestParameterData, KeyCodeCombination(KeyCode.DIGIT2, KeyCombination.SHORTCUT_DOWN), Runnable { requestParameterData.requestFocus() })
+        assignShortcut(requestBody, KeyCodeCombination(KeyCode.DIGIT3, KeyCombination.SHORTCUT_DOWN), Runnable { requestBody.requestFocus() })
+        assignShortcut(responseHeaders, KeyCodeCombination(KeyCode.DIGIT4, KeyCombination.SHORTCUT_DOWN), Runnable { responseHeaders.requestFocus() })
+        assignShortcut(responseBody, KeyCodeCombination(KeyCode.DIGIT5, KeyCombination.SHORTCUT_DOWN), Runnable { responseBody.requestFocus() })
+        assignShortcut(queryTable, KeyCodeCombination(KeyCode.DIGIT6, KeyCombination.SHORTCUT_DOWN), Runnable { queryTable.requestFocus() })
+        assignShortcut(requestDeleter, KeyCodeCombination(KeyCode.BACK_SPACE, KeyCombination.SHORTCUT_DOWN), Runnable { requestDeleter.fire() })
+        assignShortcut(requestSaver, KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN), Runnable { requestSaver.fire() })
+        assignShortcut(requestDuplicator, KeyCodeCombination(KeyCode.D, KeyCombination.SHORTCUT_DOWN), Runnable { requestDuplicator.fire() })
+        assignShortcut(findRequest, KeyCodeCombination(KeyCode.F, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN), Runnable { findRequest.requestFocus() })
 
         fun initHttpMethods() {
             httpMethods.items = httpMethodsTexts
             httpMethods.selectionModel.select(0)
-            Util.assignShortcutToText(rootContainer, getMethod, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { setMethodInUi(HttpMethod.GET) })
-            Util.assignShortcutToText(rootContainer, postMethod, KeyCodeCombination(KeyCode.P, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { setMethodInUi(HttpMethod.POST) })
-            Util.assignShortcutToText(rootContainer, deleteMethod, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { setMethodInUi(HttpMethod.DELETE) })
-            Util.assignShortcutToText(rootContainer, putMethod, KeyCodeCombination(KeyCode.U, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { setMethodInUi(HttpMethod.PUT) })
-            Util.assignShortcutToText(rootContainer, headMethod, KeyCodeCombination(KeyCode.E, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { setMethodInUi(HttpMethod.HEAD) })
-            Util.assignShortcutToText(rootContainer, optionsMethod, KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { setMethodInUi(HttpMethod.OPTIONS) })
+            assignShortcutToText(rootContainer, getMethod, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { setMethodInUi(HttpMethod.GET) })
+            assignShortcutToText(rootContainer, postMethod, KeyCodeCombination(KeyCode.P, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { setMethodInUi(HttpMethod.POST) })
+            assignShortcutToText(rootContainer, deleteMethod, KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { setMethodInUi(HttpMethod.DELETE) })
+            assignShortcutToText(rootContainer, putMethod, KeyCodeCombination(KeyCode.U, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { setMethodInUi(HttpMethod.PUT) })
+            assignShortcutToText(rootContainer, headMethod, KeyCodeCombination(KeyCode.E, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { setMethodInUi(HttpMethod.HEAD) })
+            assignShortcutToText(rootContainer, optionsMethod, KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN), Runnable { setMethodInUi(HttpMethod.OPTIONS) })
         }
         initHttpMethods()
 
@@ -176,8 +176,8 @@ internal class Controller : Initializable {
     }
 
     private fun enableFinder() {
-        Util.assignShortcut(findContainer, KeyCodeCombination(KeyCode.ESCAPE), Runnable { rootContainer.requestFocus(); findContainer.isVisible = false })
-        Util.assignShortcut(findNext, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN), Runnable { findNext.fire() })
+        assignShortcut(findContainer, KeyCodeCombination(KeyCode.ESCAPE), Runnable { rootContainer.requestFocus(); findContainer.isVisible = false })
+        assignShortcut(findNext, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN), Runnable { findNext.fire() })
 
         findRequest.setOnKeyReleased { keyEvent ->
             resetFind()
@@ -243,7 +243,7 @@ internal class Controller : Initializable {
             val clientRequest = buildRequest(requestName)
 
             val fileLocation = requestFiles.values.toLinkedList()[selectedRequestIndex]
-            if (Util.save(storage = fileLocation, request = clientRequest)) loadSavedRequests()
+            if (save(storage = fileLocation, request = clientRequest)) loadSavedRequests()
 
             postSaveAction(requestName, selectedRequestIndex, viewSelection)
         }
@@ -286,7 +286,7 @@ internal class Controller : Initializable {
         val requestName: String = if (selectedRequest === null) verboseRequestName else "${selectedRequest.name} ∆"
         val clientRequest = buildRequest(requestName)
 
-        if (Util saveAsNew clientRequest) loadSavedRequests()
+        if (saveAsNew(clientRequest)) loadSavedRequests()
 
         postSaveAction(requestName, selectedIndex, viewSelection)
     }
@@ -338,10 +338,10 @@ internal class Controller : Initializable {
     }
 
     private fun prepareRequest(): Invocation.Builder {
-        val target = Util.applyUrlRequestParameters(client.target(request.url.toString()),
-                Util.extractRequestParameters(declareRequestParameters()))
+        val target = applyUrlRequestParameters(client.target(request.url.toString()),
+                extractRequestParameters(declareRequestParameters()))
 
-        return Util.applyHeaderInfo(Util.extractHeaderData(requestHeaders.text), target.request())
+        return applyHeaderInfo(extractHeaderData(requestHeaders.text), target.request())
     }
 
     @FXML
@@ -386,8 +386,8 @@ internal class Controller : Initializable {
 
     private fun postRequest(): Response {
         val response: Response
-        if (Util.isFormMediaType(request)) {
-            response = prepareRequest().post(Entity.form(Util.toForm(request.body)))
+        if (isFormMediaType(request)) {
+            response = prepareRequest().post(Entity.form(toForm(request.body)))
         } else
             response = prepareRequest().post(Entity.json<String>(request.body))
 
@@ -411,7 +411,7 @@ internal class Controller : Initializable {
     }
 
     private fun showResponseBody(response: Response) {
-        val formattedResponse = Util.formatJson(response.readEntity(String::class.java))
+        val formattedResponse = formatJson(response.readEntity(String::class.java))
         responseBody.appendText(formattedResponse)
     }
 
@@ -434,11 +434,11 @@ internal class Controller : Initializable {
         requests.clear()
 
         val appHomeDirectory = File(App.APP_HOME_DIRECTORY)
-        Util.createAppHome(appHomeDirectory)
+        createAppHome(appHomeDirectory)
 
         appHomeDirectory.listFiles().toLinkedList().sortedDescending().forEach { file ->
-            requestFiles.put(Util.loadFromFile(file), file)
-            requests.add(Util.loadFromFile(file))
+            requestFiles.put(loadFromFile(file), file)
+            requests.add(loadFromFile(file))
         }
 
         reloadRequestBackup()
