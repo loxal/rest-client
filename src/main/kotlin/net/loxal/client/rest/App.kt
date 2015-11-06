@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory
 import java.io.IOException
 import java.net.URL
 import java.util.*
+import javax.swing.ImageIcon
 
 class App : Application() {
 
@@ -29,7 +30,10 @@ class App : Application() {
             stage.scene = scene
 
             stage.title = "Epvin v${properties.getProperty("project.version")}.${properties.getProperty("build.number")}-${properties.getProperty("scm.id")} | www.loxal.net/epvin-rest-client"
-            stage.icons.add(Image("/net/loxal/client/rest/view/tool-icon-128.png"))
+            stage.icons.add(Image(iconUri))
+
+            setMacDockIcon()
+
             rootNode.requestFocus()
             stage.show()
 
@@ -38,6 +42,11 @@ class App : Application() {
         } catch (e: IOException) {
             LOG.error("${e.cause}\n ${e.message}")
         }
+    }
+
+    private fun setMacDockIcon() {
+        val iconUrl = javaClass.getResource(iconUri)
+        com.apple.eawt.Application.getApplication().dockIconImage = ImageIcon(iconUrl).image // does not work on Linux / Windows
     }
 
     init {
@@ -49,6 +58,7 @@ class App : Application() {
         val LOG: Logger = LoggerFactory.getLogger(App::class.java)
         val SAMPLE_URL = URL("https://example.com")
         val SAVE_AS = "Save request as:"
+        const val iconUri = "/net/loxal/client/rest/view/tool-icon-128.png"
         val properties = Properties()
 
         val APP_HOME_DIRECTORY = if (System.getenv("HOME") === null) {

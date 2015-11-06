@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-mvn clean assembly:assembly
+mvn clean validate assembly:assembly
 java -jar target/Epvin-*-with-dependencies.jar
