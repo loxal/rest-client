@@ -54,15 +54,16 @@ class App : Application() {
     }
 
     companion object {
-        val REST_CODE_NAME = "RESTcode"
+        const val REST_CODE_NAME = "RESTcode"
         val LOG: Logger = LoggerFactory.getLogger(App::class.java)
         val SAMPLE_URL = URL("https://example.com")
-        val SAVE_AS = "Save request as:"
+        const val SAVE_AS = "Save request as:"
         const val iconUri = "/net/loxal/client/rest/view/tool-icon-128.png"
+        const val windowsHomePath = "USERPROFILE"
         val properties = Properties()
 
         val APP_HOME_DIRECTORY = if (System.getenv("HOME") === null) {
-            System.getenv("USERPROFILE")
+            System.getenv(windowsHomePath)
         } else {
             System.getenv("HOME")
         } + "/.loxal/rest-client/$REST_CODE_NAME"
