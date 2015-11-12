@@ -242,7 +242,7 @@ internal class Controller : Initializable {
             val requestName: String = viewSelection.selectedItem.name
             val clientRequest = buildRequest(requestName)
 
-            val fileLocation = requestFiles.values.toLinkedList()[selectedRequestIndex]
+            val fileLocation = requestFiles.values.toList()[selectedRequestIndex]
             if (save(storage = fileLocation, request = clientRequest)) loadSavedRequests()
 
             postSaveAction(requestName, selectedRequestIndex, viewSelection)
@@ -436,7 +436,7 @@ internal class Controller : Initializable {
         val appHomeDirectory = File(App.APP_HOME_DIRECTORY)
         createAppHome(appHomeDirectory)
 
-        appHomeDirectory.listFiles().toLinkedList().sortedDescending().forEach { file ->
+        appHomeDirectory.listFiles().toList().sortedDescending().forEach { file ->
             requestFiles.put(loadFromFile(file), file)
             requests.add(loadFromFile(file))
         }
@@ -468,7 +468,7 @@ internal class Controller : Initializable {
     private fun deleteSavedRequestFile() {
         val selectedIndex = queryTable.selectionModel.selectedIndex
         if (selectedIndex != none) {
-            val fileToDelete = requestFiles.values.toLinkedList()[selectedIndex]
+            val fileToDelete = requestFiles.values.toList()[selectedIndex]
             if (fileToDelete.delete()) {
                 App.LOG.info("Saved request deleted: $fileToDelete")
             } else {
@@ -530,7 +530,7 @@ internal class Controller : Initializable {
                     .build()
             request.tableView.items.set(request.tablePosition.row, clientRequestRenamed)
 
-            val file = requestFiles.values.toLinkedList()[request.tablePosition.row];
+            val file = requestFiles.values.toList()[request.tablePosition.row];
 
             val fileWriter = FileWriter(file)
             fileWriter.write(request.tableView.items[request.tablePosition.row].toString())
