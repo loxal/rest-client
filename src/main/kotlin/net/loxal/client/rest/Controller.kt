@@ -36,6 +36,11 @@ import javax.ws.rs.client.ClientBuilder
 import javax.ws.rs.client.Entity
 import javax.ws.rs.client.Invocation
 import javax.ws.rs.core.Response
+import kotlin.collections.forEach
+import kotlin.collections.get
+import kotlin.collections.sortedDescending
+import kotlin.collections.toList
+import kotlin.text.*
 
 internal class Controller : Initializable {
     private var validEndpoint: Boolean = false
@@ -528,7 +533,7 @@ internal class Controller : Initializable {
                     .body(clientRequestCopy.body)
                     .method(clientRequestCopy.method)
                     .build()
-            request.tableView.items.set(request.tablePosition.row, clientRequestRenamed)
+            request.tableView.items[request.tablePosition.row] = clientRequestRenamed
 
             val file = requestFiles.values.toList()[request.tablePosition.row];
 

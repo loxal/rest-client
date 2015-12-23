@@ -11,6 +11,8 @@ import net.loxal.client.rest.model.RestCode
 import org.junit.Test
 import java.net.URL
 import javax.ws.rs.HttpMethod
+import kotlin.collections.first
+import kotlin.collections.listOf
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
@@ -80,8 +82,7 @@ class RestCodeTest {
         assertEquals(headerValueReference, headerFromText.toString())
         assertEquals(headerValueReference, ClientRequest.toHeaders("  Header Name   :  Value ").toString())
 
-        val headersFromText = ClientRequest.toHeaders("  Header Name   :  Value  \nHeader1:Value "
-                + " \n  Header2  :Value :DELTA:\nMultivalue-Header :[First Value, Second Value, Another Value]")
+        val headersFromText = ClientRequest.toHeaders("  Header Name   :  Value  \nHeader1:Value  \n  Header2  :Value :DELTA:\nMultivalue-Header :[First Value, Second Value, Another Value]")
         assertEquals(4, headersFromText.size)
         val headers = Headers()
         headers.put("Header Name", "Value")
@@ -107,9 +108,7 @@ class RestCodeTest {
 
         private val bodyJson: String = "{'key': 'value', 'key1': 'value', 'key2': ['value', 42.24, false], 'key3': {'key3.1': true}}"
 
-        private val headersJson: String = "{\"header\": [\"value\", \"value1\", 42.0, true], " +
-                "\"header1\": [\"0\", 1, false, \"false\"], \"header2\": [], " +
-                "\"number\": [1], \"\": [], \"header3\": [\"value3\"]}"
+        private val headersJson: String = "{\"header\": [\"value\", \"value1\", 42.0, true], \"header1\": [\"0\", 1, false, \"false\"], \"header2\": [], \"number\": [1], \"\": [], \"header3\": [\"value3\"]}"
         private val headers: Headers = mapper.readValue(headersJson, Headers::class.java)
 
         private val restCodeUrlRaw: String = "$endpointUrl#${RestCode.restCodeToken}{" +

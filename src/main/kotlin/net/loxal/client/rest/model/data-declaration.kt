@@ -12,6 +12,11 @@ import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import javax.ws.rs.HttpMethod
+import kotlin.collections.first
+import kotlin.collections.forEach
+import kotlin.collections.listOf
+import kotlin.collections.toTypedArray
+import kotlin.text.*
 
 class Headers() : HashMap<String, List<Any>>() {
     override fun toString() = toString(", ")

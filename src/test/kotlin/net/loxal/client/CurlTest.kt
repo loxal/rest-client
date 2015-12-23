@@ -8,6 +8,7 @@ import net.loxal.client.rest.model.ClientRequest
 import net.loxal.client.rest.model.Headers
 import org.junit.Test
 import java.net.URL
+import kotlin.collections.listOf
 import kotlin.test.assertEquals
 
 class CurlTest {
