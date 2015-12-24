@@ -9,8 +9,8 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>net.loxal</groupId>
-        <artifactId>meta</artifactId>
-        <version>1.2.23</version>
+        <artifactId>blueprint</artifactId>
+        <version>1.0.0</version>
     </parent>
 
     <artifactId>rest-client</artifactId>
