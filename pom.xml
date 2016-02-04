@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright 2015 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+  ~ Copyright 2016 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
   -->
 
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -10,7 +10,7 @@
     <parent>
         <groupId>net.loxal</groupId>
         <artifactId>blueprint</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.4</version>
     </parent>
 
     <artifactId>rest-client</artifactId>

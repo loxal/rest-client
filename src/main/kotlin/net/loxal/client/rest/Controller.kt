@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ * Copyright 2016 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
  */
 
 package net.loxal.client.rest
@@ -36,11 +36,6 @@ import javax.ws.rs.client.ClientBuilder
 import javax.ws.rs.client.Entity
 import javax.ws.rs.client.Invocation
 import javax.ws.rs.core.Response
-import kotlin.collections.forEach
-import kotlin.collections.get
-import kotlin.collections.sortedDescending
-import kotlin.collections.toList
-import kotlin.text.*
 
 internal class Controller : Initializable {
     private var validEndpoint: Boolean = false
@@ -391,9 +386,9 @@ internal class Controller : Initializable {
 
     private fun postRequest(): Response {
         val response: Response
-        if (isFormMediaType(request)) {
+        if (isFormMediaType(request))
             response = prepareRequest().post(Entity.form(toForm(request.body)))
-        } else
+         else
             response = prepareRequest().post(Entity.json<String>(request.body))
 
         return response

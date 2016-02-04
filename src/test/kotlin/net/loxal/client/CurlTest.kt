@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ * Copyright 2016 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
  */
 
 package net.loxal.client
@@ -8,7 +8,6 @@ import net.loxal.client.rest.model.ClientRequest
 import net.loxal.client.rest.model.Headers
 import org.junit.Test
 import java.net.URL
-import kotlin.collections.listOf
 import kotlin.test.assertEquals
 
 class CurlTest {
@@ -21,8 +20,8 @@ class CurlTest {
         assertEquals("[Valid curl CLI command]", clientRequest.name)
 
         val headers: Headers = Headers()
-        headers.put("header", listOf("value", "value1", 42.0, true))
-        headers.put("header1", listOf(0, 1, false, false))
+        headers.putIfAbsent("header", listOf("value", "value1", 42.0, true))
+        headers.putIfAbsent("header1", listOf(0, 1, false, false))
         headers.put("header2", "")
         headers.put("number", 1)
         headers.put("header3", "value3")

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ * Copyright 2016 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
  */
 
 package net.loxal.client
@@ -11,8 +11,6 @@ import net.loxal.client.rest.model.RestCode
 import org.junit.Test
 import java.net.URL
 import javax.ws.rs.HttpMethod
-import kotlin.collections.first
-import kotlin.collections.listOf
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
@@ -87,7 +85,7 @@ class RestCodeTest {
         val headers = Headers()
         headers.put("Header Name", "Value")
         headers.put("Header1", "Value")
-        headers.put("Multivalue-Header", listOf("First Value", "Second Value", "Another Value"))
+        headers.putIfAbsent("Multivalue-Header", listOf("First Value", "Second Value", "Another Value"))
         headers.put("Header2", "Value :DELTA:")
         assertEquals(headers.toString(), headersFromText.toString())
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ * Copyright 2016 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
  */
 
 package net.loxal.client
@@ -14,28 +14,24 @@ import org.junit.Test
 import kotlin.test.assertEquals
 
 class ControllerTest {
-    @Before
-    public fun setUp() {
+    @Before fun setUp() {
     }
 
-    @After
-    public fun tearDown() {
+    @After fun tearDown() {
     }
 
-    @Test
-    public fun dummyTest() {
+    @Test fun dummyTest() {
         assertEquals(true, true)
     }
 
-    public class AsNonApp : Application() {
+    class AsNonApp : Application() {
         override fun start(primaryStage: Stage) {
             throw AssertionError("NOP")
         }
     }
 
     companion object {
-        @BeforeClass
-        public fun initJavaFxEnvironment() {
+        @BeforeClass fun initJavaFxEnvironment() {
             val thread = object : Thread("JavaFx Init Thread") {
                 override fun run() {
                     Application.launch(App::class.java)

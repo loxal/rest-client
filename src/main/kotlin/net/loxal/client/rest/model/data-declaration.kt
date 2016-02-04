@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ * Copyright 2016 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
  */
 
 package net.loxal.client.rest.model
@@ -12,11 +12,6 @@ import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import javax.ws.rs.HttpMethod
-import kotlin.collections.first
-import kotlin.collections.forEach
-import kotlin.collections.listOf
-import kotlin.collections.toTypedArray
-import kotlin.text.*
 
 class Headers() : HashMap<String, List<Any>>() {
     override fun toString() = toString(", ")
@@ -48,7 +43,7 @@ class Headers() : HashMap<String, List<Any>>() {
 
         fun new(name: String, value: Any): Headers {
             val h: Headers = Headers()
-            h.put(name, listOf(value))
+            h.putIfAbsent(name, listOf(value))
 
             return h
         }
@@ -155,7 +150,7 @@ data class ClientRequest(var builder: ClientRequest.Builder) : Serializable {
                 if (header.contains(headerKeyValueSeparator)) {
                     val headerName = header.substringBefore(headerKeyValueSeparator)
                     val headerValue = header.substringAfter(headerKeyValueSeparator)
-                    headers.put(headerName.trim(), listOf(headerValue.trim()))
+                    headers.putIfAbsent(headerName.trim(), listOf(headerValue.trim()))
                 }
             }
 
