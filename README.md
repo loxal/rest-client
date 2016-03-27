@@ -1,3 +1,7 @@
+# DEV Status
+
+[![Build Status](https://travis-ci.org/loxal/rest-client.svg?branch=master)](https://travis-ci.org/loxal/rest-client)
+
 **Support this project**
 <!-- BADGES/ -->
 <span class="badge-paypal">
