@@ -16,6 +16,9 @@
 <img src="https://img.shields.io/badge/gratipay-donate-yellow.svg" alt="Gratipay Donate" />
 </a></span>
 <!-- /BADGES -->
+
+[Support this work with cryptocurrencies like BitCoin!](http://me.loxal.net/coin-support.html)
+
 REST Client
 ===========
 
