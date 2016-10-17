@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  ~ Copyright 2015 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+  ~ Copyright 2016 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
   -->
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 <?import java.lang.String?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="rootPane" fx:id="rootContainer" cacheShape="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" scaleShape="false" snapToPixel="false" stylesheets="/net/loxal/client/rest/view/style.css" xmlns="http://javafx.com/javafx/8" fx:controller="net.loxal.client.rest.Controller">
     <children>
@@ -105,7 +106,7 @@
                 <TextField id="request-url-bar" fx:id="endpointUrl" cacheShape="false" centerShape="false"
                            focusTraversable="false" onKeyReleased="#updateEndpoint" pickOnBounds="false"
                            prefHeight="26.0" prefWidth="823.0" promptText="https://api.example.com" scaleShape="false"
-                           text="https://rest-kit-v1.us-east.stage.internal.yaas.io/dilbert-quote/manager">
+                           text="http://sky.loxal.net/dilbert-quote/manager">
                     <styleClass>
                         <String fx:value="request"/>
                         <String fx:value="test"/>
