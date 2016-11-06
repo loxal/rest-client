@@ -37,7 +37,7 @@ const val parameterPairEntrySeparatorRegex = "="
 
 fun assignShortcut(control: Control, keyCodeCombination: KeyCodeCombination, action: Runnable) {
     assignShortcut(control.parent, keyCodeCombination, action)
-    control.tooltip = Tooltip("${keyCodeCombination.displayText}")
+    control.tooltip = Tooltip(keyCodeCombination.displayText)
 }
 
 fun assignShortcut(control: Parent, keyCodeCombination: KeyCodeCombination, action: Runnable) {
@@ -128,7 +128,7 @@ fun extractRequestParameters(requestParameterContent: String): List<RequestParam
     return requestParameters
 }
 
-fun isFormMediaType(request: ClientRequest) = request.headers[HttpHeaders.CONTENT_TYPE] != null && request.headers[HttpHeaders.CONTENT_TYPE]?.get(0).toString().equals(MediaType.APPLICATION_FORM_URLENCODED)
+fun isFormMediaType(request: ClientRequest) = request.headers[HttpHeaders.CONTENT_TYPE] != null && request.headers[HttpHeaders.CONTENT_TYPE]?.get(0).toString() == MediaType.APPLICATION_FORM_URLENCODED
 
 fun toForm(payload: String): MultivaluedMap<String, String> {
     val formData: MultivaluedMap<String, String> = MultivaluedHashMap()
@@ -145,7 +145,7 @@ fun toForm(payload: String): MultivaluedMap<String, String> {
 fun formatJson(json: String): String {
     try {
         val jsonElement = JsonParser().parse(json)
-        if (jsonElement.equals(JsonNull.INSTANCE))
+        if (jsonElement == JsonNull.INSTANCE)
             return ""
         else
             return GsonBuilder().setPrettyPrinting().create().toJson(jsonElement)
@@ -157,7 +157,7 @@ fun formatJson(json: String): String {
 
 // TODO test this
 fun applyHeaderInfo(headers: Headers, request: Invocation.Builder): Invocation.Builder {
-    fun showSingleListEntry(entry: Map.Entry<String, List<Any>>): String = if (entry.value.size.equals(1)) entry.value[0] as String else entry.value.toString()
+    fun showSingleListEntry(entry: Map.Entry<String, List<Any>>): String = if (entry.value.size == 1) entry.value[0] as String else entry.value.toString()
     headers.forEach { entry -> request.header(entry.key, showSingleListEntry(entry)) }
 
     return request

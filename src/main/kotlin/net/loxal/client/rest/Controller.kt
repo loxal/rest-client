@@ -216,7 +216,7 @@ internal class Controller : Initializable {
 
     private fun setShortcutForArrowKeySelection() =
             queryTable.setOnKeyReleased { keyEvent ->
-                if (keyEvent.code.equals(KeyCode.UP).or(keyEvent.code.equals(KeyCode.DOWN)))
+                if ((keyEvent.code == KeyCode.UP).or(keyEvent.code == KeyCode.DOWN))
                     loadSavedRequest()
             }
 
@@ -406,7 +406,7 @@ internal class Controller : Initializable {
 
     private fun showResponseHeaders(response: Response) {
         response.headers.forEach { header ->
-            responseHeaders.appendText("${Headers.toString(entry = header, lineBreak = true)}")
+            responseHeaders.appendText(Headers.toString(entry = header, lineBreak = true))
         }
     }
 
@@ -530,7 +530,7 @@ internal class Controller : Initializable {
                     .build()
             request.tableView.items[request.tablePosition.row] = clientRequestRenamed
 
-            val file = requestFiles.values.toList()[request.tablePosition.row];
+            val file = requestFiles.values.toList()[request.tablePosition.row]
 
             val fileWriter = FileWriter(file)
             fileWriter.write(request.tableView.items[request.tablePosition.row].toString())
