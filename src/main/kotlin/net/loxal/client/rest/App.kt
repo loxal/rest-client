@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ * Copyright 2016 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
  */
 
 package net.loxal.client.rest
@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory
 import java.io.IOException
 import java.net.URL
 import java.util.*
-import javax.swing.ImageIcon
 
 class App : Application() {
 
@@ -32,8 +31,6 @@ class App : Application() {
             stage.title = "Epvin v${properties.getProperty("project.version")}.${properties.getProperty("build.number")}-${properties.getProperty("scm.id")} | www.loxal.net/epvin-rest-client"
             stage.icons.add(Image(iconUri))
 
-            setMacDockIcon()
-
             rootNode.requestFocus()
             stage.show()
 
@@ -42,11 +39,6 @@ class App : Application() {
         } catch (e: IOException) {
             LOG.error("${e.cause}\n ${e.message}")
         }
-    }
-
-    private fun setMacDockIcon() {
-        val iconUrl = javaClass.getResource(iconUri)
-        com.apple.eawt.Application.getApplication().dockIconImage = ImageIcon(iconUrl).image // does not work on Linux / Windows
     }
 
     init {
