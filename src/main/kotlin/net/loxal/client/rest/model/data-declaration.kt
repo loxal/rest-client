@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ * Copyright 2017 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
  */
 
 package net.loxal.client.rest.model
@@ -13,7 +13,7 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 import javax.ws.rs.HttpMethod
 
-class Headers() : HashMap<String, List<Any>>() {
+class Headers : HashMap<String, List<Any>>() {
     override fun toString() = toString(", ")
 
     fun toStringColumn() = toString("\n")
