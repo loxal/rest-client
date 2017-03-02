@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ * Copyright 2017 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
  */
 
 package net.loxal.client.rest
@@ -166,8 +166,8 @@ fun applyHeaderInfo(headers: Headers, request: Invocation.Builder): Invocation.B
 fun applyUrlRequestParameters(webTarget: WebTarget, requestParameters: List<RequestParameter>): WebTarget {
     var target = webTarget
 
-    requestParameters.forEach { requestParameter ->
-        target = target.queryParam(requestParameter.paramName, requestParameter.paramValue)
+    requestParameters.forEach { (paramName, paramValue) ->
+        target = target.queryParam(paramName, paramValue)
     }
 
     return target
