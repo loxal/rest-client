@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ * Copyright 2017 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
  */
 
 package net.loxal.client.rest
@@ -147,7 +147,7 @@ internal class Controller : Initializable {
         }
         focus()
 
-        findInResponse.setOnKeyReleased { keyEvent ->
+        findInResponse.setOnKeyReleased { _ ->
             responseBody.deselect()
             findNextOccurrence()
         }
