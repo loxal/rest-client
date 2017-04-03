@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-mvn clean test
+./mvnw clean test

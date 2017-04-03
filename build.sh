@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-mvn clean assembly:assembly
+./mvnw clean assembly:assembly
