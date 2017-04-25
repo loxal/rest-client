@@ -179,7 +179,7 @@ internal class Controller : Initializable {
         assignShortcut(findContainer, KeyCodeCombination(KeyCode.ESCAPE), Runnable { rootContainer.requestFocus(); findContainer.isVisible = false })
         assignShortcut(findNext, KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN), Runnable { findNext.fire() })
 
-        findRequest.setOnKeyReleased { keyEvent ->
+        findRequest.setOnKeyReleased { _ ->
             resetFind()
             populateFindings()
         }
